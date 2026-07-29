@@ -22,20 +22,42 @@ public static partial class TextFacts
         ["twenty"] = 20, ["thirty"] = 30, ["forty"] = 40, ["fifty"] = 50
     };
 
-    /// <summary>Finds a count that appears immediately before one of the given nouns.</summary>
+    /// <summary>How many words before the noun are searched for its count.</summary>
+    private const int LookBehindWords = 6;
+
+    private static readonly char[] WordSeparators = [' ', '\t', '\n', '\r', ',', ';', '(', ')'];
+
+    /// <summary>
+    /// Finds the count belonging to one of the given nouns, by scanning backwards from the noun
+    /// to the nearest word that reads as a number.
+    /// </summary>
+    /// <remarks>
+    /// Scanning backwards from the noun rather than forwards from a number matters: in "we have
+    /// 14 vans" the count is three words ahead of the noun, and in "six vehicles are assigned to
+    /// priority routes" it is five. Taking the nearest number behind the noun handles both.
+    /// </remarks>
     public static int? CountBefore(string text, params string[] nouns)
     {
+        ArgumentNullException.ThrowIfNull(text);
+        ArgumentNullException.ThrowIfNull(nouns);
+
         foreach (var noun in nouns)
         {
-            var pattern = new Regex(
-                $@"(?<n>\d+|[a-z]+)\s+(?:\w+\s+){{0,3}}?{Regex.Escape(noun)}",
-                RegexOptions.IgnoreCase);
+            var pattern = new Regex($@"\b{Regex.Escape(noun)}\b", RegexOptions.IgnoreCase);
 
             foreach (Match match in pattern.Matches(text))
             {
-                if (TryParseCount(match.Groups["n"].Value, out var value))
+                var preceding = text[..match.Index]
+                    .Split(WordSeparators, StringSplitOptions.RemoveEmptyEntries)
+                    .TakeLast(LookBehindWords)
+                    .Reverse();
+
+                foreach (var word in preceding)
                 {
-                    return value;
+                    if (TryParseCount(word.Trim('.', ':', '-'), out var value))
+                    {
+                        return value;
+                    }
                 }
             }
         }
