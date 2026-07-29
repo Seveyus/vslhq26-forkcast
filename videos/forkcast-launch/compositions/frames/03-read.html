@@ -1,0 +1,168 @@
+<template>
+  <style>
+    /* OS-bundled family: the declaration alone satisfies the renderer. */
+    @font-face {
+      font-family: "Segoe UI Variable Display";
+      src: local("Segoe UI Variable Display"), local("Segoe UI");
+      font-weight: 100 900;
+    }
+    #root {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: system-ui, "Segoe UI Variable Display", "Segoe UI", sans-serif;
+      color: #e9f0fa;
+    }
+    .f03-ground {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(1000px 620px at 8% -8%, rgba(74, 158, 255, 0.14), transparent 60%),
+        linear-gradient(180deg, #0e1726 0%, #04080f 100%);
+    }
+    .f03-stage {
+      position: absolute;
+      inset: 0;
+    }
+    .f03-eyebrow {
+      position: absolute;
+      left: 96px;
+      top: 76px;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #4a9eff;
+    }
+    .f03-head {
+      position: absolute;
+      left: 96px;
+      top: 112px;
+      font-size: 58px;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+    }
+    .f03-screen {
+      position: absolute;
+      left: 96px;
+      top: 240px;
+      width: 1120px;
+      height: 596px;
+      border-radius: 14px;
+      border: 1.5px solid rgba(74, 158, 255, 0.2);
+      background: #060b14;
+      overflow: hidden;
+    }
+    .f03-screen img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+    .f03-col {
+      position: absolute;
+      left: 1288px;
+      top: 240px;
+      width: 536px;
+    }
+    .f03-label {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #7d90b0;
+      margin-bottom: 26px;
+    }
+    .f03-chip {
+      display: flex;
+      align-items: baseline;
+      gap: 18px;
+      padding: 22px 26px;
+      margin-bottom: 16px;
+      border-radius: 14px;
+      background: rgba(74, 158, 255, 0.04);
+      border: 1.5px solid rgba(74, 158, 255, 0.2);
+    }
+    .f03-chip b {
+      font-size: 46px;
+      font-weight: 660;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      color: #4a9eff;
+      font-variant-numeric: tabular-nums;
+      min-width: 108px;
+    }
+    .f03-chip span {
+      font-size: 24px;
+      color: #9aadc9;
+      font-weight: 500;
+    }
+    .f03-chip.is-bad {
+      border-color: rgba(255, 112, 137, 0.34);
+      background: rgba(255, 112, 137, 0.08);
+    }
+    .f03-chip.is-bad b {
+      color: #ff7089;
+    }
+    .f03-note {
+      position: absolute;
+      left: 1288px;
+      top: 700px;
+      width: 536px;
+      border-left: 3px solid #4a9eff;
+      padding: 6px 0 6px 24px;
+      font-size: 27px;
+      font-weight: 550;
+      line-height: 1.45;
+      color: #e9f0fa;
+    }
+  </style>
+
+  <div id="root" data-composition-id="03-read" data-start="0" data-duration="17.5" data-width="1920" data-height="1080">
+    <div id="f03-ground" class="clip f03-ground" data-start="0" data-duration="17.5" data-track-index="0"></div>
+
+    <div id="f03-stage" class="clip f03-stage" data-start="0" data-duration="17.5" data-track-index="1">
+      <div class="f03-eyebrow">Step one</div>
+      <div class="f03-head">The incident, in their own words</div>
+
+      <div class="f03-screen" id="f03-screen">
+        <img data-layout-allow-overflow src="assets/02-incident.png" alt="The Forkcast incident card" />
+      </div>
+
+      <div class="f03-col">
+        <div class="f03-label" id="f03-label">Extracted constraints</div>
+        <div class="f03-chip" id="f03-c1"><b>20</b><span>vehicles</span></div>
+        <div class="f03-chip" id="f03-c2"><b>8</b><span>charge points</span></div>
+        <div class="f03-chip" id="f03-c3"><b>06:00</b><span>deadline</span></div>
+        <div class="f03-chip is-bad" id="f03-c4"><b>1</b><span>critical failure</span></div>
+      </div>
+
+      <div class="f03-note" id="f03-note">The model reads.<br />It does not calculate.</div>
+    </div>
+  </div>
+  <script>
+    window.__timelines = window.__timelines || {};
+    (function () {
+      var tl = gsap.timeline({ paused: true });
+
+      tl.fromTo(".f03-eyebrow", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 0.1);
+      tl.fromTo(".f03-head", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 0.3);
+      tl.fromTo("#f03-screen", { opacity: 0, y: 40, scale: 0.985 }, { opacity: 1, y: 0, scale: 1, duration: 1.1, ease: "power3.out" }, 0.7);
+
+      // Slow push-in across the whole shot, so the frame keeps developing.
+      tl.fromTo("#f03-screen img", { scale: 1 }, { scale: 1.07, duration: 15.6, ease: "none" }, 1.0);
+
+      tl.fromTo("#f03-label", { opacity: 0, x: 18 }, { opacity: 1, x: 0, duration: 0.6, ease: "power2.out" }, 2.4);
+      tl.fromTo("#f03-c1", { opacity: 0, x: 34 }, { opacity: 1, x: 0, duration: 0.7, ease: "power3.out" }, 3.0);
+      tl.fromTo("#f03-c2", { opacity: 0, x: 34 }, { opacity: 1, x: 0, duration: 0.7, ease: "power3.out" }, 4.6);
+      tl.fromTo("#f03-c3", { opacity: 0, x: 34 }, { opacity: 1, x: 0, duration: 0.7, ease: "power3.out" }, 6.2);
+      tl.fromTo("#f03-c4", { opacity: 0, x: 34 }, { opacity: 1, x: 0, duration: 0.7, ease: "power3.out" }, 7.8);
+
+      tl.fromTo("#f03-note", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.9, ease: "power3.out" }, 14.2);
+
+      window.__timelines["03-read"] = tl;
+    })();
+  </script>
+</template>

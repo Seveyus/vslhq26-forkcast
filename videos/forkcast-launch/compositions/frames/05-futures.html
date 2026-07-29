@@ -1,0 +1,230 @@
+<template>
+  <style>
+    /* OS-bundled family: the declaration alone satisfies the renderer. */
+    @font-face {
+      font-family: "Segoe UI Variable Display";
+      src: local("Segoe UI Variable Display"), local("Segoe UI");
+      font-weight: 100 900;
+    }
+    #root {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: system-ui, "Segoe UI Variable Display", "Segoe UI", sans-serif;
+      color: #e9f0fa;
+    }
+    .f05-ground {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(1000px 620px at 6% -8%, rgba(74, 158, 255, 0.13), transparent 60%),
+        radial-gradient(900px 560px at 96% 20%, rgba(53, 211, 154, 0.12), transparent 58%),
+        linear-gradient(180deg, #0e1726 0%, #04080f 100%);
+    }
+    .f05-stage {
+      position: absolute;
+      inset: 0;
+    }
+    .f05-eyebrow {
+      position: absolute;
+      left: 96px;
+      top: 70px;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #4a9eff;
+    }
+    .f05-head {
+      position: absolute;
+      left: 96px;
+      top: 104px;
+      font-size: 56px;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+    }
+    .f05-screen {
+      position: absolute;
+      left: 88px;
+      top: 208px;
+      width: 872px;
+      height: 676px;
+      border-radius: 14px;
+      border: 1.5px solid rgba(74, 158, 255, 0.2);
+      background: #060b14;
+      overflow: hidden;
+    }
+    .f05-screen img {
+      width: 100%;
+      display: block;
+    }
+    .f05-col {
+      position: absolute;
+      left: 1000px;
+      top: 208px;
+      width: 832px;
+    }
+    .f05-panel {
+      border-radius: 14px;
+      border: 1.5px solid rgba(74, 158, 255, 0.2);
+      background: rgba(74, 158, 255, 0.04);
+      padding: 26px 32px 28px;
+      margin-bottom: 20px;
+    }
+    .f05-panel.is-win {
+      border-color: rgba(53, 211, 154, 0.42);
+      background: rgba(53, 211, 154, 0.07);
+    }
+    .f05-name {
+      font-size: 23px;
+      font-weight: 550;
+      color: #9aadc9;
+      margin-bottom: 22px;
+    }
+    .f05-row {
+      display: flex;
+      align-items: baseline;
+      gap: 24px;
+    }
+    .f05-big {
+      font-size: 100px;
+      font-weight: 660;
+      line-height: 1.12;
+      letter-spacing: -0.04em;
+      font-variant-numeric: tabular-nums;
+    }
+    .f05-panel.is-win .f05-big {
+      color: #35d39a;
+    }
+    .f05-unit {
+      font-size: 23px;
+      color: #7d90b0;
+      font-weight: 500;
+    }
+    .f05-meta {
+      display: flex;
+      gap: 14px;
+      margin-top: 18px;
+      flex-wrap: wrap;
+    }
+    .f05-tag {
+      padding: 8px 18px;
+      border-radius: 100px;
+      border: 1px solid rgba(154, 173, 201, 0.34);
+      font-size: 21px;
+      font-weight: 550;
+      color: #9aadc9;
+    }
+    .f05-tag.is-risk-high {
+      border-color: rgba(255, 112, 137, 0.5);
+      color: #ff7089;
+      background: rgba(255, 112, 137, 0.1);
+    }
+    .f05-tag.is-risk-low {
+      border-color: rgba(53, 211, 154, 0.5);
+      color: #35d39a;
+      background: rgba(53, 211, 154, 0.1);
+    }
+    .f05-fair {
+      position: absolute;
+      left: 1000px;
+      top: 792px;
+      width: 832px;
+      border-left: 3px solid #4a9eff;
+      padding: 4px 0 4px 22px;
+      font-size: 25px;
+      font-weight: 550;
+      line-height: 1.4;
+      color: #e9f0fa;
+    }
+  </style>
+
+  <div id="root" data-composition-id="05-futures" data-start="0" data-duration="27.5" data-width="1920" data-height="1080">
+    <div id="f05-ground" class="clip f05-ground" data-start="0" data-duration="27.5" data-track-index="0"></div>
+
+    <div id="f05-stage" class="clip f05-stage" data-start="0" data-duration="27.5" data-track-index="1">
+      <div class="f05-eyebrow">Step three</div>
+      <div class="f05-head">Two futures</div>
+
+      <div class="f05-screen" id="f05-screen">
+        <img data-layout-allow-overflow src="assets/04-futures.png" alt="The two simulated futures, side by side" />
+      </div>
+
+      <div class="f05-col">
+        <div class="f05-panel" id="f05-a">
+          <div class="f05-name">A · Continue current schedule</div>
+          <div class="f05-row">
+            <div class="f05-big" id="f05-na">0.0%</div>
+            <div class="f05-unit">on-time departures</div>
+          </div>
+          <div class="f05-meta">
+            <span class="f05-tag" id="f05-a1">9 of 20 at risk</span>
+            <span class="f05-tag" id="f05-a2">£0</span>
+            <span class="f05-tag is-risk-high" id="f05-a3">High risk</span>
+          </div>
+        </div>
+
+        <div class="f05-panel is-win" id="f05-b">
+          <div class="f05-name">B · Reprioritise + towed battery unit</div>
+          <div class="f05-row">
+            <div class="f05-big" id="f05-nb">0.0%</div>
+            <div class="f05-unit">on-time departures</div>
+          </div>
+          <div class="f05-meta">
+            <span class="f05-tag" id="f05-b1">1 of 20 at risk</span>
+            <span class="f05-tag" id="f05-b2">£379</span>
+            <span class="f05-tag is-risk-low" id="f05-b3">Low risk</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="f05-fair" id="f05-fair">Both plans are scored against the same simulated nights.</div>
+    </div>
+  </div>
+  <script>
+    window.__timelines = window.__timelines || {};
+    (function () {
+      var tl = gsap.timeline({ paused: true });
+
+      function countTo(selector, target, at, dur) {
+        var box = { v: 0 };
+        tl.to(box, {
+          v: target,
+          duration: dur,
+          ease: "power2.out",
+          onUpdate: function () {
+            var el = document.querySelector(selector);
+            if (el) el.textContent = box.v.toFixed(1) + "%";
+          }
+        }, at);
+      }
+
+      tl.fromTo(".f05-eyebrow", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 0.1);
+      tl.fromTo(".f05-head", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 0.3);
+      tl.fromTo("#f05-screen", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1.1, ease: "power3.out" }, 0.7);
+      tl.fromTo("#f05-screen img", { y: 0, scale: 1 }, { y: -120, scale: 1.05, duration: 25.4, ease: "none" }, 1.2);
+
+      // Plan A lands first, alone, so its number is read on its own.
+      tl.fromTo("#f05-a", { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.9, ease: "power3.out" }, 3.2);
+      countTo("#f05-na", 60.9, 3.6, 2.2);
+      tl.fromTo("#f05-a1", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5 }, 6.4);
+      tl.fromTo("#f05-a2", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5 }, 6.8);
+      tl.fromTo("#f05-a3", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5 }, 7.2);
+
+      // Then B, against it.
+      tl.fromTo("#f05-b", { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.9, ease: "power3.out" }, 11.4);
+      countTo("#f05-nb", 97.2, 11.9, 2.4);
+      tl.fromTo("#f05-b1", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5 }, 15.2);
+      tl.fromTo("#f05-b2", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5 }, 15.9);
+      tl.fromTo("#f05-b3", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5 }, 16.6);
+
+      // The winning panel takes its ring last.
+      tl.fromTo("#f05-b", { boxShadow: "0 0 0 0px rgba(53,211,154,0)" }, { boxShadow: "0 0 0 3px rgba(53,211,154,0.42)", duration: 1.2, ease: "power2.out" }, 18.2);
+
+      tl.fromTo("#f05-fair", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.9, ease: "power3.out" }, 23.4);
+
+      window.__timelines["05-futures"] = tl;
+    })();
+  </script>
+</template>

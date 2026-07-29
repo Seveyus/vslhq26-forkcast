@@ -1,0 +1,249 @@
+<template>
+  <style>
+    /* OS-bundled family: the declaration alone satisfies the renderer. */
+    @font-face {
+      font-family: "Segoe UI Variable Display";
+      src: local("Segoe UI Variable Display"), local("Segoe UI");
+      font-weight: 100 900;
+    }
+    #root {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: system-ui, "Segoe UI Variable Display", "Segoe UI", sans-serif;
+      color: #e9f0fa;
+    }
+    .f08-ground {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(1000px 600px at 10% -8%, rgba(74, 158, 255, 0.14), transparent 60%),
+        radial-gradient(880px 540px at 92% 90%, rgba(255, 112, 137, 0.12), transparent 58%),
+        linear-gradient(180deg, #0e1726 0%, #04080f 100%);
+    }
+    .f08-stage {
+      position: absolute;
+      inset: 0;
+    }
+    .f08-eyebrow {
+      position: absolute;
+      left: 96px;
+      top: 70px;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #4a9eff;
+    }
+    .f08-head {
+      position: absolute;
+      left: 96px;
+      top: 104px;
+      font-size: 56px;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+    }
+    .f08-ask {
+      position: absolute;
+      left: 96px;
+      top: 200px;
+      width: 1064px;
+      border-radius: 12px;
+      border: 1.5px solid rgba(74, 158, 255, 0.34);
+      background: #04080f;
+      padding: 20px 26px;
+      font-size: 25px;
+      font-weight: 500;
+      color: #e9f0fa;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .f08-caret {
+      display: inline-block;
+      width: 2px;
+      height: 26px;
+      margin-left: 3px;
+      background: #4a9eff;
+      vertical-align: -4px;
+    }
+    .f08-screen {
+      position: absolute;
+      left: 96px;
+      top: 290px;
+      width: 1064px;
+      height: 566px;
+      border-radius: 14px;
+      border: 1.5px solid rgba(74, 158, 255, 0.2);
+      background: #060b14;
+      overflow: hidden;
+    }
+    .f08-screen img {
+      width: 100%;
+      display: block;
+    }
+    .f08-col {
+      position: absolute;
+      left: 1214px;
+      top: 200px;
+      width: 618px;
+    }
+    .f08-move {
+      border-radius: 14px;
+      border: 1.5px solid rgba(255, 112, 137, 0.32);
+      background: rgba(255, 112, 137, 0.07);
+      padding: 26px 30px 30px;
+      margin-bottom: 20px;
+    }
+    .f08-move i {
+      display: block;
+      font-style: normal;
+      font-size: 15px;
+      font-weight: 650;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: #9aadc9;
+      margin-bottom: 16px;
+    }
+    .f08-num {
+      font-size: 96px;
+      font-weight: 660;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      font-variant-numeric: tabular-nums;
+      color: #ff7089;
+    }
+    .f08-sub {
+      margin-top: 14px;
+      font-size: 22px;
+      color: #9aadc9;
+      font-weight: 500;
+    }
+    .f08-pair {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 18px;
+      font-size: 24px;
+      font-weight: 600;
+      color: #7d90b0;
+    }
+    .f08-pill {
+      padding: 8px 20px;
+      border-radius: 100px;
+      border: 1.5px solid currentColor;
+      font-size: 21px;
+      font-weight: 650;
+    }
+    .f08-pill.is-low {
+      color: #35d39a;
+      background: rgba(53, 211, 154, 0.1);
+    }
+    .f08-pill.is-high {
+      color: #ff7089;
+      background: rgba(255, 112, 137, 0.12);
+    }
+    .f08-kicker {
+      border-left: 3px solid #4a9eff;
+      padding: 4px 0 4px 22px;
+      font-size: 25px;
+      font-weight: 550;
+      line-height: 1.42;
+      color: #e9f0fa;
+    }
+  </style>
+
+  <div id="root" data-composition-id="08-challenge" data-start="0" data-duration="20.5" data-width="1920" data-height="1080">
+    <div id="f08-ground" class="clip f08-ground" data-start="0" data-duration="20.5" data-track-index="0"></div>
+
+    <div id="f08-stage" class="clip f08-stage" data-start="0" data-duration="20.5" data-track-index="1">
+      <div class="f08-eyebrow">Argue with it</div>
+      <div class="f08-head">Challenge the recommendation</div>
+
+      <div class="f08-ask" id="f08-ask"><span id="f08-typed"></span><span class="f08-caret" id="f08-caret"></span></div>
+
+      <div class="f08-screen" id="f08-screen">
+        <img data-layout-allow-overflow src="assets/07-challenge.png" alt="The Forkcast challenge panel after a rerun" />
+      </div>
+
+      <div class="f08-col">
+        <div class="f08-move" id="f08-move">
+          <i>On-time departures</i>
+          <div class="f08-num" id="f08-num">97.2%</div>
+          <div class="f08-sub" id="f08-sub">was 97.2% before the battery slipped an hour</div>
+          <div class="f08-pair" id="f08-pair">
+            <span class="f08-pill is-low">Low</span>
+            <span aria-hidden="true">&#8594;</span>
+            <span class="f08-pill is-high">High</span>
+          </div>
+        </div>
+
+        <div class="f08-move" id="f08-risk">
+          <i>Vehicles at risk</i>
+          <div class="f08-num" id="f08-risknum">1</div>
+          <div class="f08-sub">of twenty in the fleet</div>
+        </div>
+
+        <div class="f08-kicker" id="f08-kicker">Nothing here was written in advance.</div>
+      </div>
+    </div>
+  </div>
+  <script>
+    window.__timelines = window.__timelines || {};
+    (function () {
+      var tl = gsap.timeline({ paused: true });
+      var QUESTION = "What happens if the temporary battery arrives one hour late?";
+
+      tl.fromTo(".f08-eyebrow", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 0.1);
+      tl.fromTo(".f08-head", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.9, ease: "power3.out" }, 0.3);
+      tl.fromTo("#f08-ask", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 0.9);
+
+      // The question types itself in, deterministically driven by timeline progress.
+      var typing = { n: 0 };
+      tl.to(typing, {
+        n: QUESTION.length,
+        duration: 3.4,
+        ease: "none",
+        onUpdate: function () {
+          var el = document.querySelector("#f08-typed");
+          if (el) el.textContent = QUESTION.slice(0, Math.round(typing.n));
+        }
+      }, 1.5);
+
+      tl.fromTo("#f08-screen", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 1.0, ease: "power3.out" }, 5.4);
+      tl.fromTo("#f08-screen img", { y: 0 }, { y: -120, duration: 14, ease: "none" }, 5.8);
+
+      tl.fromTo("#f08-move", { opacity: 0, x: 34 }, { opacity: 1, x: 0, duration: 0.8, ease: "power3.out" }, 8.4);
+
+      // The headline metric falls to the value the rerun actually returned.
+      var fall = { v: 97.2 };
+      tl.to(fall, {
+        v: 86.7,
+        duration: 2.2,
+        ease: "power2.inOut",
+        onUpdate: function () {
+          var el = document.querySelector("#f08-num");
+          if (el) el.textContent = fall.v.toFixed(1) + "%";
+        }
+      }, 10.4);
+
+      tl.fromTo("#f08-pair", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, 12.9);
+
+      tl.fromTo("#f08-risk", { opacity: 0, x: 34 }, { opacity: 1, x: 0, duration: 0.8, ease: "power3.out" }, 14.2);
+      var climb = { v: 1 };
+      tl.to(climb, {
+        v: 8,
+        duration: 1.3,
+        ease: "power2.out",
+        onUpdate: function () {
+          var el = document.querySelector("#f08-risknum");
+          if (el) el.textContent = String(Math.round(climb.v));
+        }
+      }, 14.9);
+
+      tl.fromTo("#f08-kicker", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 17.2);
+
+      window.__timelines["08-challenge"] = tl;
+    })();
+  </script>
+</template>

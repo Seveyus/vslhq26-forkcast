@@ -437,3 +437,11 @@ web/dist/
 web/node_modules/
 demo/frames/
 demo/captures/
+
+## HyperFrames video project
+videos/*/node_modules/
+videos/*/renders/
+videos/*/snapshots/
+videos/*/.hyperframes/
+videos/*/capture/
+videos/*/check.log

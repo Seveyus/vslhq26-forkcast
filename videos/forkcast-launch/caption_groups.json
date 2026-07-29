@@ -1,0 +1,3592 @@
+{
+  "total_duration_s": 168,
+  "width": 1920,
+  "height": 1080,
+  "groups": [
+    {
+      "id": "caption-group-0",
+      "frame": 1,
+      "start": 0,
+      "end": 1.23,
+      "text": "At eighteen forty,",
+      "words": [
+        {
+          "id": "caption-word-0-0",
+          "text": "At",
+          "start": 0,
+          "end": 0.224
+        },
+        {
+          "id": "caption-word-0-1",
+          "text": "eighteen",
+          "start": 0.224,
+          "end": 0.82
+        },
+        {
+          "id": "caption-word-0-2",
+          "text": "forty,",
+          "start": 0.82,
+          "end": 1.23
+        }
+      ]
+    },
+    {
+      "id": "caption-group-1",
+      "frame": 1,
+      "start": 1.23,
+      "end": 2.273,
+      "text": "a fast charger",
+      "words": [
+        {
+          "id": "caption-word-1-0",
+          "text": "a",
+          "start": 1.23,
+          "end": 1.391
+        },
+        {
+          "id": "caption-word-1-1",
+          "text": "fast",
+          "start": 1.391,
+          "end": 1.739
+        },
+        {
+          "id": "caption-word-1-2",
+          "text": "charger",
+          "start": 1.739,
+          "end": 2.273
+        }
+      ]
+    },
+    {
+      "id": "caption-group-2",
+      "frame": 1,
+      "start": 2.273,
+      "end": 2.906,
+      "text": "fails at",
+      "words": [
+        {
+          "id": "caption-word-2-0",
+          "text": "fails",
+          "start": 2.273,
+          "end": 2.683
+        },
+        {
+          "id": "caption-word-2-1",
+          "text": "at",
+          "start": 2.683,
+          "end": 2.906
+        }
+      ]
+    },
+    {
+      "id": "caption-group-3",
+      "frame": 1,
+      "start": 2.906,
+      "end": 4.322,
+      "text": "an electric delivery",
+      "words": [
+        {
+          "id": "caption-word-3-0",
+          "text": "an",
+          "start": 2.906,
+          "end": 3.13
+        },
+        {
+          "id": "caption-word-3-1",
+          "text": "electric",
+          "start": 3.13,
+          "end": 3.726
+        },
+        {
+          "id": "caption-word-3-2",
+          "text": "delivery",
+          "start": 3.726,
+          "end": 4.322
+        }
+      ]
+    },
+    {
+      "id": "caption-group-4",
+      "frame": 1,
+      "start": 4.322,
+      "end": 4.732,
+      "text": "depot.",
+      "words": [
+        {
+          "id": "caption-word-4-0",
+          "text": "depot.",
+          "start": 4.322,
+          "end": 4.732
+        }
+      ]
+    },
+    {
+      "id": "caption-group-5",
+      "frame": 1,
+      "start": 4.732,
+      "end": 6.557,
+      "text": "Twenty vehicles still have",
+      "words": [
+        {
+          "id": "caption-word-5-0",
+          "text": "Twenty",
+          "start": 4.732,
+          "end": 5.204
+        },
+        {
+          "id": "caption-word-5-1",
+          "text": "vehicles",
+          "start": 5.204,
+          "end": 5.8
+        },
+        {
+          "id": "caption-word-5-2",
+          "text": "still",
+          "start": 5.8,
+          "end": 6.21
+        },
+        {
+          "id": "caption-word-5-3",
+          "text": "have",
+          "start": 6.21,
+          "end": 6.557
+        }
+      ]
+    },
+    {
+      "id": "caption-group-6",
+      "frame": 1,
+      "start": 6.557,
+      "end": 7.191,
+      "text": "to leave",
+      "words": [
+        {
+          "id": "caption-word-6-0",
+          "text": "to",
+          "start": 6.557,
+          "end": 6.781
+        },
+        {
+          "id": "caption-word-6-1",
+          "text": "leave",
+          "start": 6.781,
+          "end": 7.191
+        }
+      ]
+    },
+    {
+      "id": "caption-group-7",
+      "frame": 1,
+      "start": 7.191,
+      "end": 7.7,
+      "text": "by six",
+      "words": [
+        {
+          "id": "caption-word-7-0",
+          "text": "by",
+          "start": 7.191,
+          "end": 7.414
+        },
+        {
+          "id": "caption-word-7-1",
+          "text": "six",
+          "start": 7.414,
+          "end": 7.7
+        }
+      ]
+    },
+    {
+      "id": "caption-group-8",
+      "frame": 1,
+      "start": 7.7,
+      "end": 8.743,
+      "text": "in the morning.",
+      "words": [
+        {
+          "id": "caption-word-8-0",
+          "text": "in",
+          "start": 7.7,
+          "end": 7.924
+        },
+        {
+          "id": "caption-word-8-1",
+          "text": "the",
+          "start": 7.924,
+          "end": 8.209
+        },
+        {
+          "id": "caption-word-8-2",
+          "text": "morning.",
+          "start": 8.209,
+          "end": 8.743
+        }
+      ]
+    },
+    {
+      "id": "caption-group-9",
+      "frame": 1,
+      "start": 8.743,
+      "end": 10.097,
+      "text": "Eight charge points",
+      "words": [
+        {
+          "id": "caption-word-9-0",
+          "text": "Eight",
+          "start": 8.743,
+          "end": 9.153
+        },
+        {
+          "id": "caption-word-9-1",
+          "text": "charge",
+          "start": 9.153,
+          "end": 9.625
+        },
+        {
+          "id": "caption-word-9-2",
+          "text": "points",
+          "start": 9.625,
+          "end": 10.097
+        }
+      ]
+    },
+    {
+      "id": "caption-group-10",
+      "frame": 1,
+      "start": 10.097,
+      "end": 10.569,
+      "text": "remain.",
+      "words": [
+        {
+          "id": "caption-word-10-0",
+          "text": "remain.",
+          "start": 10.097,
+          "end": 10.569
+        }
+      ]
+    },
+    {
+      "id": "caption-group-11",
+      "frame": 1,
+      "start": 10.569,
+      "end": 11.674,
+      "text": "Somebody has to",
+      "words": [
+        {
+          "id": "caption-word-11-0",
+          "text": "Somebody",
+          "start": 10.569,
+          "end": 11.165
+        },
+        {
+          "id": "caption-word-11-1",
+          "text": "has",
+          "start": 11.165,
+          "end": 11.451
+        },
+        {
+          "id": "caption-word-11-2",
+          "text": "to",
+          "start": 11.451,
+          "end": 11.674
+        }
+      ]
+    },
+    {
+      "id": "caption-group-12",
+      "frame": 1,
+      "start": 11.674,
+      "end": 12.717,
+      "text": "decide what to",
+      "words": [
+        {
+          "id": "caption-word-12-0",
+          "text": "decide",
+          "start": 11.674,
+          "end": 12.146
+        },
+        {
+          "id": "caption-word-12-1",
+          "text": "what",
+          "start": 12.146,
+          "end": 12.494
+        },
+        {
+          "id": "caption-word-12-2",
+          "text": "to",
+          "start": 12.494,
+          "end": 12.717
+        }
+      ]
+    },
+    {
+      "id": "caption-group-13",
+      "frame": 1,
+      "start": 12.717,
+      "end": 12.941,
+      "text": "do,",
+      "words": [
+        {
+          "id": "caption-word-13-0",
+          "text": "do,",
+          "start": 12.717,
+          "end": 12.941
+        }
+      ]
+    },
+    {
+      "id": "caption-group-14",
+      "frame": 1,
+      "start": 12.941,
+      "end": 13.347,
+      "text": "now.",
+      "words": [
+        {
+          "id": "caption-word-14-0",
+          "text": "now.",
+          "start": 12.941,
+          "end": 13.227
+        }
+      ]
+    },
+    {
+      "id": "caption-group-15",
+      "frame": 2,
+      "start": 15,
+      "end": 16.129,
+      "text": "Forkcast is an",
+      "words": [
+        {
+          "id": "caption-word-15-0",
+          "text": "Forkcast",
+          "start": 15,
+          "end": 15.645
+        },
+        {
+          "id": "caption-word-15-1",
+          "text": "is",
+          "start": 15.645,
+          "end": 15.887
+        },
+        {
+          "id": "caption-word-15-2",
+          "text": "an",
+          "start": 15.887,
+          "end": 16.129
+        }
+      ]
+    },
+    {
+      "id": "caption-group-16",
+      "frame": 2,
+      "start": 16.129,
+      "end": 17.46,
+      "text": "AI decision agent",
+      "words": [
+        {
+          "id": "caption-word-16-0",
+          "text": "AI",
+          "start": 16.129,
+          "end": 16.371
+        },
+        {
+          "id": "caption-word-16-1",
+          "text": "decision",
+          "start": 16.371,
+          "end": 17.017
+        },
+        {
+          "id": "caption-word-16-2",
+          "text": "agent",
+          "start": 17.017,
+          "end": 17.46
+        }
+      ]
+    },
+    {
+      "id": "caption-group-17",
+      "frame": 2,
+      "start": 17.46,
+      "end": 19.329,
+      "text": "for operational incidents.",
+      "words": [
+        {
+          "id": "caption-word-17-0",
+          "text": "for",
+          "start": 17.46,
+          "end": 17.769
+        },
+        {
+          "id": "caption-word-17-1",
+          "text": "operational",
+          "start": 17.769,
+          "end": 18.616
+        },
+        {
+          "id": "caption-word-17-2",
+          "text": "incidents.",
+          "start": 18.616,
+          "end": 19.329
+        }
+      ]
+    },
+    {
+      "id": "caption-group-18",
+      "frame": 2,
+      "start": 19.329,
+      "end": 19.947,
+      "text": "It lets",
+      "words": [
+        {
+          "id": "caption-word-18-0",
+          "text": "It",
+          "start": 19.329,
+          "end": 19.571
+        },
+        {
+          "id": "caption-word-18-1",
+          "text": "lets",
+          "start": 19.571,
+          "end": 19.947
+        }
+      ]
+    },
+    {
+      "id": "caption-group-19",
+      "frame": 2,
+      "start": 19.947,
+      "end": 20.498,
+      "text": "a team",
+      "words": [
+        {
+          "id": "caption-word-19-0",
+          "text": "a",
+          "start": 19.947,
+          "end": 20.122
+        },
+        {
+          "id": "caption-word-19-1",
+          "text": "team",
+          "start": 20.122,
+          "end": 20.498
+        }
+      ]
+    },
+    {
+      "id": "caption-group-20",
+      "frame": 2,
+      "start": 20.498,
+      "end": 21.762,
+      "text": "see both futures",
+      "words": [
+        {
+          "id": "caption-word-20-0",
+          "text": "see",
+          "start": 20.498,
+          "end": 20.808
+        },
+        {
+          "id": "caption-word-20-1",
+          "text": "both",
+          "start": 20.808,
+          "end": 21.184
+        },
+        {
+          "id": "caption-word-20-2",
+          "text": "futures",
+          "start": 21.184,
+          "end": 21.762
+        }
+      ]
+    },
+    {
+      "id": "caption-group-21",
+      "frame": 2,
+      "start": 21.762,
+      "end": 23.589,
+      "text": "before making the call.",
+      "words": [
+        {
+          "id": "caption-word-21-0",
+          "text": "before",
+          "start": 21.762,
+          "end": 22.273
+        },
+        {
+          "id": "caption-word-21-1",
+          "text": "making",
+          "start": 22.273,
+          "end": 22.784
+        },
+        {
+          "id": "caption-word-21-2",
+          "text": "the",
+          "start": 22.784,
+          "end": 23.093
+        },
+        {
+          "id": "caption-word-21-3",
+          "text": "call.",
+          "start": 23.093,
+          "end": 23.469
+        }
+      ]
+    },
+    {
+      "id": "caption-group-22",
+      "frame": 3,
+      "start": 26,
+      "end": 27.076,
+      "text": "A duty manager",
+      "words": [
+        {
+          "id": "caption-word-22-0",
+          "text": "A",
+          "start": 26,
+          "end": 26.167
+        },
+        {
+          "id": "caption-word-22-1",
+          "text": "duty",
+          "start": 26.167,
+          "end": 26.525
+        },
+        {
+          "id": "caption-word-22-2",
+          "text": "manager",
+          "start": 26.525,
+          "end": 27.076
+        }
+      ]
+    },
+    {
+      "id": "caption-group-23",
+      "frame": 3,
+      "start": 27.076,
+      "end": 28.537,
+      "text": "describes what broke,",
+      "words": [
+        {
+          "id": "caption-word-23-0",
+          "text": "describes",
+          "start": 27.076,
+          "end": 27.756
+        },
+        {
+          "id": "caption-word-23-1",
+          "text": "what",
+          "start": 27.756,
+          "end": 28.115
+        },
+        {
+          "id": "caption-word-23-2",
+          "text": "broke,",
+          "start": 28.115,
+          "end": 28.537
+        }
+      ]
+    },
+    {
+      "id": "caption-group-24",
+      "frame": 3,
+      "start": 28.537,
+      "end": 29.191,
+      "text": "in their",
+      "words": [
+        {
+          "id": "caption-word-24-0",
+          "text": "in",
+          "start": 28.537,
+          "end": 28.768
+        },
+        {
+          "id": "caption-word-24-1",
+          "text": "their",
+          "start": 28.768,
+          "end": 29.191
+        }
+      ]
+    },
+    {
+      "id": "caption-group-25",
+      "frame": 3,
+      "start": 29.191,
+      "end": 29.909,
+      "text": "own words.",
+      "words": [
+        {
+          "id": "caption-word-25-0",
+          "text": "own",
+          "start": 29.191,
+          "end": 29.486
+        },
+        {
+          "id": "caption-word-25-1",
+          "text": "words.",
+          "start": 29.486,
+          "end": 29.909
+        }
+      ]
+    },
+    {
+      "id": "caption-group-26",
+      "frame": 3,
+      "start": 29.909,
+      "end": 31.241,
+      "text": "Azure OpenAI reads",
+      "words": [
+        {
+          "id": "caption-word-26-0",
+          "text": "Azure",
+          "start": 29.909,
+          "end": 30.332
+        },
+        {
+          "id": "caption-word-26-1",
+          "text": "OpenAI",
+          "start": 30.332,
+          "end": 30.819
+        },
+        {
+          "id": "caption-word-26-2",
+          "text": "reads",
+          "start": 30.819,
+          "end": 31.241
+        }
+      ]
+    },
+    {
+      "id": "caption-group-27",
+      "frame": 3,
+      "start": 31.241,
+      "end": 32.318,
+      "text": "that text into",
+      "words": [
+        {
+          "id": "caption-word-27-0",
+          "text": "that",
+          "start": 31.241,
+          "end": 31.6
+        },
+        {
+          "id": "caption-word-27-1",
+          "text": "text",
+          "start": 31.6,
+          "end": 31.959
+        },
+        {
+          "id": "caption-word-27-2",
+          "text": "into",
+          "start": 31.959,
+          "end": 32.318
+        }
+      ]
+    },
+    {
+      "id": "caption-group-28",
+      "frame": 3,
+      "start": 32.318,
+      "end": 33.843,
+      "text": "a structured incident:",
+      "words": [
+        {
+          "id": "caption-word-28-0",
+          "text": "a",
+          "start": 32.318,
+          "end": 32.485
+        },
+        {
+          "id": "caption-word-28-1",
+          "text": "structured",
+          "start": 32.485,
+          "end": 33.228
+        },
+        {
+          "id": "caption-word-28-2",
+          "text": "incident:",
+          "start": 33.228,
+          "end": 33.843
+        }
+      ]
+    },
+    {
+      "id": "caption-group-29",
+      "frame": 3,
+      "start": 33.843,
+      "end": 34.561,
+      "text": "the fleet,",
+      "words": [
+        {
+          "id": "caption-word-29-0",
+          "text": "the",
+          "start": 33.843,
+          "end": 34.138
+        },
+        {
+          "id": "caption-word-29-1",
+          "text": "fleet,",
+          "start": 34.138,
+          "end": 34.561
+        }
+      ]
+    },
+    {
+      "id": "caption-group-30",
+      "frame": 3,
+      "start": 34.561,
+      "end": 35.599,
+      "text": "the connectors,",
+      "words": [
+        {
+          "id": "caption-word-30-0",
+          "text": "the",
+          "start": 34.561,
+          "end": 34.855
+        },
+        {
+          "id": "caption-word-30-1",
+          "text": "connectors,",
+          "start": 34.855,
+          "end": 35.599
+        }
+      ]
+    },
+    {
+      "id": "caption-group-31",
+      "frame": 3,
+      "start": 35.599,
+      "end": 36.509,
+      "text": "the deadline,",
+      "words": [
+        {
+          "id": "caption-word-31-0",
+          "text": "the",
+          "start": 35.599,
+          "end": 35.893
+        },
+        {
+          "id": "caption-word-31-1",
+          "text": "deadline,",
+          "start": 35.893,
+          "end": 36.509
+        }
+      ]
+    },
+    {
+      "id": "caption-group-32",
+      "frame": 3,
+      "start": 36.509,
+      "end": 37.777,
+      "text": "the battery range.",
+      "words": [
+        {
+          "id": "caption-word-32-0",
+          "text": "the",
+          "start": 36.509,
+          "end": 36.803
+        },
+        {
+          "id": "caption-word-32-1",
+          "text": "battery",
+          "start": 36.803,
+          "end": 37.354
+        },
+        {
+          "id": "caption-word-32-2",
+          "text": "range.",
+          "start": 37.354,
+          "end": 37.777
+        }
+      ]
+    },
+    {
+      "id": "caption-group-33",
+      "frame": 3,
+      "start": 37.777,
+      "end": 39.046,
+      "text": "Then the language",
+      "words": [
+        {
+          "id": "caption-word-33-0",
+          "text": "Then",
+          "start": 37.777,
+          "end": 38.136
+        },
+        {
+          "id": "caption-word-33-1",
+          "text": "the",
+          "start": 38.136,
+          "end": 38.431
+        },
+        {
+          "id": "caption-word-33-2",
+          "text": "language",
+          "start": 38.431,
+          "end": 39.046
+        }
+      ]
+    },
+    {
+      "id": "caption-group-34",
+      "frame": 3,
+      "start": 39.046,
+      "end": 40.371,
+      "text": "model steps back.",
+      "words": [
+        {
+          "id": "caption-word-34-0",
+          "text": "model",
+          "start": 39.046,
+          "end": 39.469
+        },
+        {
+          "id": "caption-word-34-1",
+          "text": "steps",
+          "start": 39.469,
+          "end": 39.892
+        },
+        {
+          "id": "caption-word-34-2",
+          "text": "back.",
+          "start": 39.892,
+          "end": 40.251
+        }
+      ]
+    },
+    {
+      "id": "caption-group-35",
+      "frame": 4,
+      "start": 43,
+      "end": 43.722,
+      "text": "From here",
+      "words": [
+        {
+          "id": "caption-word-35-0",
+          "text": "From",
+          "start": 43,
+          "end": 43.361
+        },
+        {
+          "id": "caption-word-35-1",
+          "text": "here",
+          "start": 43.361,
+          "end": 43.722
+        }
+      ]
+    },
+    {
+      "id": "caption-group-36",
+      "frame": 4,
+      "start": 43.722,
+      "end": 44.933,
+      "text": "it is arithmetic.",
+      "words": [
+        {
+          "id": "caption-word-36-0",
+          "text": "it",
+          "start": 43.722,
+          "end": 43.954
+        },
+        {
+          "id": "caption-word-36-1",
+          "text": "is",
+          "start": 43.954,
+          "end": 44.186
+        },
+        {
+          "id": "caption-word-36-2",
+          "text": "arithmetic.",
+          "start": 44.186,
+          "end": 44.933
+        }
+      ]
+    },
+    {
+      "id": "caption-group-37",
+      "frame": 4,
+      "start": 44.933,
+      "end": 46.634,
+      "text": "A deterministic dot NET",
+      "words": [
+        {
+          "id": "caption-word-37-0",
+          "text": "A",
+          "start": 44.933,
+          "end": 45.101
+        },
+        {
+          "id": "caption-word-37-1",
+          "text": "deterministic",
+          "start": 45.101,
+          "end": 46.041
+        },
+        {
+          "id": "caption-word-37-2",
+          "text": "dot",
+          "start": 46.041,
+          "end": 46.338
+        },
+        {
+          "id": "caption-word-37-3",
+          "text": "NET",
+          "start": 46.338,
+          "end": 46.634
+        }
+      ]
+    },
+    {
+      "id": "caption-group-38",
+      "frame": 4,
+      "start": 46.634,
+      "end": 47.91,
+      "text": "engine builds two",
+      "words": [
+        {
+          "id": "caption-word-38-0",
+          "text": "engine",
+          "start": 46.634,
+          "end": 47.124
+        },
+        {
+          "id": "caption-word-38-1",
+          "text": "builds",
+          "start": 47.124,
+          "end": 47.614
+        },
+        {
+          "id": "caption-word-38-2",
+          "text": "two",
+          "start": 47.614,
+          "end": 47.91
+        }
+      ]
+    },
+    {
+      "id": "caption-group-39",
+      "frame": 4,
+      "start": 47.91,
+      "end": 49.933,
+      "text": "response plans and simulates",
+      "words": [
+        {
+          "id": "caption-word-39-0",
+          "text": "response",
+          "start": 47.91,
+          "end": 48.528
+        },
+        {
+          "id": "caption-word-39-1",
+          "text": "plans",
+          "start": 48.528,
+          "end": 48.954
+        },
+        {
+          "id": "caption-word-39-2",
+          "text": "and",
+          "start": 48.954,
+          "end": 49.25
+        },
+        {
+          "id": "caption-word-39-3",
+          "text": "simulates",
+          "start": 49.25,
+          "end": 49.933
+        }
+      ]
+    },
+    {
+      "id": "caption-group-40",
+      "frame": 4,
+      "start": 49.933,
+      "end": 51.467,
+      "text": "five hundred possible",
+      "words": [
+        {
+          "id": "caption-word-40-0",
+          "text": "five",
+          "start": 49.933,
+          "end": 50.294
+        },
+        {
+          "id": "caption-word-40-1",
+          "text": "hundred",
+          "start": 50.294,
+          "end": 50.848
+        },
+        {
+          "id": "caption-word-40-2",
+          "text": "possible",
+          "start": 50.848,
+          "end": 51.467
+        }
+      ]
+    },
+    {
+      "id": "caption-group-41",
+      "frame": 4,
+      "start": 51.467,
+      "end": 52.614,
+      "text": "nights for each",
+      "words": [
+        {
+          "id": "caption-word-41-0",
+          "text": "nights",
+          "start": 51.467,
+          "end": 51.956
+        },
+        {
+          "id": "caption-word-41-1",
+          "text": "for",
+          "start": 51.956,
+          "end": 52.253
+        },
+        {
+          "id": "caption-word-41-2",
+          "text": "each",
+          "start": 52.253,
+          "end": 52.614
+        }
+      ]
+    },
+    {
+      "id": "caption-group-42",
+      "frame": 4,
+      "start": 52.614,
+      "end": 52.91,
+      "text": "one,",
+      "words": [
+        {
+          "id": "caption-word-42-0",
+          "text": "one,",
+          "start": 52.614,
+          "end": 52.91
+        }
+      ]
+    },
+    {
+      "id": "caption-group-43",
+      "frame": 4,
+      "start": 52.91,
+      "end": 54.637,
+      "text": "against connector queues,",
+      "words": [
+        {
+          "id": "caption-word-43-0",
+          "text": "against",
+          "start": 52.91,
+          "end": 53.464
+        },
+        {
+          "id": "caption-word-43-1",
+          "text": "connector",
+          "start": 53.464,
+          "end": 54.147
+        },
+        {
+          "id": "caption-word-43-2",
+          "text": "queues,",
+          "start": 54.147,
+          "end": 54.637
+        }
+      ]
+    },
+    {
+      "id": "caption-group-44",
+      "frame": 4,
+      "start": 54.637,
+      "end": 55.913,
+      "text": "re-plug delays and",
+      "words": [
+        {
+          "id": "caption-word-44-0",
+          "text": "re-plug",
+          "start": 54.637,
+          "end": 55.127
+        },
+        {
+          "id": "caption-word-44-1",
+          "text": "delays",
+          "start": 55.127,
+          "end": 55.616
+        },
+        {
+          "id": "caption-word-44-2",
+          "text": "and",
+          "start": 55.616,
+          "end": 55.913
+        }
+      ]
+    },
+    {
+      "id": "caption-group-45",
+      "frame": 4,
+      "start": 55.913,
+      "end": 57.124,
+      "text": "the site's power",
+      "words": [
+        {
+          "id": "caption-word-45-0",
+          "text": "the",
+          "start": 55.913,
+          "end": 56.209
+        },
+        {
+          "id": "caption-word-45-1",
+          "text": "site's",
+          "start": 56.209,
+          "end": 56.699
+        },
+        {
+          "id": "caption-word-45-2",
+          "text": "power",
+          "start": 56.699,
+          "end": 57.124
+        }
+      ]
+    },
+    {
+      "id": "caption-group-46",
+      "frame": 4,
+      "start": 57.124,
+      "end": 57.669,
+      "text": "limit.",
+      "words": [
+        {
+          "id": "caption-word-46-0",
+          "text": "limit.",
+          "start": 57.124,
+          "end": 57.549
+        }
+      ]
+    },
+    {
+      "id": "caption-group-47",
+      "frame": 5,
+      "start": 60,
+      "end": 60.729,
+      "text": "Two futures.",
+      "words": [
+        {
+          "id": "caption-word-47-0",
+          "text": "Two",
+          "start": 60,
+          "end": 60.254
+        },
+        {
+          "id": "caption-word-47-1",
+          "text": "futures.",
+          "start": 60.254,
+          "end": 60.729
+        }
+      ]
+    },
+    {
+      "id": "caption-group-48",
+      "frame": 5,
+      "start": 60.729,
+      "end": 61.987,
+      "text": "Continue the current",
+      "words": [
+        {
+          "id": "caption-word-48-0",
+          "text": "Continue",
+          "start": 60.729,
+          "end": 61.259
+        },
+        {
+          "id": "caption-word-48-1",
+          "text": "the",
+          "start": 61.259,
+          "end": 61.512
+        },
+        {
+          "id": "caption-word-48-2",
+          "text": "current",
+          "start": 61.512,
+          "end": 61.987
+        }
+      ]
+    },
+    {
+      "id": "caption-group-49",
+      "frame": 5,
+      "start": 61.987,
+      "end": 62.517,
+      "text": "schedule,",
+      "words": [
+        {
+          "id": "caption-word-49-0",
+          "text": "schedule,",
+          "start": 61.987,
+          "end": 62.517
+        }
+      ]
+    },
+    {
+      "id": "caption-group-50",
+      "frame": 5,
+      "start": 62.517,
+      "end": 63.135,
+      "text": "and sixty",
+      "words": [
+        {
+          "id": "caption-word-50-0",
+          "text": "and",
+          "start": 62.517,
+          "end": 62.771
+        },
+        {
+          "id": "caption-word-50-1",
+          "text": "sixty",
+          "start": 62.771,
+          "end": 63.135
+        }
+      ]
+    },
+    {
+      "id": "caption-group-51",
+      "frame": 5,
+      "start": 63.135,
+      "end": 64.284,
+      "text": "point nine percent",
+      "words": [
+        {
+          "id": "caption-word-51-0",
+          "text": "point",
+          "start": 63.135,
+          "end": 63.5
+        },
+        {
+          "id": "caption-word-51-1",
+          "text": "nine",
+          "start": 63.5,
+          "end": 63.809
+        },
+        {
+          "id": "caption-word-51-2",
+          "text": "percent",
+          "start": 63.809,
+          "end": 64.284
+        }
+      ]
+    },
+    {
+      "id": "caption-group-52",
+      "frame": 5,
+      "start": 64.284,
+      "end": 65.377,
+      "text": "of vehicles leave",
+      "words": [
+        {
+          "id": "caption-word-52-0",
+          "text": "of",
+          "start": 64.284,
+          "end": 64.482
+        },
+        {
+          "id": "caption-word-52-1",
+          "text": "vehicles",
+          "start": 64.482,
+          "end": 65.012
+        },
+        {
+          "id": "caption-word-52-2",
+          "text": "leave",
+          "start": 65.012,
+          "end": 65.377
+        }
+      ]
+    },
+    {
+      "id": "caption-group-53",
+      "frame": 5,
+      "start": 65.377,
+      "end": 65.884,
+      "text": "on time,",
+      "words": [
+        {
+          "id": "caption-word-53-0",
+          "text": "on",
+          "start": 65.377,
+          "end": 65.575
+        },
+        {
+          "id": "caption-word-53-1",
+          "text": "time,",
+          "start": 65.575,
+          "end": 65.884
+        }
+      ]
+    },
+    {
+      "id": "caption-group-54",
+      "frame": 5,
+      "start": 65.884,
+      "end": 66.503,
+      "text": "with nine",
+      "words": [
+        {
+          "id": "caption-word-54-0",
+          "text": "with",
+          "start": 65.884,
+          "end": 66.193
+        },
+        {
+          "id": "caption-word-54-1",
+          "text": "nine",
+          "start": 66.193,
+          "end": 66.503
+        }
+      ]
+    },
+    {
+      "id": "caption-group-55",
+      "frame": 5,
+      "start": 66.503,
+      "end": 67.121,
+      "text": "of twenty",
+      "words": [
+        {
+          "id": "caption-word-55-0",
+          "text": "of",
+          "start": 66.503,
+          "end": 66.701
+        },
+        {
+          "id": "caption-word-55-1",
+          "text": "twenty",
+          "start": 66.701,
+          "end": 67.121
+        }
+      ]
+    },
+    {
+      "id": "caption-group-56",
+      "frame": 5,
+      "start": 67.121,
+      "end": 67.629,
+      "text": "at risk.",
+      "words": [
+        {
+          "id": "caption-word-56-0",
+          "text": "at",
+          "start": 67.121,
+          "end": 67.32
+        },
+        {
+          "id": "caption-word-56-1",
+          "text": "risk.",
+          "start": 67.32,
+          "end": 67.629
+        }
+      ]
+    },
+    {
+      "id": "caption-group-57",
+      "frame": 5,
+      "start": 67.629,
+      "end": 69.252,
+      "text": "Reprioritise the queue and",
+      "words": [
+        {
+          "id": "caption-word-57-0",
+          "text": "Reprioritise",
+          "start": 67.629,
+          "end": 68.379
+        },
+        {
+          "id": "caption-word-57-1",
+          "text": "the",
+          "start": 68.379,
+          "end": 68.633
+        },
+        {
+          "id": "caption-word-57-2",
+          "text": "queue",
+          "start": 68.633,
+          "end": 68.998
+        },
+        {
+          "id": "caption-word-57-3",
+          "text": "and",
+          "start": 68.998,
+          "end": 69.252
+        }
+      ]
+    },
+    {
+      "id": "caption-group-58",
+      "frame": 5,
+      "start": 69.252,
+      "end": 69.815,
+      "text": "bring in",
+      "words": [
+        {
+          "id": "caption-word-58-0",
+          "text": "bring",
+          "start": 69.252,
+          "end": 69.616
+        },
+        {
+          "id": "caption-word-58-1",
+          "text": "in",
+          "start": 69.616,
+          "end": 69.815
+        }
+      ]
+    },
+    {
+      "id": "caption-group-59",
+      "frame": 5,
+      "start": 69.815,
+      "end": 70.322,
+      "text": "a towed",
+      "words": [
+        {
+          "id": "caption-word-59-0",
+          "text": "a",
+          "start": 69.815,
+          "end": 69.958
+        },
+        {
+          "id": "caption-word-59-1",
+          "text": "towed",
+          "start": 69.958,
+          "end": 70.322
+        }
+      ]
+    },
+    {
+      "id": "caption-group-60",
+      "frame": 5,
+      "start": 70.322,
+      "end": 71.106,
+      "text": "battery unit,",
+      "words": [
+        {
+          "id": "caption-word-60-0",
+          "text": "battery",
+          "start": 70.322,
+          "end": 70.797
+        },
+        {
+          "id": "caption-word-60-1",
+          "text": "unit,",
+          "start": 70.797,
+          "end": 71.106
+        }
+      ]
+    },
+    {
+      "id": "caption-group-61",
+      "frame": 5,
+      "start": 71.106,
+      "end": 71.559,
+      "text": "and it",
+      "words": [
+        {
+          "id": "caption-word-61-0",
+          "text": "and",
+          "start": 71.106,
+          "end": 71.36
+        },
+        {
+          "id": "caption-word-61-1",
+          "text": "it",
+          "start": 71.36,
+          "end": 71.559
+        }
+      ]
+    },
+    {
+      "id": "caption-group-62",
+      "frame": 5,
+      "start": 71.559,
+      "end": 72.817,
+      "text": "is ninety-seven point",
+      "words": [
+        {
+          "id": "caption-word-62-0",
+          "text": "is",
+          "start": 71.559,
+          "end": 71.758
+        },
+        {
+          "id": "caption-word-62-1",
+          "text": "ninety-seven",
+          "start": 71.758,
+          "end": 72.453
+        },
+        {
+          "id": "caption-word-62-2",
+          "text": "point",
+          "start": 72.453,
+          "end": 72.817
+        }
+      ]
+    },
+    {
+      "id": "caption-group-63",
+      "frame": 5,
+      "start": 72.817,
+      "end": 73.546,
+      "text": "two percent,",
+      "words": [
+        {
+          "id": "caption-word-63-0",
+          "text": "two",
+          "start": 72.817,
+          "end": 73.071
+        },
+        {
+          "id": "caption-word-63-1",
+          "text": "percent,",
+          "start": 73.071,
+          "end": 73.546
+        }
+      ]
+    },
+    {
+      "id": "caption-group-64",
+      "frame": 5,
+      "start": 73.546,
+      "end": 74.109,
+      "text": "with one",
+      "words": [
+        {
+          "id": "caption-word-64-0",
+          "text": "with",
+          "start": 73.546,
+          "end": 73.855
+        },
+        {
+          "id": "caption-word-64-1",
+          "text": "one",
+          "start": 73.855,
+          "end": 74.109
+        }
+      ]
+    },
+    {
+      "id": "caption-group-65",
+      "frame": 5,
+      "start": 74.109,
+      "end": 74.617,
+      "text": "at risk,",
+      "words": [
+        {
+          "id": "caption-word-65-0",
+          "text": "at",
+          "start": 74.109,
+          "end": 74.308
+        },
+        {
+          "id": "caption-word-65-1",
+          "text": "risk,",
+          "start": 74.308,
+          "end": 74.617
+        }
+      ]
+    },
+    {
+      "id": "caption-group-66",
+      "frame": 5,
+      "start": 74.617,
+      "end": 75.71,
+      "text": "for three hundred",
+      "words": [
+        {
+          "id": "caption-word-66-0",
+          "text": "for",
+          "start": 74.617,
+          "end": 74.871
+        },
+        {
+          "id": "caption-word-66-1",
+          "text": "three",
+          "start": 74.871,
+          "end": 75.235
+        },
+        {
+          "id": "caption-word-66-2",
+          "text": "hundred",
+          "start": 75.235,
+          "end": 75.71
+        }
+      ]
+    },
+    {
+      "id": "caption-group-67",
+      "frame": 5,
+      "start": 75.71,
+      "end": 77.079,
+      "text": "and seventy-nine pounds.",
+      "words": [
+        {
+          "id": "caption-word-67-0",
+          "text": "and",
+          "start": 75.71,
+          "end": 75.964
+        },
+        {
+          "id": "caption-word-67-1",
+          "text": "seventy-nine",
+          "start": 75.964,
+          "end": 76.659
+        },
+        {
+          "id": "caption-word-67-2",
+          "text": "pounds.",
+          "start": 76.659,
+          "end": 77.079
+        }
+      ]
+    },
+    {
+      "id": "caption-group-68",
+      "frame": 5,
+      "start": 77.079,
+      "end": 77.752,
+      "text": "Both plans",
+      "words": [
+        {
+          "id": "caption-word-68-0",
+          "text": "Both",
+          "start": 77.079,
+          "end": 77.388
+        },
+        {
+          "id": "caption-word-68-1",
+          "text": "plans",
+          "start": 77.388,
+          "end": 77.752
+        }
+      ]
+    },
+    {
+      "id": "caption-group-69",
+      "frame": 5,
+      "start": 77.752,
+      "end": 78.901,
+      "text": "are scored against",
+      "words": [
+        {
+          "id": "caption-word-69-0",
+          "text": "are",
+          "start": 77.752,
+          "end": 78.006
+        },
+        {
+          "id": "caption-word-69-1",
+          "text": "scored",
+          "start": 78.006,
+          "end": 78.426
+        },
+        {
+          "id": "caption-word-69-2",
+          "text": "against",
+          "start": 78.426,
+          "end": 78.901
+        }
+      ]
+    },
+    {
+      "id": "caption-group-70",
+      "frame": 5,
+      "start": 78.901,
+      "end": 80.049,
+      "text": "the same simulated",
+      "words": [
+        {
+          "id": "caption-word-70-0",
+          "text": "the",
+          "start": 78.901,
+          "end": 79.154
+        },
+        {
+          "id": "caption-word-70-1",
+          "text": "same",
+          "start": 79.154,
+          "end": 79.464
+        },
+        {
+          "id": "caption-word-70-2",
+          "text": "simulated",
+          "start": 79.464,
+          "end": 80.049
+        }
+      ]
+    },
+    {
+      "id": "caption-group-71",
+      "frame": 5,
+      "start": 80.049,
+      "end": 80.468,
+      "text": "nights,",
+      "words": [
+        {
+          "id": "caption-word-71-0",
+          "text": "nights,",
+          "start": 80.049,
+          "end": 80.468
+        }
+      ]
+    },
+    {
+      "id": "caption-group-72",
+      "frame": 5,
+      "start": 80.468,
+      "end": 80.921,
+      "text": "so the",
+      "words": [
+        {
+          "id": "caption-word-72-0",
+          "text": "so",
+          "start": 80.468,
+          "end": 80.667
+        },
+        {
+          "id": "caption-word-72-1",
+          "text": "the",
+          "start": 80.667,
+          "end": 80.921
+        }
+      ]
+    },
+    {
+      "id": "caption-group-73",
+      "frame": 5,
+      "start": 80.921,
+      "end": 81.959,
+      "text": "gap between them",
+      "words": [
+        {
+          "id": "caption-word-73-0",
+          "text": "gap",
+          "start": 80.921,
+          "end": 81.175
+        },
+        {
+          "id": "caption-word-73-1",
+          "text": "between",
+          "start": 81.175,
+          "end": 81.65
+        },
+        {
+          "id": "caption-word-73-2",
+          "text": "them",
+          "start": 81.65,
+          "end": 81.959
+        }
+      ]
+    },
+    {
+      "id": "caption-group-74",
+      "frame": 5,
+      "start": 81.959,
+      "end": 82.411,
+      "text": "is the",
+      "words": [
+        {
+          "id": "caption-word-74-0",
+          "text": "is",
+          "start": 81.959,
+          "end": 82.157
+        },
+        {
+          "id": "caption-word-74-1",
+          "text": "the",
+          "start": 82.157,
+          "end": 82.411
+        }
+      ]
+    },
+    {
+      "id": "caption-group-75",
+      "frame": 5,
+      "start": 82.411,
+      "end": 82.776,
+      "text": "plans,",
+      "words": [
+        {
+          "id": "caption-word-75-0",
+          "text": "plans,",
+          "start": 82.411,
+          "end": 82.776
+        }
+      ]
+    },
+    {
+      "id": "caption-group-76",
+      "frame": 5,
+      "start": 82.776,
+      "end": 83.459,
+      "text": "not luck.",
+      "words": [
+        {
+          "id": "caption-word-76-0",
+          "text": "not",
+          "start": 82.776,
+          "end": 83.03
+        },
+        {
+          "id": "caption-word-76-1",
+          "text": "luck.",
+          "start": 83.03,
+          "end": 83.339
+        }
+      ]
+    },
+    {
+      "id": "caption-group-77",
+      "frame": 6,
+      "start": 87,
+      "end": 89.565,
+      "text": "Forkcast recommends reprioritising the",
+      "words": [
+        {
+          "id": "caption-word-77-0",
+          "text": "Forkcast",
+          "start": 87,
+          "end": 87.595
+        },
+        {
+          "id": "caption-word-77-1",
+          "text": "recommends",
+          "start": 87.595,
+          "end": 88.313
+        },
+        {
+          "id": "caption-word-77-2",
+          "text": "reprioritising",
+          "start": 88.313,
+          "end": 89.28
+        },
+        {
+          "id": "caption-word-77-3",
+          "text": "the",
+          "start": 89.28,
+          "end": 89.565
+        }
+      ]
+    },
+    {
+      "id": "caption-group-78",
+      "frame": 6,
+      "start": 89.565,
+      "end": 91.634,
+      "text": "priority routes and activating",
+      "words": [
+        {
+          "id": "caption-word-78-0",
+          "text": "priority",
+          "start": 89.565,
+          "end": 90.159
+        },
+        {
+          "id": "caption-word-78-1",
+          "text": "routes",
+          "start": 90.159,
+          "end": 90.63
+        },
+        {
+          "id": "caption-word-78-2",
+          "text": "and",
+          "start": 90.63,
+          "end": 90.915
+        },
+        {
+          "id": "caption-word-78-3",
+          "text": "activating",
+          "start": 90.915,
+          "end": 91.634
+        }
+      ]
+    },
+    {
+      "id": "caption-group-79",
+      "frame": 6,
+      "start": 91.634,
+      "end": 92.922,
+      "text": "the battery buffer.",
+      "words": [
+        {
+          "id": "caption-word-79-0",
+          "text": "the",
+          "start": 91.634,
+          "end": 91.919
+        },
+        {
+          "id": "caption-word-79-1",
+          "text": "battery",
+          "start": 91.919,
+          "end": 92.452
+        },
+        {
+          "id": "caption-word-79-2",
+          "text": "buffer.",
+          "start": 92.452,
+          "end": 92.922
+        }
+      ]
+    },
+    {
+      "id": "caption-group-80",
+      "frame": 6,
+      "start": 92.922,
+      "end": 93.554,
+      "text": "The rule",
+      "words": [
+        {
+          "id": "caption-word-80-0",
+          "text": "The",
+          "start": 92.922,
+          "end": 93.207
+        },
+        {
+          "id": "caption-word-80-1",
+          "text": "rule",
+          "start": 93.207,
+          "end": 93.554
+        }
+      ]
+    },
+    {
+      "id": "caption-group-81",
+      "frame": 6,
+      "start": 93.554,
+      "end": 94.595,
+      "text": "that picked it",
+      "words": [
+        {
+          "id": "caption-word-81-0",
+          "text": "that",
+          "start": 93.554,
+          "end": 93.901
+        },
+        {
+          "id": "caption-word-81-1",
+          "text": "picked",
+          "start": 93.901,
+          "end": 94.372
+        },
+        {
+          "id": "caption-word-81-2",
+          "text": "it",
+          "start": 94.372,
+          "end": 94.595
+        }
+      ]
+    },
+    {
+      "id": "caption-group-82",
+      "frame": 6,
+      "start": 94.595,
+      "end": 95.351,
+      "text": "is written",
+      "words": [
+        {
+          "id": "caption-word-82-0",
+          "text": "is",
+          "start": 94.595,
+          "end": 94.818
+        },
+        {
+          "id": "caption-word-82-1",
+          "text": "written",
+          "start": 94.818,
+          "end": 95.351
+        }
+      ]
+    },
+    {
+      "id": "caption-group-83",
+      "frame": 6,
+      "start": 95.351,
+      "end": 95.859,
+      "text": "on the",
+      "words": [
+        {
+          "id": "caption-word-83-0",
+          "text": "on",
+          "start": 95.351,
+          "end": 95.574
+        },
+        {
+          "id": "caption-word-83-1",
+          "text": "the",
+          "start": 95.574,
+          "end": 95.859
+        }
+      ]
+    },
+    {
+      "id": "caption-group-84",
+      "frame": 6,
+      "start": 95.859,
+      "end": 96.33,
+      "text": "screen,",
+      "words": [
+        {
+          "id": "caption-word-84-0",
+          "text": "screen,",
+          "start": 95.859,
+          "end": 96.33
+        }
+      ]
+    },
+    {
+      "id": "caption-group-85",
+      "frame": 6,
+      "start": 96.33,
+      "end": 96.9,
+      "text": "next to",
+      "words": [
+        {
+          "id": "caption-word-85-0",
+          "text": "next",
+          "start": 96.33,
+          "end": 96.677
+        },
+        {
+          "id": "caption-word-85-1",
+          "text": "to",
+          "start": 96.677,
+          "end": 96.9
+        }
+      ]
+    },
+    {
+      "id": "caption-group-86",
+      "frame": 6,
+      "start": 96.9,
+      "end": 98.002,
+      "text": "the evidence it",
+      "words": [
+        {
+          "id": "caption-word-86-0",
+          "text": "the",
+          "start": 96.9,
+          "end": 97.185
+        },
+        {
+          "id": "caption-word-86-1",
+          "text": "evidence",
+          "start": 97.185,
+          "end": 97.779
+        },
+        {
+          "id": "caption-word-86-2",
+          "text": "it",
+          "start": 97.779,
+          "end": 98.002
+        }
+      ]
+    },
+    {
+      "id": "caption-group-87",
+      "frame": 6,
+      "start": 98.002,
+      "end": 98.469,
+      "text": "used.",
+      "words": [
+        {
+          "id": "caption-word-87-0",
+          "text": "used.",
+          "start": 98.002,
+          "end": 98.349
+        }
+      ]
+    },
+    {
+      "id": "caption-group-88",
+      "frame": 7,
+      "start": 102,
+      "end": 102.545,
+      "text": "This is",
+      "words": [
+        {
+          "id": "caption-word-88-0",
+          "text": "This",
+          "start": 102,
+          "end": 102.332
+        },
+        {
+          "id": "caption-word-88-1",
+          "text": "is",
+          "start": 102.332,
+          "end": 102.545
+        }
+      ]
+    },
+    {
+      "id": "caption-group-89",
+      "frame": 7,
+      "start": 102.545,
+      "end": 103.149,
+      "text": "the part",
+      "words": [
+        {
+          "id": "caption-word-89-0",
+          "text": "the",
+          "start": 102.545,
+          "end": 102.818
+        },
+        {
+          "id": "caption-word-89-1",
+          "text": "part",
+          "start": 102.818,
+          "end": 103.149
+        }
+      ]
+    },
+    {
+      "id": "caption-group-90",
+      "frame": 7,
+      "start": 103.149,
+      "end": 103.991,
+      "text": "that matters.",
+      "words": [
+        {
+          "id": "caption-word-90-0",
+          "text": "that",
+          "start": 103.149,
+          "end": 103.481
+        },
+        {
+          "id": "caption-word-90-1",
+          "text": "matters.",
+          "start": 103.481,
+          "end": 103.991
+        }
+      ]
+    },
+    {
+      "id": "caption-group-91",
+      "frame": 7,
+      "start": 103.991,
+      "end": 105.046,
+      "text": "Every figure on",
+      "words": [
+        {
+          "id": "caption-word-91-0",
+          "text": "Every",
+          "start": 103.991,
+          "end": 104.382
+        },
+        {
+          "id": "caption-word-91-1",
+          "text": "figure",
+          "start": 104.382,
+          "end": 104.832
+        },
+        {
+          "id": "caption-word-91-2",
+          "text": "on",
+          "start": 104.832,
+          "end": 105.046
+        }
+      ]
+    },
+    {
+      "id": "caption-group-92",
+      "frame": 7,
+      "start": 105.046,
+      "end": 105.828,
+      "text": "that screen",
+      "words": [
+        {
+          "id": "caption-word-92-0",
+          "text": "that",
+          "start": 105.046,
+          "end": 105.377
+        },
+        {
+          "id": "caption-word-92-1",
+          "text": "screen",
+          "start": 105.377,
+          "end": 105.828
+        }
+      ]
+    },
+    {
+      "id": "caption-group-93",
+      "frame": 7,
+      "start": 105.828,
+      "end": 106.195,
+      "text": "is a",
+      "words": [
+        {
+          "id": "caption-word-93-0",
+          "text": "is",
+          "start": 105.828,
+          "end": 106.041
+        },
+        {
+          "id": "caption-word-93-1",
+          "text": "a",
+          "start": 106.041,
+          "end": 106.195
+        }
+      ]
+    },
+    {
+      "id": "caption-group-94",
+      "frame": 7,
+      "start": 106.195,
+      "end": 106.586,
+      "text": "claim,",
+      "words": [
+        {
+          "id": "caption-word-94-0",
+          "text": "claim,",
+          "start": 106.195,
+          "end": 106.586
+        }
+      ]
+    },
+    {
+      "id": "caption-group-95",
+      "frame": 7,
+      "start": 106.586,
+      "end": 108.115,
+      "text": "carrying the simulation",
+      "words": [
+        {
+          "id": "caption-word-95-0",
+          "text": "carrying",
+          "start": 106.586,
+          "end": 107.155
+        },
+        {
+          "id": "caption-word-95-1",
+          "text": "the",
+          "start": 107.155,
+          "end": 107.428
+        },
+        {
+          "id": "caption-word-95-2",
+          "text": "simulation",
+          "start": 107.428,
+          "end": 108.115
+        }
+      ]
+    },
+    {
+      "id": "caption-group-96",
+      "frame": 7,
+      "start": 108.115,
+      "end": 108.719,
+      "text": "field it",
+      "words": [
+        {
+          "id": "caption-word-96-0",
+          "text": "field",
+          "start": 108.115,
+          "end": 108.506
+        },
+        {
+          "id": "caption-word-96-1",
+          "text": "it",
+          "start": 108.506,
+          "end": 108.719
+        }
+      ]
+    },
+    {
+      "id": "caption-group-97",
+      "frame": 7,
+      "start": 108.719,
+      "end": 109.383,
+      "text": "came from,",
+      "words": [
+        {
+          "id": "caption-word-97-0",
+          "text": "came",
+          "start": 108.719,
+          "end": 109.051
+        },
+        {
+          "id": "caption-word-97-1",
+          "text": "from,",
+          "start": 109.051,
+          "end": 109.383
+        }
+      ]
+    },
+    {
+      "id": "caption-group-98",
+      "frame": 7,
+      "start": 109.383,
+      "end": 109.869,
+      "text": "how it",
+      "words": [
+        {
+          "id": "caption-word-98-0",
+          "text": "how",
+          "start": 109.383,
+          "end": 109.655
+        },
+        {
+          "id": "caption-word-98-1",
+          "text": "it",
+          "start": 109.655,
+          "end": 109.869
+        }
+      ]
+    },
+    {
+      "id": "caption-group-99",
+      "frame": 7,
+      "start": 109.869,
+      "end": 110.829,
+      "text": "was calculated,",
+      "words": [
+        {
+          "id": "caption-word-99-0",
+          "text": "was",
+          "start": 109.869,
+          "end": 110.141
+        },
+        {
+          "id": "caption-word-99-1",
+          "text": "calculated,",
+          "start": 110.141,
+          "end": 110.829
+        }
+      ]
+    },
+    {
+      "id": "caption-group-100",
+      "frame": 7,
+      "start": 110.829,
+      "end": 111.374,
+      "text": "and the",
+      "words": [
+        {
+          "id": "caption-word-100-0",
+          "text": "and",
+          "start": 110.829,
+          "end": 111.101
+        },
+        {
+          "id": "caption-word-100-1",
+          "text": "the",
+          "start": 111.101,
+          "end": 111.374
+        }
+      ]
+    },
+    {
+      "id": "caption-group-101",
+      "frame": 7,
+      "start": 111.374,
+      "end": 112.547,
+      "text": "seed to reproduce",
+      "words": [
+        {
+          "id": "caption-word-101-0",
+          "text": "seed",
+          "start": 111.374,
+          "end": 111.706
+        },
+        {
+          "id": "caption-word-101-1",
+          "text": "to",
+          "start": 111.706,
+          "end": 111.919
+        },
+        {
+          "id": "caption-word-101-2",
+          "text": "reproduce",
+          "start": 111.919,
+          "end": 112.547
+        }
+      ]
+    },
+    {
+      "id": "caption-group-102",
+      "frame": 7,
+      "start": 112.547,
+      "end": 112.76,
+      "text": "it.",
+      "words": [
+        {
+          "id": "caption-word-102-0",
+          "text": "it.",
+          "start": 112.547,
+          "end": 112.76
+        }
+      ]
+    },
+    {
+      "id": "caption-group-103",
+      "frame": 7,
+      "start": 112.76,
+      "end": 114.17,
+      "text": "Eight verified claims.",
+      "words": [
+        {
+          "id": "caption-word-103-0",
+          "text": "Eight",
+          "start": 112.76,
+          "end": 113.151
+        },
+        {
+          "id": "caption-word-103-1",
+          "text": "verified",
+          "start": 113.151,
+          "end": 113.72
+        },
+        {
+          "id": "caption-word-103-2",
+          "text": "claims.",
+          "start": 113.72,
+          "end": 114.17
+        }
+      ]
+    },
+    {
+      "id": "caption-group-104",
+      "frame": 7,
+      "start": 114.17,
+      "end": 115.758,
+      "text": "Zero unsupported numbers.",
+      "words": [
+        {
+          "id": "caption-word-104-0",
+          "text": "Zero",
+          "start": 114.17,
+          "end": 114.502
+        },
+        {
+          "id": "caption-word-104-1",
+          "text": "unsupported",
+          "start": 114.502,
+          "end": 115.249
+        },
+        {
+          "id": "caption-word-104-2",
+          "text": "numbers.",
+          "start": 115.249,
+          "end": 115.758
+        }
+      ]
+    },
+    {
+      "id": "caption-group-105",
+      "frame": 7,
+      "start": 115.758,
+      "end": 116.244,
+      "text": "And if",
+      "words": [
+        {
+          "id": "caption-word-105-0",
+          "text": "And",
+          "start": 115.758,
+          "end": 116.031
+        },
+        {
+          "id": "caption-word-105-1",
+          "text": "if",
+          "start": 116.031,
+          "end": 116.244
+        }
+      ]
+    },
+    {
+      "id": "caption-group-106",
+      "frame": 7,
+      "start": 116.244,
+      "end": 116.908,
+      "text": "the model",
+      "words": [
+        {
+          "id": "caption-word-106-0",
+          "text": "the",
+          "start": 116.244,
+          "end": 116.517
+        },
+        {
+          "id": "caption-word-106-1",
+          "text": "model",
+          "start": 116.517,
+          "end": 116.908
+        }
+      ]
+    },
+    {
+      "id": "caption-group-107",
+      "frame": 7,
+      "start": 116.908,
+      "end": 117.69,
+      "text": "ever writes",
+      "words": [
+        {
+          "id": "caption-word-107-0",
+          "text": "ever",
+          "start": 116.908,
+          "end": 117.24
+        },
+        {
+          "id": "caption-word-107-1",
+          "text": "writes",
+          "start": 117.24,
+          "end": 117.69
+        }
+      ]
+    },
+    {
+      "id": "caption-group-108",
+      "frame": 7,
+      "start": 117.69,
+      "end": 118.294,
+      "text": "a figure",
+      "words": [
+        {
+          "id": "caption-word-108-0",
+          "text": "a",
+          "start": 117.69,
+          "end": 117.844
+        },
+        {
+          "id": "caption-word-108-1",
+          "text": "figure",
+          "start": 117.844,
+          "end": 118.294
+        }
+      ]
+    },
+    {
+      "id": "caption-group-109",
+      "frame": 7,
+      "start": 118.294,
+      "end": 119.468,
+      "text": "no claim supports,",
+      "words": [
+        {
+          "id": "caption-word-109-0",
+          "text": "no",
+          "start": 118.294,
+          "end": 118.508
+        },
+        {
+          "id": "caption-word-109-1",
+          "text": "claim",
+          "start": 118.508,
+          "end": 118.899
+        },
+        {
+          "id": "caption-word-109-2",
+          "text": "supports,",
+          "start": 118.899,
+          "end": 119.468
+        }
+      ]
+    },
+    {
+      "id": "caption-group-110",
+      "frame": 7,
+      "start": 119.468,
+      "end": 120.759,
+      "text": "the whole paragraph",
+      "words": [
+        {
+          "id": "caption-word-110-0",
+          "text": "the",
+          "start": 119.468,
+          "end": 119.74
+        },
+        {
+          "id": "caption-word-110-1",
+          "text": "whole",
+          "start": 119.74,
+          "end": 120.131
+        },
+        {
+          "id": "caption-word-110-2",
+          "text": "paragraph",
+          "start": 120.131,
+          "end": 120.759
+        }
+      ]
+    },
+    {
+      "id": "caption-group-111",
+      "frame": 7,
+      "start": 120.759,
+      "end": 121.601,
+      "text": "is discarded,",
+      "words": [
+        {
+          "id": "caption-word-111-0",
+          "text": "is",
+          "start": 120.759,
+          "end": 120.973
+        },
+        {
+          "id": "caption-word-111-1",
+          "text": "discarded,",
+          "start": 120.973,
+          "end": 121.601
+        }
+      ]
+    },
+    {
+      "id": "caption-group-112",
+      "frame": 7,
+      "start": 121.601,
+      "end": 122.621,
+      "text": "not corrected.",
+      "words": [
+        {
+          "id": "caption-word-112-0",
+          "text": "not",
+          "start": 121.601,
+          "end": 121.873
+        },
+        {
+          "id": "caption-word-112-1",
+          "text": "corrected.",
+          "start": 121.873,
+          "end": 122.501
+        }
+      ]
+    },
+    {
+      "id": "caption-group-113",
+      "frame": 8,
+      "start": 124,
+      "end": 124.551,
+      "text": "And you",
+      "words": [
+        {
+          "id": "caption-word-113-0",
+          "text": "And",
+          "start": 124,
+          "end": 124.275
+        },
+        {
+          "id": "caption-word-113-1",
+          "text": "you",
+          "start": 124.275,
+          "end": 124.551
+        }
+      ]
+    },
+    {
+      "id": "caption-group-114",
+      "frame": 8,
+      "start": 124.551,
+      "end": 125.556,
+      "text": "can argue with",
+      "words": [
+        {
+          "id": "caption-word-114-0",
+          "text": "can",
+          "start": 124.551,
+          "end": 124.826
+        },
+        {
+          "id": "caption-word-114-1",
+          "text": "argue",
+          "start": 124.826,
+          "end": 125.221
+        },
+        {
+          "id": "caption-word-114-2",
+          "text": "with",
+          "start": 125.221,
+          "end": 125.556
+        }
+      ]
+    },
+    {
+      "id": "caption-group-115",
+      "frame": 8,
+      "start": 125.556,
+      "end": 125.772,
+      "text": "it.",
+      "words": [
+        {
+          "id": "caption-word-115-0",
+          "text": "it.",
+          "start": 125.556,
+          "end": 125.772
+        }
+      ]
+    },
+    {
+      "id": "caption-group-116",
+      "frame": 8,
+      "start": 125.772,
+      "end": 126.897,
+      "text": "Ask what happens",
+      "words": [
+        {
+          "id": "caption-word-116-0",
+          "text": "Ask",
+          "start": 125.772,
+          "end": 126.047
+        },
+        {
+          "id": "caption-word-116-1",
+          "text": "what",
+          "start": 126.047,
+          "end": 126.383
+        },
+        {
+          "id": "caption-word-116-2",
+          "text": "happens",
+          "start": 126.383,
+          "end": 126.897
+        }
+      ]
+    },
+    {
+      "id": "caption-group-117",
+      "frame": 8,
+      "start": 126.897,
+      "end": 127.903,
+      "text": "if the battery",
+      "words": [
+        {
+          "id": "caption-word-117-0",
+          "text": "if",
+          "start": 126.897,
+          "end": 127.113
+        },
+        {
+          "id": "caption-word-117-1",
+          "text": "the",
+          "start": 127.113,
+          "end": 127.388
+        },
+        {
+          "id": "caption-word-117-2",
+          "text": "battery",
+          "start": 127.388,
+          "end": 127.903
+        }
+      ]
+    },
+    {
+      "id": "caption-group-118",
+      "frame": 8,
+      "start": 127.903,
+      "end": 128.969,
+      "text": "unit arrives an",
+      "words": [
+        {
+          "id": "caption-word-118-0",
+          "text": "unit",
+          "start": 127.903,
+          "end": 128.238
+        },
+        {
+          "id": "caption-word-118-1",
+          "text": "arrives",
+          "start": 128.238,
+          "end": 128.753
+        },
+        {
+          "id": "caption-word-118-2",
+          "text": "an",
+          "start": 128.753,
+          "end": 128.969
+        }
+      ]
+    },
+    {
+      "id": "caption-group-119",
+      "frame": 8,
+      "start": 128.969,
+      "end": 129.639,
+      "text": "hour late,",
+      "words": [
+        {
+          "id": "caption-word-119-0",
+          "text": "hour",
+          "start": 128.969,
+          "end": 129.304
+        },
+        {
+          "id": "caption-word-119-1",
+          "text": "late,",
+          "start": 129.304,
+          "end": 129.639
+        }
+      ]
+    },
+    {
+      "id": "caption-group-120",
+      "frame": 8,
+      "start": 129.639,
+      "end": 130.884,
+      "text": "and the simulation",
+      "words": [
+        {
+          "id": "caption-word-120-0",
+          "text": "and",
+          "start": 129.639,
+          "end": 129.914
+        },
+        {
+          "id": "caption-word-120-1",
+          "text": "the",
+          "start": 129.914,
+          "end": 130.19
+        },
+        {
+          "id": "caption-word-120-2",
+          "text": "simulation",
+          "start": 130.19,
+          "end": 130.884
+        }
+      ]
+    },
+    {
+      "id": "caption-group-121",
+      "frame": 8,
+      "start": 130.884,
+      "end": 132.249,
+      "text": "genuinely runs again.",
+      "words": [
+        {
+          "id": "caption-word-121-0",
+          "text": "genuinely",
+          "start": 130.884,
+          "end": 131.519
+        },
+        {
+          "id": "caption-word-121-1",
+          "text": "runs",
+          "start": 131.519,
+          "end": 131.854
+        },
+        {
+          "id": "caption-word-121-2",
+          "text": "again.",
+          "start": 131.854,
+          "end": 132.249
+        }
+      ]
+    },
+    {
+      "id": "caption-group-122",
+      "frame": 8,
+      "start": 132.249,
+      "end": 134.069,
+      "text": "On-time departures fall from",
+      "words": [
+        {
+          "id": "caption-word-122-0",
+          "text": "On-time",
+          "start": 132.249,
+          "end": 132.704
+        },
+        {
+          "id": "caption-word-122-1",
+          "text": "departures",
+          "start": 132.704,
+          "end": 133.398
+        },
+        {
+          "id": "caption-word-122-2",
+          "text": "fall",
+          "start": 133.398,
+          "end": 133.734
+        },
+        {
+          "id": "caption-word-122-3",
+          "text": "from",
+          "start": 133.734,
+          "end": 134.069
+        }
+      ]
+    },
+    {
+      "id": "caption-group-123",
+      "frame": 8,
+      "start": 134.069,
+      "end": 135.709,
+      "text": "ninety-seven point two to",
+      "words": [
+        {
+          "id": "caption-word-123-0",
+          "text": "ninety-seven",
+          "start": 134.069,
+          "end": 134.823
+        },
+        {
+          "id": "caption-word-123-1",
+          "text": "point",
+          "start": 134.823,
+          "end": 135.218
+        },
+        {
+          "id": "caption-word-123-2",
+          "text": "two",
+          "start": 135.218,
+          "end": 135.494
+        },
+        {
+          "id": "caption-word-123-3",
+          "text": "to",
+          "start": 135.494,
+          "end": 135.709
+        }
+      ]
+    },
+    {
+      "id": "caption-group-124",
+      "frame": 8,
+      "start": 135.709,
+      "end": 137.649,
+      "text": "eighty-six point seven percent.",
+      "words": [
+        {
+          "id": "caption-word-124-0",
+          "text": "eighty-six",
+          "start": 135.709,
+          "end": 136.344
+        },
+        {
+          "id": "caption-word-124-1",
+          "text": "point",
+          "start": 136.344,
+          "end": 136.739
+        },
+        {
+          "id": "caption-word-124-2",
+          "text": "seven",
+          "start": 136.739,
+          "end": 137.134
+        },
+        {
+          "id": "caption-word-124-3",
+          "text": "percent.",
+          "start": 137.134,
+          "end": 137.649
+        }
+      ]
+    },
+    {
+      "id": "caption-group-125",
+      "frame": 8,
+      "start": 137.649,
+      "end": 138.774,
+      "text": "Vehicles at risk",
+      "words": [
+        {
+          "id": "caption-word-125-0",
+          "text": "Vehicles",
+          "start": 137.649,
+          "end": 138.223
+        },
+        {
+          "id": "caption-word-125-1",
+          "text": "at",
+          "start": 138.223,
+          "end": 138.439
+        },
+        {
+          "id": "caption-word-125-2",
+          "text": "risk",
+          "start": 138.439,
+          "end": 138.774
+        }
+      ]
+    },
+    {
+      "id": "caption-group-126",
+      "frame": 8,
+      "start": 138.774,
+      "end": 139.325,
+      "text": "go from",
+      "words": [
+        {
+          "id": "caption-word-126-0",
+          "text": "go",
+          "start": 138.774,
+          "end": 138.99
+        },
+        {
+          "id": "caption-word-126-1",
+          "text": "from",
+          "start": 138.99,
+          "end": 139.325
+        }
+      ]
+    },
+    {
+      "id": "caption-group-127",
+      "frame": 8,
+      "start": 139.325,
+      "end": 139.816,
+      "text": "one to",
+      "words": [
+        {
+          "id": "caption-word-127-0",
+          "text": "one",
+          "start": 139.325,
+          "end": 139.6
+        },
+        {
+          "id": "caption-word-127-1",
+          "text": "to",
+          "start": 139.6,
+          "end": 139.816
+        }
+      ]
+    },
+    {
+      "id": "caption-group-128",
+      "frame": 8,
+      "start": 139.816,
+      "end": 140.211,
+      "text": "eight.",
+      "words": [
+        {
+          "id": "caption-word-128-0",
+          "text": "eight.",
+          "start": 139.816,
+          "end": 140.211
+        }
+      ]
+    },
+    {
+      "id": "caption-group-129",
+      "frame": 8,
+      "start": 140.211,
+      "end": 141.336,
+      "text": "Nothing here was",
+      "words": [
+        {
+          "id": "caption-word-129-0",
+          "text": "Nothing",
+          "start": 140.211,
+          "end": 140.726
+        },
+        {
+          "id": "caption-word-129-1",
+          "text": "here",
+          "start": 140.726,
+          "end": 141.061
+        },
+        {
+          "id": "caption-word-129-2",
+          "text": "was",
+          "start": 141.061,
+          "end": 141.336
+        }
+      ]
+    },
+    {
+      "id": "caption-group-130",
+      "frame": 8,
+      "start": 141.336,
+      "end": 142.701,
+      "text": "written in advance.",
+      "words": [
+        {
+          "id": "caption-word-130-0",
+          "text": "written",
+          "start": 141.336,
+          "end": 141.851
+        },
+        {
+          "id": "caption-word-130-1",
+          "text": "in",
+          "start": 141.851,
+          "end": 142.067
+        },
+        {
+          "id": "caption-word-130-2",
+          "text": "advance.",
+          "start": 142.067,
+          "end": 142.581
+        }
+      ]
+    },
+    {
+      "id": "caption-group-131",
+      "frame": 9,
+      "start": 144,
+      "end": 144.679,
+      "text": "The model",
+      "words": [
+        {
+          "id": "caption-word-131-0",
+          "text": "The",
+          "start": 144,
+          "end": 144.279
+        },
+        {
+          "id": "caption-word-131-1",
+          "text": "model",
+          "start": 144.279,
+          "end": 144.679
+        }
+      ]
+    },
+    {
+      "id": "caption-group-132",
+      "frame": 9,
+      "start": 144.679,
+      "end": 145.298,
+      "text": "may read",
+      "words": [
+        {
+          "id": "caption-word-132-0",
+          "text": "may",
+          "start": 144.679,
+          "end": 144.958
+        },
+        {
+          "id": "caption-word-132-1",
+          "text": "read",
+          "start": 144.958,
+          "end": 145.298
+        }
+      ]
+    },
+    {
+      "id": "caption-group-133",
+      "frame": 9,
+      "start": 145.298,
+      "end": 145.917,
+      "text": "a report,",
+      "words": [
+        {
+          "id": "caption-word-133-0",
+          "text": "a",
+          "start": 145.298,
+          "end": 145.456
+        },
+        {
+          "id": "caption-word-133-1",
+          "text": "report,",
+          "start": 145.456,
+          "end": 145.917
+        }
+      ]
+    },
+    {
+      "id": "caption-group-134",
+      "frame": 9,
+      "start": 145.917,
+      "end": 146.414,
+      "text": "name a",
+      "words": [
+        {
+          "id": "caption-word-134-0",
+          "text": "name",
+          "start": 145.917,
+          "end": 146.257
+        },
+        {
+          "id": "caption-word-134-1",
+          "text": "a",
+          "start": 146.257,
+          "end": 146.414
+        }
+      ]
+    },
+    {
+      "id": "caption-group-135",
+      "frame": 9,
+      "start": 146.414,
+      "end": 146.754,
+      "text": "plan,",
+      "words": [
+        {
+          "id": "caption-word-135-0",
+          "text": "plan,",
+          "start": 146.414,
+          "end": 146.754
+        }
+      ]
+    },
+    {
+      "id": "caption-group-136",
+      "frame": 9,
+      "start": 146.754,
+      "end": 147.433,
+      "text": "and write",
+      "words": [
+        {
+          "id": "caption-word-136-0",
+          "text": "and",
+          "start": 146.754,
+          "end": 147.033
+        },
+        {
+          "id": "caption-word-136-1",
+          "text": "write",
+          "start": 147.033,
+          "end": 147.433
+        }
+      ]
+    },
+    {
+      "id": "caption-group-137",
+      "frame": 9,
+      "start": 147.433,
+      "end": 148.477,
+      "text": "the explanation.",
+      "words": [
+        {
+          "id": "caption-word-137-0",
+          "text": "the",
+          "start": 147.433,
+          "end": 147.712
+        },
+        {
+          "id": "caption-word-137-1",
+          "text": "explanation.",
+          "start": 147.712,
+          "end": 148.477
+        }
+      ]
+    },
+    {
+      "id": "caption-group-138",
+      "frame": 9,
+      "start": 148.477,
+      "end": 148.974,
+      "text": "It may",
+      "words": [
+        {
+          "id": "caption-word-138-0",
+          "text": "It",
+          "start": 148.477,
+          "end": 148.695
+        },
+        {
+          "id": "caption-word-138-1",
+          "text": "may",
+          "start": 148.695,
+          "end": 148.974
+        }
+      ]
+    },
+    {
+      "id": "caption-group-139",
+      "frame": 9,
+      "start": 148.974,
+      "end": 149.775,
+      "text": "not produce",
+      "words": [
+        {
+          "id": "caption-word-139-0",
+          "text": "not",
+          "start": 148.974,
+          "end": 149.253
+        },
+        {
+          "id": "caption-word-139-1",
+          "text": "produce",
+          "start": 149.253,
+          "end": 149.775
+        }
+      ]
+    },
+    {
+      "id": "caption-group-140",
+      "frame": 9,
+      "start": 149.775,
+      "end": 150.394,
+      "text": "a number,",
+      "words": [
+        {
+          "id": "caption-word-140-0",
+          "text": "a",
+          "start": 149.775,
+          "end": 149.933
+        },
+        {
+          "id": "caption-word-140-1",
+          "text": "number,",
+          "start": 149.933,
+          "end": 150.394
+        }
+      ]
+    },
+    {
+      "id": "caption-group-141",
+      "frame": 9,
+      "start": 150.394,
+      "end": 151.595,
+      "text": "decide which plan",
+      "words": [
+        {
+          "id": "caption-word-141-0",
+          "text": "decide",
+          "start": 150.394,
+          "end": 150.855
+        },
+        {
+          "id": "caption-word-141-1",
+          "text": "which",
+          "start": 150.855,
+          "end": 151.255
+        },
+        {
+          "id": "caption-word-141-2",
+          "text": "plan",
+          "start": 151.255,
+          "end": 151.595
+        }
+      ]
+    },
+    {
+      "id": "caption-group-142",
+      "frame": 9,
+      "start": 151.595,
+      "end": 151.934,
+      "text": "wins,",
+      "words": [
+        {
+          "id": "caption-word-142-0",
+          "text": "wins,",
+          "start": 151.595,
+          "end": 151.934
+        }
+      ]
+    },
+    {
+      "id": "caption-group-143",
+      "frame": 9,
+      "start": 151.934,
+      "end": 152.371,
+      "text": "or be",
+      "words": [
+        {
+          "id": "caption-word-143-0",
+          "text": "or",
+          "start": 151.934,
+          "end": 152.153
+        },
+        {
+          "id": "caption-word-143-1",
+          "text": "be",
+          "start": 152.153,
+          "end": 152.371
+        }
+      ]
+    },
+    {
+      "id": "caption-group-144",
+      "frame": 9,
+      "start": 152.371,
+      "end": 153.451,
+      "text": "on the critical",
+      "words": [
+        {
+          "id": "caption-word-144-0",
+          "text": "on",
+          "start": 152.371,
+          "end": 152.59
+        },
+        {
+          "id": "caption-word-144-1",
+          "text": "the",
+          "start": 152.59,
+          "end": 152.869
+        },
+        {
+          "id": "caption-word-144-2",
+          "text": "critical",
+          "start": 152.869,
+          "end": 153.451
+        }
+      ]
+    },
+    {
+      "id": "caption-group-145",
+      "frame": 9,
+      "start": 153.451,
+      "end": 153.791,
+      "text": "path.",
+      "words": [
+        {
+          "id": "caption-word-145-0",
+          "text": "path.",
+          "start": 153.451,
+          "end": 153.791
+        }
+      ]
+    },
+    {
+      "id": "caption-group-146",
+      "frame": 9,
+      "start": 153.791,
+      "end": 155.113,
+      "text": "With no credentials",
+      "words": [
+        {
+          "id": "caption-word-146-0",
+          "text": "With",
+          "start": 153.791,
+          "end": 154.13
+        },
+        {
+          "id": "caption-word-146-1",
+          "text": "no",
+          "start": 154.13,
+          "end": 154.349
+        },
+        {
+          "id": "caption-word-146-2",
+          "text": "credentials",
+          "start": 154.349,
+          "end": 155.113
+        }
+      ]
+    },
+    {
+      "id": "caption-group-147",
+      "frame": 9,
+      "start": 155.113,
+      "end": 155.61,
+      "text": "at all,",
+      "words": [
+        {
+          "id": "caption-word-147-0",
+          "text": "at",
+          "start": 155.113,
+          "end": 155.331
+        },
+        {
+          "id": "caption-word-147-1",
+          "text": "all,",
+          "start": 155.331,
+          "end": 155.61
+        }
+      ]
+    },
+    {
+      "id": "caption-group-148",
+      "frame": 9,
+      "start": 155.61,
+      "end": 156.933,
+      "text": "everything you just",
+      "words": [
+        {
+          "id": "caption-word-148-0",
+          "text": "everything",
+          "start": 155.61,
+          "end": 156.314
+        },
+        {
+          "id": "caption-word-148-1",
+          "text": "you",
+          "start": 156.314,
+          "end": 156.593
+        },
+        {
+          "id": "caption-word-148-2",
+          "text": "just",
+          "start": 156.593,
+          "end": 156.933
+        }
+      ]
+    },
+    {
+      "id": "caption-group-149",
+      "frame": 9,
+      "start": 156.933,
+      "end": 158.072,
+      "text": "saw still runs.",
+      "words": [
+        {
+          "id": "caption-word-149-0",
+          "text": "saw",
+          "start": 156.933,
+          "end": 157.212
+        },
+        {
+          "id": "caption-word-149-1",
+          "text": "still",
+          "start": 157.212,
+          "end": 157.612
+        },
+        {
+          "id": "caption-word-149-2",
+          "text": "runs.",
+          "start": 157.612,
+          "end": 157.952
+        }
+      ]
+    },
+    {
+      "id": "caption-group-150",
+      "frame": 10,
+      "start": 160,
+      "end": 160.646,
+      "text": "Forkcast.",
+      "words": [
+        {
+          "id": "caption-word-150-0",
+          "text": "Forkcast.",
+          "start": 160,
+          "end": 160.646
+        }
+      ]
+    },
+    {
+      "id": "caption-group-151",
+      "frame": 10,
+      "start": 160.646,
+      "end": 161.911,
+      "text": "See both futures",
+      "words": [
+        {
+          "id": "caption-word-151-0",
+          "text": "See",
+          "start": 160.646,
+          "end": 160.955
+        },
+        {
+          "id": "caption-word-151-1",
+          "text": "both",
+          "start": 160.955,
+          "end": 161.332
+        },
+        {
+          "id": "caption-word-151-2",
+          "text": "futures",
+          "start": 161.332,
+          "end": 161.911
+        }
+      ]
+    },
+    {
+      "id": "caption-group-152",
+      "frame": 10,
+      "start": 161.911,
+      "end": 163.363,
+      "text": "before you decide.",
+      "words": [
+        {
+          "id": "caption-word-152-0",
+          "text": "before",
+          "start": 161.911,
+          "end": 162.422
+        },
+        {
+          "id": "caption-word-152-1",
+          "text": "you",
+          "start": 162.422,
+          "end": 162.731
+        },
+        {
+          "id": "caption-word-152-2",
+          "text": "decide.",
+          "start": 162.731,
+          "end": 163.243
+        }
+      ]
+    }
+  ]
+}

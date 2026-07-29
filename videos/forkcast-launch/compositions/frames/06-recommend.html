@@ -1,0 +1,161 @@
+<template>
+  <style>
+    /* OS-bundled family: the declaration alone satisfies the renderer. */
+    @font-face {
+      font-family: "Segoe UI Variable Display";
+      src: local("Segoe UI Variable Display"), local("Segoe UI");
+      font-weight: 100 900;
+    }
+    #root {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: system-ui, "Segoe UI Variable Display", "Segoe UI", sans-serif;
+      color: #e9f0fa;
+    }
+    .f06-ground {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(1000px 600px at 90% -6%, rgba(53, 211, 154, 0.13), transparent 60%),
+        linear-gradient(180deg, #0e1726 0%, #04080f 100%);
+    }
+    .f06-stage {
+      position: absolute;
+      inset: 0;
+    }
+    .f06-eyebrow {
+      position: absolute;
+      left: 96px;
+      top: 76px;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #35d39a;
+    }
+    .f06-head {
+      position: absolute;
+      left: 96px;
+      top: 112px;
+      width: 1170px;
+      font-size: 56px;
+      font-weight: 600;
+      line-height: 1.16;
+      letter-spacing: -0.025em;
+    }
+    .f06-screen {
+      position: absolute;
+      left: 96px;
+      top: 300px;
+      width: 936px;
+      height: 560px;
+      border-radius: 14px;
+      border: 1.5px solid rgba(53, 211, 154, 0.28);
+      background: #060b14;
+      overflow: hidden;
+    }
+    .f06-screen img {
+      width: 100%;
+      display: block;
+    }
+    .f06-col {
+      position: absolute;
+      left: 1104px;
+      top: 300px;
+      width: 720px;
+    }
+    .f06-rule {
+      border-left: 3px solid #4a9eff;
+      padding: 4px 0 4px 24px;
+      margin-bottom: 34px;
+    }
+    .f06-rule i {
+      display: block;
+      font-style: normal;
+      font-size: 15px;
+      font-weight: 650;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #4a9eff;
+      margin-bottom: 12px;
+    }
+    .f06-rule p {
+      margin: 0;
+      font-size: 26px;
+      line-height: 1.5;
+      color: #9aadc9;
+      font-weight: 500;
+    }
+    .f06-step {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+    .f06-step b {
+      flex: none;
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: rgba(74, 158, 255, 0.1);
+      border: 1.5px solid rgba(74, 158, 255, 0.34);
+      color: #4a9eff;
+      font-size: 20px;
+      font-weight: 650;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .f06-step span {
+      font-size: 25px;
+      line-height: 1.45;
+      color: #e9f0fa;
+      font-weight: 500;
+      padding-top: 4px;
+    }
+  </style>
+
+  <div id="root" data-composition-id="06-recommend" data-start="0" data-duration="15.5" data-width="1920" data-height="1080">
+    <div id="f06-ground" class="clip f06-ground" data-start="0" data-duration="15.5" data-track-index="0"></div>
+
+    <div id="f06-stage" class="clip f06-stage" data-start="0" data-duration="15.5" data-track-index="1">
+      <div class="f06-eyebrow">Recommended response</div>
+      <div class="f06-head">Reprioritise the priority routes, and activate the battery buffer.</div>
+
+      <div class="f06-screen" id="f06-screen">
+        <img data-layout-allow-overflow src="assets/05-recommendation.png" alt="The Forkcast recommendation panel" />
+      </div>
+
+      <div class="f06-col">
+        <div class="f06-rule" id="f06-rule">
+          <i>Decision rule</i>
+          <p>Highest expected on-time departures wins, the gap being larger than the one percentage point tie threshold.</p>
+        </div>
+
+        <div class="f06-step" id="f06-s1"><b>1</b><span>Re-sequence the yard queue by priority route, then by least slack</span></div>
+        <div class="f06-step" id="f06-s2"><b>2</b><span>Charge to the route requirement, then move the connector on</span></div>
+        <div class="f06-step" id="f06-s3"><b>3</b><span>Call out the towed battery unit</span></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    window.__timelines = window.__timelines || {};
+    (function () {
+      var tl = gsap.timeline({ paused: true });
+
+      tl.fromTo(".f06-eyebrow", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 0.1);
+      tl.fromTo(".f06-head", { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 1.0, ease: "power3.out" }, 0.35);
+      tl.fromTo("#f06-screen", { opacity: 0, y: 38 }, { opacity: 1, y: 0, duration: 1.1, ease: "power3.out" }, 1.1);
+      tl.fromTo("#f06-screen img", { y: 0, scale: 1 }, { y: -90, scale: 1.04, duration: 13.5, ease: "none" }, 1.5);
+
+      tl.fromTo("#f06-rule", { opacity: 0, x: 34 }, { opacity: 1, x: 0, duration: 0.9, ease: "power3.out" }, 6.4);
+      tl.fromTo("#f06-s1", { opacity: 0, x: 26 }, { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, 9.6);
+      tl.fromTo("#f06-s2", { opacity: 0, x: 26 }, { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, 10.6);
+      tl.fromTo("#f06-s3", { opacity: 0, x: 26 }, { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, 11.6);
+
+      window.__timelines["06-recommend"] = tl;
+    })();
+  </script>
+</template>

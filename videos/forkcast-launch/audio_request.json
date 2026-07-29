@@ -1,0 +1,50 @@
+{
+  "provider": "kokoro",
+  "speed": 1,
+  "lines": [
+    {
+      "id": "01",
+      "text": "At eighteen forty, a fast charger fails at an electric delivery depot. Twenty vehicles still have to leave by six in the morning. Eight charge points remain. Somebody has to decide what to do, now."
+    },
+    {
+      "id": "02",
+      "text": "Forkcast is an AI decision agent for operational incidents. It lets a team see both futures before making the call."
+    },
+    {
+      "id": "03",
+      "text": "A duty manager describes what broke, in their own words. Azure OpenAI reads that text into a structured incident: the fleet, the connectors, the deadline, the battery range. Then the language model steps back."
+    },
+    {
+      "id": "04",
+      "text": "From here it is arithmetic. A deterministic dot NET engine builds two response plans and simulates five hundred possible nights for each one, against connector queues, re-plug delays and the site's power limit."
+    },
+    {
+      "id": "05",
+      "text": "Two futures. Continue the current schedule, and sixty point nine percent of vehicles leave on time, with nine of twenty at risk. Reprioritise the queue and bring in a towed battery unit, and it is ninety-seven point two percent, with one at risk, for three hundred and seventy-nine pounds. Both plans are scored against the same simulated nights, so the gap between them is the plans, not luck."
+    },
+    {
+      "id": "06",
+      "text": "Forkcast recommends reprioritising the priority routes and activating the battery buffer. The rule that picked it is written on the screen, next to the evidence it used."
+    },
+    {
+      "id": "07",
+      "text": "This is the part that matters. Every figure on that screen is a claim, carrying the simulation field it came from, how it was calculated, and the seed to reproduce it. Eight verified claims. Zero unsupported numbers. And if the model ever writes a figure no claim supports, the whole paragraph is discarded, not corrected."
+    },
+    {
+      "id": "08",
+      "text": "And you can argue with it. Ask what happens if the battery unit arrives an hour late, and the simulation genuinely runs again. On-time departures fall from ninety-seven point two to eighty-six point seven percent. Vehicles at risk go from one to eight. Nothing here was written in advance."
+    },
+    {
+      "id": "09",
+      "text": "The model may read a report, name a plan, and write the explanation. It may not produce a number, decide which plan wins, or be on the critical path. With no credentials at all, everything you just saw still runs."
+    },
+    {
+      "id": "10",
+      "text": "Forkcast. See both futures before you decide."
+    }
+  ],
+  "bgm": {
+    "mode": "none"
+  },
+  "voice": "bm_george"
+}

@@ -1,0 +1,169 @@
+<template>
+  <style>
+    /* OS-bundled family: the declaration alone satisfies the renderer. */
+    @font-face {
+      font-family: "Segoe UI Variable Display";
+      src: local("Segoe UI Variable Display"), local("Segoe UI");
+      font-weight: 100 900;
+    }
+    #root {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: system-ui, "Segoe UI Variable Display", "Segoe UI", sans-serif;
+      color: #e9f0fa;
+    }
+    .f04-ground {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(1100px 640px at 88% -6%, rgba(74, 158, 255, 0.15), transparent 62%),
+        linear-gradient(180deg, #0e1726 0%, #04080f 100%);
+    }
+    .f04-stage {
+      position: absolute;
+      inset: 0;
+    }
+    .f04-eyebrow {
+      position: absolute;
+      left: 96px;
+      top: 76px;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #4a9eff;
+    }
+    .f04-head {
+      position: absolute;
+      left: 96px;
+      top: 112px;
+      font-size: 58px;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+    }
+    .f04-screen {
+      position: absolute;
+      left: 96px;
+      top: 236px;
+      width: 1728px;
+      height: 300px;
+      border-radius: 14px;
+      border: 1.5px solid rgba(74, 158, 255, 0.2);
+      background: #060b14;
+      overflow: hidden;
+    }
+    .f04-screen img {
+      width: 100%;
+      display: block;
+    }
+    .f04-stats {
+      position: absolute;
+      left: 96px;
+      right: 96px;
+      top: 596px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+    .f04-stat {
+      background: rgba(74, 158, 255, 0.04);
+      border: 1.5px solid rgba(74, 158, 255, 0.2);
+      border-radius: 14px;
+      padding: 32px 36px 36px;
+    }
+    .f04-stat b {
+      display: block;
+      font-size: 92px;
+      font-weight: 660;
+      line-height: 1;
+      letter-spacing: -0.035em;
+      color: #4a9eff;
+      font-variant-numeric: tabular-nums;
+    }
+    .f04-stat span {
+      display: block;
+      margin-top: 16px;
+      font-size: 24px;
+      font-weight: 500;
+      color: #9aadc9;
+    }
+    .f04-bar {
+      position: absolute;
+      left: 96px;
+      right: 96px;
+      top: 848px;
+      height: 5px;
+      border-radius: 4px;
+      background: rgba(74, 158, 255, 0.14);
+      overflow: hidden;
+    }
+    .f04-bar i {
+      display: block;
+      height: 100%;
+      width: 100%;
+      transform-origin: left center;
+      background: linear-gradient(90deg, #4a9eff, #35d39a);
+    }
+  </style>
+
+  <div id="root" data-composition-id="04-engine" data-start="0" data-duration="17.5" data-width="1920" data-height="1080">
+    <div id="f04-ground" class="clip f04-ground" data-start="0" data-duration="17.5" data-track-index="0"></div>
+
+    <div id="f04-stage" class="clip f04-stage" data-start="0" data-duration="17.5" data-track-index="1">
+      <div class="f04-eyebrow">Step two</div>
+      <div class="f04-head">From here, it is arithmetic</div>
+
+      <div class="f04-screen" id="f04-screen">
+        <img data-layout-allow-overflow src="assets/03-agent.png" alt="The Forkcast agent working through its pipeline" />
+      </div>
+
+      <div class="f04-stats">
+        <div class="f04-stat" id="f04-s1"><b id="f04-n1">0</b><span>simulated nights per plan</span></div>
+        <div class="f04-stat" id="f04-s2"><b id="f04-n2">0</b><span>response plans compared</span></div>
+        <div class="f04-stat" id="f04-s3"><b id="f04-n3">0</b><span>vehicles scheduled each night</span></div>
+      </div>
+
+      <div class="f04-bar" id="f04-bar"><i id="f04-fill"></i></div>
+    </div>
+  </div>
+  <script>
+    window.__timelines = window.__timelines || {};
+    (function () {
+      var tl = gsap.timeline({ paused: true });
+
+      function countTo(selector, target, at, dur) {
+        var box = { v: 0 };
+        tl.to(box, {
+          v: target,
+          duration: dur,
+          ease: "power2.out",
+          onUpdate: function () {
+            var el = document.querySelector(selector);
+            if (el) el.textContent = String(Math.round(box.v));
+          }
+        }, at);
+      }
+
+      tl.fromTo(".f04-eyebrow", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 0.1);
+      tl.fromTo(".f04-head", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 0.3);
+      tl.fromTo("#f04-screen", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 1.0, ease: "power3.out" }, 0.7);
+      tl.fromTo("#f04-screen img", { y: 0 }, { y: -46, duration: 15.5, ease: "none" }, 1.2);
+
+      tl.fromTo("#f04-s1", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 4.6);
+      countTo("#f04-n1", 500, 4.8, 2.6);
+
+      tl.fromTo("#f04-s2", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 8.0);
+      countTo("#f04-n2", 2, 8.2, 0.9);
+
+      tl.fromTo("#f04-s3", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 10.6);
+      countTo("#f04-n3", 20, 10.8, 1.2);
+
+      tl.fromTo("#f04-bar", { opacity: 0 }, { opacity: 1, duration: 0.5 }, 3.6);
+      tl.fromTo("#f04-fill", { scaleX: 0 }, { scaleX: 1, duration: 12.4, ease: "power1.inOut" }, 3.8);
+
+      window.__timelines["04-engine"] = tl;
+    })();
+  </script>
+</template>

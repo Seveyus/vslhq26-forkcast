@@ -1,0 +1,168 @@
+<template>
+  <style>
+    /* OS-bundled family: the declaration alone satisfies the renderer. */
+    @font-face {
+      font-family: "Segoe UI Variable Display";
+      src: local("Segoe UI Variable Display"), local("Segoe UI");
+      font-weight: 100 900;
+    }
+    #root {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: system-ui, "Segoe UI Variable Display", "Segoe UI", sans-serif;
+      color: #e9f0fa;
+    }
+    .f01-ground {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(1200px 700px at 12% -10%, rgba(74, 158, 255, 0.16), transparent 62%),
+        radial-gradient(900px 560px at 92% 8%, rgba(255, 112, 137, 0.1), transparent 58%),
+        linear-gradient(180deg, #0e1726 0%, #04080f 100%);
+    }
+    .f01-stage {
+      position: absolute;
+      inset: 0;
+    }
+    .f01-eyebrow {
+      position: absolute;
+      left: 96px;
+      top: 92px;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #4a9eff;
+    }
+    .f01-clockrow {
+      position: absolute;
+      left: 96px;
+      right: 96px;
+      top: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .f01-clock {
+      font-size: 168px;
+      font-weight: 660;
+      letter-spacing: -0.045em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+    .f01-clock small {
+      display: block;
+      margin-top: 18px;
+      font-size: 21px;
+      font-weight: 550;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #7d90b0;
+    }
+    .f01-deadline {
+      color: #ff7089;
+      text-align: right;
+    }
+    .f01-span {
+      position: absolute;
+      left: 560px;
+      right: 560px;
+      top: 336px;
+      height: 2px;
+      transform-origin: left center;
+      background: linear-gradient(90deg, #4a9eff, #ff7089);
+      border-radius: 2px;
+    }
+    .f01-gap {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 362px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: #9aadc9;
+      font-variant-numeric: tabular-nums;
+    }
+    .f01-facts {
+      position: absolute;
+      left: 96px;
+      right: 96px;
+      top: 590px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+    .f01-fact {
+      background: rgba(74, 158, 255, 0.04);
+      border: 1.5px solid rgba(74, 158, 255, 0.2);
+      border-radius: 14px;
+      padding: 34px 38px 38px;
+    }
+    .f01-fact b {
+      display: block;
+      font-size: 84px;
+      font-weight: 660;
+      line-height: 1;
+      letter-spacing: -0.03em;
+      color: #4a9eff;
+      font-variant-numeric: tabular-nums;
+    }
+    .f01-fact span {
+      display: block;
+      margin-top: 16px;
+      font-size: 25px;
+      font-weight: 500;
+      color: #9aadc9;
+    }
+    .f01-fact.is-bad b {
+      color: #ff7089;
+    }
+  </style>
+
+  <div id="root" data-composition-id="01-bind" data-start="0" data-duration="15.5" data-width="1920" data-height="1080">
+    <div id="f01-ground" class="clip f01-ground" data-start="0" data-duration="15.5" data-track-index="0"></div>
+
+    <div id="f01-stage" class="clip f01-stage" data-start="0" data-duration="15.5" data-track-index="1">
+      <div class="f01-eyebrow">Operational incident</div>
+
+      <div class="f01-clockrow">
+        <div class="f01-clock" id="f01-start">18:40<small>fast charger fails</small></div>
+        <div class="f01-clock f01-deadline" id="f01-end">06:00<small>last vehicle must leave</small></div>
+      </div>
+
+      <div class="f01-span" id="f01-span"></div>
+      <div class="f01-gap" id="f01-gap">11 h 20 m to fix it</div>
+
+      <div class="f01-facts">
+        <div class="f01-fact" id="f01-fact1"><b>20</b><span>vehicles must depart</span></div>
+        <div class="f01-fact" id="f01-fact2"><b>8</b><span>charge points remain</span></div>
+        <div class="f01-fact is-bad" id="f01-fact3"><b>1</b><span>fast charger down</span></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    window.__timelines = window.__timelines || {};
+    (function () {
+      var tl = gsap.timeline({ paused: true });
+
+      tl.fromTo(".f01-eyebrow", { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }, 0.15);
+      tl.fromTo("#f01-start", { opacity: 0, y: 40, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 1.0, ease: "power3.out" }, 0.5);
+      tl.fromTo("#f01-span", { scaleX: 0, opacity: 0 }, { scaleX: 1, opacity: 1, duration: 1.4, ease: "power2.inOut" }, 2.3);
+      tl.fromTo("#f01-end", { opacity: 0, y: 40, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 1.0, ease: "power3.out" }, 3.2);
+      tl.fromTo("#f01-gap", { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }, 5.0);
+
+      tl.fromTo("#f01-fact1", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 6.3);
+      tl.fromTo("#f01-fact2", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 7.9);
+      tl.fromTo("#f01-fact3", { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 9.4);
+
+      // The deadline pulls focus as the window closes.
+      tl.fromTo("#f01-end", { scale: 1 }, { scale: 1.04, duration: 1.6, ease: "power2.inOut" }, 10.9);
+
+      window.__timelines["01-bind"] = tl;
+    })();
+  </script>
+</template>

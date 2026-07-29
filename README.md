@@ -213,6 +213,25 @@ curl -s -X POST http://localhost:5199/api/simulations/challenge \
 Every screenshot is captured from the running application by
 [`web/scripts/capture.mjs`](web/scripts/capture.mjs). None of them is a mock-up.
 
+## Demo video
+
+**[`demo/demo.mp4`](demo/demo.mp4)** — 2:48, 1920×1080, H.264.
+
+Built with [HyperFrames](https://hyperframes.heygen.com) from the same captured screens, so the
+film shows the submitted application rather than a separate mock-up of it. Every figure spoken or
+shown in it is one the engine returns at seed `20260728`, and the test
+`Published_demo_figures_hold` fails if the engine ever stops returning them.
+
+The whole composition is source, under [`videos/forkcast-launch/`](videos/forkcast-launch): the
+brief, the storyboard, the narration script, and one HTML file per shot. Narration is a local
+Kokoro voice; there is no music, so nothing in the video is licensed from anyone.
+
+```bash
+cd videos/forkcast-launch
+npx hyperframes check     # 0 errors, 58/58 WCAG AA contrast checks
+npx hyperframes render --quality high --output renders/video.mp4
+```
+
 ---
 
 ## How it is built

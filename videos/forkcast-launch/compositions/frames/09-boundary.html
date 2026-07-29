@@ -1,0 +1,157 @@
+<template>
+  <style>
+    /* OS-bundled family: the declaration alone satisfies the renderer. */
+    @font-face {
+      font-family: "Segoe UI Variable Display";
+      src: local("Segoe UI Variable Display"), local("Segoe UI");
+      font-weight: 100 900;
+    }
+    #root {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      font-family: system-ui, "Segoe UI Variable Display", "Segoe UI", sans-serif;
+      color: #e9f0fa;
+    }
+    .f09-ground {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(900px 560px at 22% -6%, rgba(74, 158, 255, 0.15), transparent 60%),
+        radial-gradient(900px 560px at 80% 96%, rgba(255, 112, 137, 0.11), transparent 58%),
+        linear-gradient(180deg, #0e1726 0%, #04080f 100%);
+    }
+    .f09-stage {
+      position: absolute;
+      inset: 0;
+    }
+    .f09-eyebrow {
+      position: absolute;
+      left: 96px;
+      top: 78px;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #4a9eff;
+    }
+    .f09-head {
+      position: absolute;
+      left: 96px;
+      top: 114px;
+      font-size: 58px;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+    }
+    .f09-cols {
+      position: absolute;
+      left: 96px;
+      right: 96px;
+      top: 250px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+    .f09-card {
+      border-radius: 14px;
+      padding: 34px 40px 40px;
+      border: 1.5px solid rgba(74, 158, 255, 0.24);
+      background: rgba(74, 158, 255, 0.05);
+    }
+    .f09-card.is-deny {
+      border-color: rgba(255, 112, 137, 0.3);
+      background: rgba(255, 112, 137, 0.06);
+    }
+    .f09-card h3 {
+      margin: 0 0 28px;
+      font-size: 19px;
+      font-weight: 650;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #4a9eff;
+    }
+    .f09-card.is-deny h3 {
+      color: #ff7089;
+    }
+    .f09-item {
+      position: relative;
+      padding-left: 34px;
+      margin-bottom: 22px;
+      font-size: 27px;
+      line-height: 1.4;
+      color: #e9f0fa;
+      font-weight: 500;
+    }
+    .f09-item::before {
+      content: "";
+      position: absolute;
+      left: 4px;
+      top: 14px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #4a9eff;
+    }
+    .f09-card.is-deny .f09-item::before {
+      background: #ff7089;
+    }
+    .f09-foot {
+      position: absolute;
+      left: 96px;
+      right: 96px;
+      top: 790px;
+      text-align: center;
+      font-size: 32px;
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      color: #35d39a;
+    }
+  </style>
+
+  <div id="root" data-composition-id="09-boundary" data-start="0" data-duration="16.5" data-width="1920" data-height="1080">
+    <div id="f09-ground" class="clip f09-ground" data-start="0" data-duration="16.5" data-track-index="0"></div>
+
+    <div id="f09-stage" class="clip f09-stage" data-start="0" data-duration="16.5" data-track-index="1">
+      <div class="f09-eyebrow">The boundary</div>
+      <div class="f09-head">Where the language stops and the arithmetic starts</div>
+
+      <div class="f09-cols">
+        <div class="f09-card" id="f09-allow">
+          <h3>The model may</h3>
+          <div class="f09-item f09-a">Read a report into a fixed schema</div>
+          <div class="f09-item f09-a">Name and describe a plan</div>
+          <div class="f09-item f09-a">Write the executive explanation</div>
+        </div>
+
+        <div class="f09-card is-deny" id="f09-deny">
+          <h3>The model may not</h3>
+          <div class="f09-item f09-d">Produce a percentage, a cost or a count</div>
+          <div class="f09-item f09-d">Decide which plan wins</div>
+          <div class="f09-item f09-d">Be on the critical path</div>
+        </div>
+      </div>
+
+      <div class="f09-foot" id="f09-foot">With no credentials at all, everything you just saw still runs.</div>
+    </div>
+  </div>
+  <script>
+    window.__timelines = window.__timelines || {};
+    (function () {
+      var tl = gsap.timeline({ paused: true });
+
+      tl.fromTo(".f09-eyebrow", { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }, 0.1);
+      tl.fromTo(".f09-head", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.9, ease: "power3.out" }, 0.3);
+
+      tl.fromTo("#f09-allow", { opacity: 0, x: -34 }, { opacity: 1, x: 0, duration: 0.9, ease: "power3.out" }, 1.1);
+      tl.fromTo(".f09-a", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.65, stagger: 1.5, ease: "power3.out" }, 1.7);
+
+      tl.fromTo("#f09-deny", { opacity: 0, x: 34 }, { opacity: 1, x: 0, duration: 0.9, ease: "power3.out" }, 6.6);
+      tl.fromTo(".f09-d", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.65, stagger: 1.4, ease: "power3.out" }, 7.2);
+
+      tl.fromTo("#f09-foot", { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.9, ease: "power3.out" }, 12.4);
+
+      window.__timelines["09-boundary"] = tl;
+    })();
+  </script>
+</template>
