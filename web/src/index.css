@@ -1458,6 +1458,185 @@ textarea {
   margin-top: 1.35rem;
 }
 
+/* --- counterfactual canvas ---------------------------------------------- */
+
+.canvas__resources {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 0.95rem 1.1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--bg-deep);
+  margin-bottom: 1.35rem;
+}
+
+.canvas__strip-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 650;
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
+.canvas__resources ul {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.res {
+  display: grid;
+  gap: 0.1rem;
+  justify-items: center;
+  min-width: 54px;
+  padding: 0.35rem 0.5rem;
+  border-radius: 7px;
+  border: 1px solid rgba(53, 211, 154, 0.45);
+  background: var(--good-soft);
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.res--down {
+  border-color: rgba(255, 112, 137, 0.5);
+  background: var(--bad-soft);
+  opacity: 0.75;
+}
+
+.res--buffer {
+  border-style: dashed;
+  border-color: rgba(74, 158, 255, 0.55);
+  background: var(--accent-soft);
+}
+
+.res__id {
+  font-family: var(--mono);
+  font-size: 0.62rem;
+  color: var(--text-dim);
+  letter-spacing: 0.02em;
+}
+
+.res__rate {
+  font-size: 0.74rem;
+  font-weight: 640;
+  font-variant-numeric: tabular-nums;
+  color: var(--text);
+}
+
+.res--down .res__rate {
+  text-decoration: line-through;
+  color: var(--bad);
+}
+
+.canvas__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 1.25rem;
+}
+
+.board {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  padding: 1.2rem 1.3rem 1.35rem;
+}
+
+.board--recommended {
+  border-color: rgba(53, 211, 154, 0.4);
+}
+
+.board__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.05rem;
+}
+
+.board__head h3 {
+  font-size: 1rem;
+}
+
+.board__head p {
+  margin-top: 0.3rem;
+  color: var(--text-faint);
+  font-size: 0.82rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.board__units {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(46px, 1fr));
+  gap: 6px;
+}
+
+.unit {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 7px;
+  display: grid;
+  place-items: center;
+  cursor: default;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  /* The transition is the point: a counterfactual visibly ripples across the board. */
+  transition: background 0.55s ease, box-shadow 0.35s ease;
+}
+
+.unit--priority {
+  box-shadow: inset 0 0 0 2px rgba(233, 240, 250, 0.55);
+}
+
+.unit__id {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: inherit;
+  letter-spacing: -0.02em;
+}
+
+.canvas__legend {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-top: 1.4rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--line);
+  color: var(--text-faint);
+  font-size: 0.8rem;
+}
+
+.canvas__legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.swatch--bad {
+  background: rgba(255, 112, 137, 0.55);
+}
+
+.swatch--warn {
+  background: rgba(245, 181, 68, 0.6);
+}
+
+.swatch--good {
+  background: rgba(53, 211, 154, 0.65);
+}
+
+.swatch--priority {
+  background: transparent;
+  box-shadow: inset 0 0 0 2px rgba(233, 240, 250, 0.6);
+}
+
 /* --- try to fool it ----------------------------------------------------- */
 
 .probe {

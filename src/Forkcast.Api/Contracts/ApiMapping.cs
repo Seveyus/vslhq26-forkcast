@@ -1,5 +1,6 @@
 using Forkcast.Api.Services;
 using Forkcast.Core.Ai;
+using Forkcast.Core.Briefing;
 using Forkcast.Core.Challenges;
 using Forkcast.Core.Demo;
 using Forkcast.Core.Comparison;
@@ -230,6 +231,48 @@ internal static class ApiMapping
 
     public static AdjustmentDto ToDto(this DraftAdjustment adjustment) =>
         new(adjustment.Field, adjustment.Reason);
+
+    public static BriefingResponse ToResponse(this DecisionBriefing briefing, IncidentVocabulary words)
+    {
+        ArgumentNullException.ThrowIfNull(briefing);
+        ArgumentNullException.ThrowIfNull(words);
+
+        return new BriefingResponse(
+            briefing.DomainKey,
+            briefing.DomainLabel,
+            briefing.Title,
+            briefing.Situation,
+            briefing.RecommendedPlanId,
+            briefing.Headline,
+            briefing.Seed,
+            briefing.TrialCount,
+            briefing.VerifiedClaims,
+            briefing.UnsupportedNumbers,
+            briefing.TotalSeconds,
+            briefing.CounterfactualLabel,
+            briefing.Beats
+                .Select(b => new BriefingBeatDto(
+                    b.Id, b.Kind, b.StartSeconds, b.DurationSeconds, b.Heading, b.Caption, b.ClaimIds))
+                .ToList(),
+            briefing.Resources
+                .Select(r => new CanvasResourceDto(r.Id, r.Kind, r.Rate, r.Operational, r.FaultCode))
+                .ToList(),
+            briefing.Plans
+                .Select(plan => new CanvasPlanDto(
+                    plan.PlanId,
+                    plan.PlanName,
+                    plan.Recommended,
+                    plan.OnTimePct,
+                    plan.AtRiskCount,
+                    plan.RiskLevel,
+                    plan.Units
+                        .Select(u => new CanvasUnitDto(
+                            u.Id, u.Label, u.IsPriority, u.OnTimeProbability,
+                            u.ShortfallLevel, u.SlackMinutes, u.AtRisk))
+                        .ToList()))
+                .ToList(),
+            words.ToDto());
+    }
 
     public static VerificationProbeResponse ToResponse(this VerificationProbe probe)
     {

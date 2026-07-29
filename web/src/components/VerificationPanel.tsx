@@ -14,9 +14,10 @@ export function VerificationPanel({ decision }: Props) {
     <section className="panel verify" id="verification">
       <header className="panel__head">
         <div>
-          <h2>Every number, accounted for</h2>
+          <h2>Evidence ledger</h2>
           <p className="panel__sub">
-            The model writes the explanation. It is never allowed to invent the numbers.
+            Every number on this page, with the simulation field it came from. The model writes the
+            explanation; it is never allowed to invent the figures.
           </p>
         </div>
         <div className={`stamp${clean ? ' stamp--clean' : ' stamp--dirty'}`}>

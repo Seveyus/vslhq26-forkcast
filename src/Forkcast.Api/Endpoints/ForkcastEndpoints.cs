@@ -196,6 +196,28 @@ public static class ForkcastEndpoints
             .WithName("ChallengeSimulation")
             .WithSummary("Reruns the simulation with one assumption changed and reports the difference.");
 
+        api.MapGet("/briefing/export", async Task<Results<Ok<BriefingResponse>, ProblemHttpResult>> (
+                string? scenario,
+                string? question,
+                ForkcastRunner runner,
+                CancellationToken cancellationToken) =>
+            {
+                if (question is not null && Validate.Question(question) is { } problem)
+                {
+                    return problem;
+                }
+
+                var (briefing, result) = await runner.BriefAsync(
+                    null, question, SimulationOptions.Default, scenario, cancellationToken);
+
+                return TypedResults.Ok(briefing.ToResponse(result.Incident.Vocabulary));
+            })
+            .WithName("ExportBriefing")
+            .WithSummary(
+                "The decision brief for the current verified state: timed beats, canvas state and "
+                + "the claims each beat may show. Every caption is composed from claim display "
+                + "values, so a renderer cannot introduce a figure the claim set does not carry.");
+
         api.MapPost("/verification/probe", async Task<Results<Ok<VerificationProbeResponse>, ProblemHttpResult>> (
                 VerificationProbeRequest request,
                 ForkcastRunner runner,

@@ -57,7 +57,7 @@ export function IncidentCard({
       </header>
 
       <label className="incident__label" htmlFor="incident-narrative">
-        Incident report
+        Operational situation
       </label>
       <textarea
         id="incident-narrative"

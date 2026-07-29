@@ -249,6 +249,58 @@ public sealed record VerificationProbeResponse(
 /// <summary>A ready-made paragraph for the verifier demonstration.</summary>
 public sealed record ProbeExampleDto(string Label, string Narrative, string Expectation);
 
+public sealed record BriefingBeatDto(
+    string Id,
+    string Kind,
+    double StartSeconds,
+    double DurationSeconds,
+    string Heading,
+    string Caption,
+    IReadOnlyList<string> ClaimIds);
+
+public sealed record CanvasUnitDto(
+    string Id,
+    string Label,
+    bool IsPriority,
+    double OnTimeProbability,
+    double ShortfallLevel,
+    double SlackMinutes,
+    bool AtRisk);
+
+public sealed record CanvasResourceDto(
+    string Id,
+    string Kind,
+    double Rate,
+    bool Operational,
+    string? FaultCode);
+
+public sealed record CanvasPlanDto(
+    string PlanId,
+    string PlanName,
+    bool Recommended,
+    double OnTimePct,
+    int AtRiskCount,
+    string RiskLevel,
+    IReadOnlyList<CanvasUnitDto> Units);
+
+public sealed record BriefingResponse(
+    string DomainKey,
+    string DomainLabel,
+    string Title,
+    string Situation,
+    string RecommendedPlanId,
+    string Headline,
+    long Seed,
+    int TrialCount,
+    int VerifiedClaims,
+    int UnsupportedNumbers,
+    double TotalSeconds,
+    string? CounterfactualLabel,
+    IReadOnlyList<BriefingBeatDto> Beats,
+    IReadOnlyList<CanvasResourceDto> Resources,
+    IReadOnlyList<CanvasPlanDto> Plans,
+    VocabularyDto Vocabulary);
+
 public sealed record DemoIncidentResponse(
     IncidentDto Incident,
     string Narrative,

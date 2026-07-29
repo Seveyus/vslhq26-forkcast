@@ -13,6 +13,10 @@ That boundary is the product. Everything else here is in service of it, and you 
 yourself in the running app: [**write a figure it cannot support**](#try-to-fool-it) and watch the
 paragraph around it get discarded.
 
+Forkcast is not a fleet tool. It is a **decision intelligence layer for operations**: turn a
+situation into alternative futures, verify every figure, and brief the room. The electric depot is
+one worked example; a GPU compute hall runs on the same engine.
+
 | | |
 |---|---|
 | **Team** | Forkcast |
@@ -22,7 +26,7 @@ paragraph around it get discarded.
 | **Demo video** | [`./demo/demo.mp4`](./demo/demo.mp4) |
 | **Stack** | ASP.NET Core Minimal API · C# · Azure OpenAI · React + TypeScript + Vite · deterministic Monte Carlo · xUnit |
 | **Domains shipped** | An electric delivery depot and a GPU compute hall, on the same engine |
-| **Tests** | 150, `dotnet test` |
+| **Tests** | 155, `dotnet test` |
 
 ---
 
@@ -178,6 +182,45 @@ with it — one invented figure among true ones, an entirely invented paragraph,
 rounding (`98%` when the run says `97.2%`), and an honest one that passes — and a test submits all
 four and asserts each behaves as its label promises.
 
+### The counterfactual canvas
+
+One surface for the whole operation. Every tile is a real unit, shaded by how often it met its
+requirement across the 500 runs; the strip above it is the actual resource inventory, with the
+failed one struck through. Nothing on it is decoration.
+
+![The counterfactual canvas](demo/assets/14-canvas.png)
+
+Run a counterfactual and the board moves with the numbers. Below, the towed battery arrives an hour
+late — eight tiles on the recommended plan turn amber, its on-time figure falls from 97.2% to 86.7%,
+and the do-nothing board is untouched because the lever never applied to it.
+
+![The canvas after a counterfactual](demo/assets/15-canvas-after.png)
+
+### The decision brief, exported from verified state
+
+`GET /api/briefing/export` returns the animated brief for whatever is currently on screen: timed
+beats, the canvas state, and the claims each beat is allowed to show.
+
+```bash
+curl -s 'http://localhost:5199/api/briefing/export?scenario=compute&question=What+if+the+burst+capacity+comes+online+an+hour+late?'   | jq -r '.beats[] | "\(.startSeconds)s  \(.kind)  \(.caption)"'
+```
+
+```
+0s    situation       24 jobs need 10 GPU nodes before 05:30. 2 of them just failed.
+12s   futures         Hold the scheduled queue: 57.8%. Reprioritise and burst…: 85.6%.
+38s   futures         14 under the baseline, 9 if you act.
+54s   recommendation  Reprioritise regulated submissions and burst to the paired region.
+72s   evidence        Every figure above traces to a simulation field, reproducible at seed 20260728.
+92s   counterfactual  The burst capacity … arrives one hour late: on-time completions 94.7% to 85.6%…
+112s  close           See both futures before you decide.
+```
+
+Switch domain and the beats re-word themselves. Apply a counterfactual and a beat appears carrying
+the real before-and-after. Every caption is composed from claim display values, incident facts and
+the domain's vocabulary — and a test runs each caption back through the verifier, so the export
+cannot introduce a figure the claim set does not carry. That test has already caught one:
+an earlier evidence caption stated its own tally, which no claim backs.
+
 ---
 
 ## Running it
@@ -202,7 +245,7 @@ document at `/openapi/v1.json`.
 
 ```bash
 dotnet build          # 0 warnings — warnings are errors
-dotnet test           # 150 tests
+dotnet test           # 155 tests
 cd web && npm run build
 ```
 
@@ -234,6 +277,7 @@ is how unusual incident wording is read and how the explanation is written.
 | `POST /api/simulations/challenge` | Change one assumption, rerun, report the difference |
 | `POST /api/verification/probe` | Submit any paragraph to the claim verifier and get a verdict per number |
 | `GET /api/scenarios` | The shipped domains |
+| `GET /api/briefing/export` | The animated decision brief for the current verified state |
 
 Every simulation endpoint takes an optional `scenario` of `"fleet"` or `"compute"`.
 
@@ -319,7 +363,7 @@ src/
     Challenges/           the closed set of challengeable assumptions
     Ai/                   the language boundary, and its deterministic implementation
   Forkcast.Api/           Minimal API, DTO mapping, Azure OpenAI provider
-tests/Forkcast.Tests/     150 tests
+tests/Forkcast.Tests/     155 tests
 web/                      React + TypeScript + Vite, one page
 demo/                     screenshots and the demo video
 ```
@@ -348,6 +392,8 @@ problem does not need them, and each one would be another thing between a review
   teaching the wrong lesson
 - `The_analyser_and_the_rejection_list_agree` — the inspectable verdict and the enforced one are
   the same computation
+- `Every_number_in_every_caption_survives_the_verifier` — the exported brief is held to the same
+  rule as the model's prose
 
 ---
 
@@ -396,6 +442,15 @@ solve.
 - **Both scenarios price in pounds.** The currency is not yet part of the vocabulary.
 - **The verifier checks numerals, not claims about causation.** A paragraph can pass the check and
   still be misleading in its wording; the guarantee is specifically about figures.
+
+## Relation to FleetMind
+
+FleetMind is the EV-fleet application context that motivated this work. Forkcast is the layer
+underneath: a reusable engine that simulates, verifies and communicates operational decisions
+across domains. One is an application; the other is the decision technology it would sit on.
+
+That is why the compute hall matters more than it looks. It is not a second feature — it is the
+evidence that the engine is not shaped like a depot.
 
 ## Prior work, and what is new here
 

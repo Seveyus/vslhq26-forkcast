@@ -1,5 +1,6 @@
 using Forkcast.Api.Ai;
 using Forkcast.Core.Ai;
+using Forkcast.Core.Briefing;
 using Forkcast.Core.Decisions;
 using Forkcast.Core.Demo;
 using Forkcast.Core.Incidents;
@@ -34,7 +35,8 @@ public sealed class ForkcastRunner(
     IIncidentIntelligence intelligence,
     IncidentComposer composer,
     DecisionService decisions,
-    ClaimVerifier verifier)
+    ClaimVerifier verifier,
+    BriefingComposer briefings)
 {
     /// <summary>
     /// Turns incident text into a runnable incident. Empty text means the preloaded demo, which
@@ -141,6 +143,30 @@ public sealed class ForkcastRunner(
             Claims: claims,
             Seed: options.Seed,
             TrialCount: options.TrialCount);
+    }
+
+    /// <summary>
+    /// Composes a decision brief from the current verified state, after applying a counterfactual
+    /// if one is supplied.
+    /// </summary>
+    /// <remarks>
+    /// The brief is a projection, not a template: switch domain and its beats re-word themselves,
+    /// change an assumption and the counterfactual beat carries the real before-and-after. Because
+    /// every caption is built from claim display values, the payload cannot introduce a figure the
+    /// claim set does not already carry.
+    /// </remarks>
+    public async Task<(DecisionBriefing Briefing, DecisionResult Result)> BriefAsync(
+        string? narrative,
+        string? question,
+        SimulationOptions options,
+        string? scenarioKey = null,
+        CancellationToken cancellationToken = default)
+    {
+        var (result, _) = string.IsNullOrWhiteSpace(question)
+            ? await RunAsync(narrative, options, scenarioKey, cancellationToken)
+            : await ChallengeAsync(narrative, question, options, scenarioKey, cancellationToken);
+
+        return (briefings.Compose(result), result);
     }
 
     /// <summary>

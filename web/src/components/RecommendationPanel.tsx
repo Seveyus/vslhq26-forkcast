@@ -13,7 +13,7 @@ export function RecommendationPanel({ decision }: Props) {
     <section className="panel recommend" id="recommendation">
       <header className="panel__head">
         <div>
-          <p className="eyebrow">Recommended response</p>
+          <p className="eyebrow">Decision brief</p>
           <h2>{recommendation.headline}</h2>
         </div>
         <div className={`pill pill--${riskTone(recommendation.residualRisk)} pill--lg`}>

@@ -2,6 +2,7 @@ using System.Text.Json.Serialization;
 using Forkcast.Api.Ai;
 using Forkcast.Api.Configuration;
 using Forkcast.Api.Diagnostics;
+using Forkcast.Core.Briefing;
 using Forkcast.Api.Endpoints;
 using Forkcast.Api.Services;
 using Forkcast.Core.Challenges;
@@ -56,6 +57,7 @@ builder.Services.AddSingleton<ClaimVerifier>();
 builder.Services.AddSingleton<RecommendationService>();
 builder.Services.AddSingleton<ChallengeService>();
 builder.Services.AddSingleton<IncidentComposer>();
+builder.Services.AddSingleton<BriefingComposer>();
 
 // Scoped, because it depends on the intelligence provider, which may be a typed HttpClient.
 builder.Services.AddScoped<DecisionService>();

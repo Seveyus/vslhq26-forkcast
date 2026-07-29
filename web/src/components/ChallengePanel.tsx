@@ -27,9 +27,9 @@ export function ChallengePanel({
     <section className="panel challenge" id="challenge">
       <header className="panel__head">
         <div>
-          <h2>Challenge the recommendation</h2>
+          <h2>Counterfactual test</h2>
           <p className="panel__sub">
-            Change an assumption and the simulation runs again. Nothing here is a canned answer.
+            Change an assumption and the whole surface reruns — scores, evidence, narrative and canvas. Nothing here is a canned answer.
           </p>
         </div>
       </header>

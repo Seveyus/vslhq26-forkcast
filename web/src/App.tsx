@@ -4,6 +4,7 @@ import type { Decision, DemoIncident } from './api/schema'
 import { AgentProgress } from './components/AgentProgress'
 import { ArchitectureSection } from './components/ArchitectureSection'
 import { ChallengePanel } from './components/ChallengePanel'
+import { CounterfactualCanvas } from './components/CounterfactualCanvas'
 import { FuturePanel } from './components/FuturePanel'
 import { IncidentCard } from './components/IncidentCard'
 import { RecommendationPanel } from './components/RecommendationPanel'
@@ -169,10 +170,14 @@ export function App() {
           </div>
 
           <h1 className="hero__title">See both futures before you decide.</h1>
-          <p className="hero__lede">An AI decision agent for operational incidents.</p>
+          <p className="hero__lede">
+            A decision intelligence layer for operations — simulate the futures, verify the
+            evidence, brief the room.
+          </p>
           <p className="hero__note">
-            Azure OpenAI reads the incident and writes the explanation. A deterministic .NET engine
-            calculates every consequence, and no figure reaches this page without a claim behind it.
+            Azure OpenAI reads the situation and writes the explanation. A deterministic .NET engine
+            calculates every consequence, and no figure reaches this page without a claim behind
+            it. One engine, multiple operational worlds.
           </p>
         </div>
       </header>
@@ -191,7 +196,7 @@ export function App() {
           <section className="domains" aria-label="Choose an incident">
             <div className="domains__intro">
               <p className="eyebrow">One engine, unrelated domains</p>
-              <h2>Switch the incident</h2>
+              <h2>One engine, multiple operational worlds</h2>
               <p className="panel__sub">
                 These two sites share no vocabulary, no units and no failure mode. Neither needed a
                 line of change in the simulation, the comparison, the claim layer or the
@@ -250,7 +255,7 @@ export function App() {
 
               <section className="futures" id="futures">
                 <header className="futures__head">
-                  <h2>Two futures</h2>
+                  <h2>Alternative futures</h2>
                   <p>
                     {decision.trialCount} simulated nights per plan, seed {decision.seed}. Both plans
                     are scored against the same sampled nights, so the gap between them is the plans
@@ -279,6 +284,7 @@ export function App() {
                 </div>
               </section>
 
+              <CounterfactualCanvas decision={decision} />
               <RecommendationPanel decision={decision} />
               <VerificationPanel decision={decision} />
 
