@@ -1,0 +1,15 @@
+# Normalise line endings so the repository content is identical on every platform.
+* text=auto eol=lf
+
+*.sln text eol=crlf
+
+# Never let Git rewrite bytes inside binaries.
+*.mp4 -text
+*.png -text
+*.jpg -text
+*.jpeg -text
+*.gif -text
+*.webp -text
+*.woff -text
+*.woff2 -text
+*.ico -text

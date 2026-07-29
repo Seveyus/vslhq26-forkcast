@@ -427,3 +427,13 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+## Forkcast
+.env
+.env.local
+appsettings.Development.json
+secrets.json
+web/dist/
+web/node_modules/
+demo/frames/
+demo/captures/

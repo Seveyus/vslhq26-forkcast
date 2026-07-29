@@ -1,0 +1,22 @@
+<Project>
+
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+
+    <!--
+      CA1822 wants stateless services marked static. Forkcast resolves them through dependency
+      injection so they can be substituted in tests, which static members prevent.
+      CA1859 wants concrete collection types on internal signatures. Returning the read-only
+      interface is the stronger contract here, and none of these paths is hot enough to trade
+      that away.
+    -->
+    <NoWarn>$(NoWarn);CA1822;CA1859</NoWarn>
+  </PropertyGroup>
+
+</Project>
