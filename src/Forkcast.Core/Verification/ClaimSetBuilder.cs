@@ -109,12 +109,13 @@ public sealed class ClaimSetBuilder
                 "Count of vehicles whose on-time probability across all trials falls below 90 percent"),
 
             ("additional-cost",
-                "Additional operational cost of acting",
+                "Net additional operational cost of acting",
                 "GBP",
                 "comparison.additionalCostGbp",
                 "Alternative total operational cost minus baseline total operational cost, where "
                 + "total cost is metered energy priced against the time-of-use tariff plus any "
-                + "call-out and buffer energy charges"),
+                + "call-out and buffer energy charges. Net, so it is lower than the intervention "
+                + "cost alone by the metered energy the towed battery displaces"),
 
             ("baseline-unmet-energy",
                 $"{baseline.PlanName}: unmet energy at departure",

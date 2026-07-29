@@ -16,7 +16,7 @@ using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-const string DevelopmentCors = "forkcast-local";
+const string LocalFrontendCors = "forkcast-local";
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
@@ -27,7 +27,10 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 builder.Services.AddProblemDetails();
 builder.Services.AddOpenApi();
 
-builder.Services.AddCors(options => options.AddPolicy(DevelopmentCors, policy => policy
+// Named origins only, never AllowAnyOrigin. The policy is applied unconditionally rather than
+// only in Development so that `dotnet run` serves the local frontend whatever environment the
+// host happens to resolve to; the allow-list is what makes that safe, not the environment check.
+builder.Services.AddCors(options => options.AddPolicy(LocalFrontendCors, policy => policy
     .WithOrigins(
         "http://localhost:5173",
         "http://127.0.0.1:5173",
@@ -68,11 +71,7 @@ app.UseExceptionHandler(handler => handler.Run(async context =>
 }));
 
 app.UseStatusCodePages();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseCors(DevelopmentCors);
-}
+app.UseCors(LocalFrontendCors);
 
 app.MapOpenApi();
 app.MapScalarApiReference(options => options.WithTitle("Forkcast API"));
