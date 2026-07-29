@@ -40,6 +40,31 @@ public sealed record ConstraintsDto(
     double PlugSwapBaseMinutes,
     double FaultRecoveryProbability);
 
+public sealed record VocabularyDto(
+    string DomainKey,
+    string DomainLabel,
+    string UnitSingular,
+    string UnitPlural,
+    string ResourceSingular,
+    string ResourcePlural,
+    string LevelUnit,
+    string RateUnit,
+    string DeadlineNoun,
+    string OnTimeMetricLabel,
+    string PriorityLabelPlural,
+    string CapacityPoolLabel,
+    string BufferLabel,
+    string ShortfallLabel);
+
+public sealed record ScenarioSummaryDto(
+    string Key,
+    string Title,
+    string DomainLabel,
+    string Narrative,
+    string SuggestedChallenge,
+    int UnitCount,
+    int ResourceCount);
+
 public sealed record IncidentDto(
     string Id,
     string Title,
@@ -58,7 +83,8 @@ public sealed record IncidentDto(
     IReadOnlyList<VehicleDto> Fleet,
     IReadOnlyList<ChargePointDto> ChargePoints,
     IReadOnlyList<TariffWindowDto> Tariff,
-    ConstraintsDto Constraints);
+    ConstraintsDto Constraints,
+    VocabularyDto Vocabulary);
 
 public sealed record MobileBufferDto(
     int Outlets,
@@ -230,6 +256,8 @@ public sealed record DemoIncidentResponse(
     string SuggestedChallenge,
     IReadOnlyList<string> ExampleChallenges,
     IReadOnlyList<ProbeExampleDto> ExampleProbes,
+    IReadOnlyList<ScenarioSummaryDto> Scenarios,
+    string ScenarioKey,
     long DefaultSeed,
     int DefaultTrialCount);
 

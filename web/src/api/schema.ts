@@ -37,6 +37,33 @@ export const tariffWindowSchema = z.object({
   pricePerKwhGbp: z.number(),
 })
 
+export const vocabularySchema = z.object({
+  domainKey: z.string(),
+  domainLabel: z.string(),
+  unitSingular: z.string(),
+  unitPlural: z.string(),
+  resourceSingular: z.string(),
+  resourcePlural: z.string(),
+  levelUnit: z.string(),
+  rateUnit: z.string(),
+  deadlineNoun: z.string(),
+  onTimeMetricLabel: z.string(),
+  priorityLabelPlural: z.string(),
+  capacityPoolLabel: z.string(),
+  bufferLabel: z.string(),
+  shortfallLabel: z.string(),
+})
+
+export const scenarioSummarySchema = z.object({
+  key: z.string(),
+  title: z.string(),
+  domainLabel: z.string(),
+  narrative: z.string(),
+  suggestedChallenge: z.string(),
+  unitCount: z.number(),
+  resourceCount: z.number(),
+})
+
 export const incidentSchema = z.object({
   id: z.string(),
   title: z.string(),
@@ -61,6 +88,7 @@ export const incidentSchema = z.object({
     plugSwapBaseMinutes: z.number(),
     faultRecoveryProbability: z.number(),
   }),
+  vocabulary: vocabularySchema,
 })
 
 export const planSchema = z.object({
@@ -249,6 +277,8 @@ export const demoIncidentSchema = z.object({
   suggestedChallenge: z.string(),
   exampleChallenges: z.array(z.string()),
   exampleProbes: z.array(probeExampleSchema),
+  scenarios: z.array(scenarioSummarySchema),
+  scenarioKey: z.string(),
   defaultSeed: z.number(),
   defaultTrialCount: z.number(),
 })
@@ -272,5 +302,7 @@ export type Decision = z.infer<typeof decisionSchema>
 export type DemoIncident = z.infer<typeof demoIncidentSchema>
 export type Health = z.infer<typeof healthSchema>
 export type ProbeExample = z.infer<typeof probeExampleSchema>
+export type Vocabulary = z.infer<typeof vocabularySchema>
+export type ScenarioSummary = z.infer<typeof scenarioSummarySchema>
 export type NumberFinding = z.infer<typeof numberFindingSchema>
 export type VerificationProbe = z.infer<typeof verificationProbeSchema>

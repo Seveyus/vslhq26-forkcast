@@ -12,6 +12,10 @@ public abstract record SimulationRequest
     /// <summary>Number of Monte Carlo trials. Omit to use 500.</summary>
     [Description("Number of Monte Carlo trials between 1 and 2000. Omit to use 500.")]
     public int? TrialCount { get; init; }
+
+    /// <summary>Which shipped scenario to run: "fleet" or "compute". Omit for "fleet".</summary>
+    [Description("Scenario key: \"fleet\" or \"compute\". Omit to use the fleet scenario.")]
+    public string? Scenario { get; init; }
 }
 
 public sealed record ParseIncidentRequest
@@ -19,6 +23,10 @@ public sealed record ParseIncidentRequest
     /// <summary>The incident described in the operator's own words.</summary>
     [Description("The incident described in plain language.")]
     public string Narrative { get; init; } = string.Empty;
+
+    /// <summary>Which site template to read it against: "fleet" or "compute".</summary>
+    [Description("Scenario key whose site template fills anything the text does not state.")]
+    public string? Scenario { get; init; }
 }
 
 public sealed record RunSimulationRequest : SimulationRequest

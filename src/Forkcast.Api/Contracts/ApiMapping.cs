@@ -1,6 +1,7 @@
 using Forkcast.Api.Services;
 using Forkcast.Core.Ai;
 using Forkcast.Core.Challenges;
+using Forkcast.Core.Demo;
 using Forkcast.Core.Comparison;
 using Forkcast.Core.Decisions;
 using Forkcast.Core.Incidents;
@@ -42,7 +43,8 @@ internal static class ApiMapping
             incident.Constraints.AcArrayCapacityKw,
             incident.Constraints.PreDepartureReadyMinutes,
             incident.Constraints.PlugSwapBaseMinutes,
-            incident.Constraints.FaultRecoveryProbability));
+            incident.Constraints.FaultRecoveryProbability),
+        incident.Vocabulary.ToDto());
 
     private static VehicleDto ToDto(Vehicle vehicle) => new(
         vehicle.Id,
@@ -65,6 +67,31 @@ internal static class ApiMapping
 
     private static TariffWindowDto ToDto(TariffWindow window) => new(
         window.Label, window.From, window.To, window.PricePerKwhGbp);
+
+    public static VocabularyDto ToDto(this IncidentVocabulary words) => new(
+        words.DomainKey,
+        words.DomainLabel,
+        words.UnitSingular,
+        words.UnitPlural,
+        words.ResourceSingular,
+        words.ResourcePlural,
+        words.LevelUnit,
+        words.RateUnit,
+        words.DeadlineNoun,
+        words.OnTimeMetricLabel,
+        words.PriorityLabelPlural,
+        words.CapacityPoolLabel,
+        words.BufferLabel,
+        words.ShortfallLabel);
+
+    public static ScenarioSummaryDto ToSummaryDto(this Scenario scenario) => new(
+        scenario.Key,
+        scenario.Title,
+        scenario.DomainLabel,
+        scenario.Narrative,
+        scenario.SuggestedChallenge,
+        scenario.Incident.VehicleCount,
+        scenario.Incident.OperationalChargePointCount);
 
     public static PlanDto ToDto(this ResponsePlan plan) => new(
         plan.Id,

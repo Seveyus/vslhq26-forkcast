@@ -444,36 +444,41 @@ public sealed class SimulationEngine
         double expectedNeverPlugged,
         double unmetEnergyKwh)
     {
+        var words = incident.Vocabulary;
+
         if (expectedNeverPlugged >= 1.0)
         {
-            return $"Connector availability — {expectedNeverPlugged:0.#} vehicles never reach a "
-                   + $"free connector before departure ({incident.OperationalChargePointCount} of "
-                   + $"{incident.ChargePoints.Count} charge points operational)";
+            return $"{Capitalise(words.ConnectorNoun)} availability — {expectedNeverPlugged:0.#} "
+                   + $"{words.UnitPlural} never reach a free {words.ConnectorNoun} before their "
+                   + $"{words.DeadlineNoun} ({incident.OperationalChargePointCount} of "
+                   + $"{incident.ChargePoints.Count} {words.ResourcePlural} operational)";
         }
 
         if (plan.MobileBuffer is { } buffer && bufferExhaustedShare >= 0.5 && unmetEnergyKwh > 1.0)
         {
-            return $"Mobile buffer energy budget — {buffer.StoredEnergyKwh:0} kWh is fully drawn in "
-                   + $"{bufferExhaustedShare * 100:0} percent of runs";
+            return $"{Capitalise(words.BufferLabel)} budget — {buffer.StoredEnergyKwh:0} "
+                   + $"{words.LevelUnit} is fully drawn in {bufferExhaustedShare * 100:0} percent of runs";
         }
 
         if (acLimitBindingShare >= 0.5 && unmetEnergyKwh > 1.0)
         {
-            var acRating = incident.ChargePoints
+            var poolRating = incident.ChargePoints
                 .Where(c => c is { Kind: ChargePointKind.DepotAc, IsOperational: true })
                 .Sum(c => c.RatedPowerKw);
-            return $"AC array capacity — {acRating:0} kW of connectors sharing "
-                   + $"{incident.Constraints.AcArrayCapacityKw:0} kW of available site capacity";
+            return $"{Capitalise(words.CapacityPoolLabel)} — {poolRating:0} {words.RateUnit} of "
+                   + $"{words.ResourcePlural} sharing {incident.Constraints.AcArrayCapacityKw:0} "
+                   + $"{words.RateUnit} of available capacity";
         }
 
         if (utilisationPct >= 85.0)
         {
-            return $"Charge point hours — connectors are occupied {utilisationPct:0} percent of the "
-                   + "charging window";
+            return $"{Capitalise(words.ResourceSingular)} hours — {words.ResourcePlural} are "
+                   + $"occupied {utilisationPct:0} percent of the window";
         }
 
-        return $"Departure window — {incident.PriorityVehicleCount} priority routes leave before the "
-               + $"{incident.DepartureDeadline:HH\\:mm} deadline";
+        return $"{Capitalise(words.DeadlineNoun)} window — {incident.PriorityVehicleCount} "
+               + $"{words.PriorityLabelPlural} reach their deadline before "
+               + $"{incident.DepartureDeadline:HH\\:mm}";
     }
 
     private static IReadOnlyList<LoadSample> BuildLoadCurve(
@@ -547,6 +552,9 @@ public sealed class SimulationEngine
     }
 
     private static double Round(double value, int digits) => Math.Round(value, digits, MidpointRounding.AwayFromZero);
+
+    private static string Capitalise(string text) =>
+        text.Length == 0 ? text : char.ToUpperInvariant(text[0]) + text[1..];
 
     private sealed class Resource
     {

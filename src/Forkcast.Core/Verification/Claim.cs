@@ -18,7 +18,7 @@ public sealed record Claim
 
     public required double Value { get; init; }
 
-    /// <summary>One of "%", "vehicles", "percentage points", "GBP", "kWh".</summary>
+    /// <summary>"%", "count", "percentage points", "GBP", or the domain level unit.</summary>
     public required string Unit { get; init; }
 
     /// <summary>Dotted path of the simulation output field this value was read from.</summary>
@@ -42,9 +42,9 @@ public sealed record Claim
         "percentage points" => (Value >= 0 ? "+" : "")
                                + Value.ToString("0.#", CultureInfo.InvariantCulture) + " pp",
         "GBP" => "£" + Value.ToString("0", CultureInfo.InvariantCulture),
-        "kWh" => Value.ToString("0.#", CultureInfo.InvariantCulture) + " kWh",
-        "vehicles" => Value.ToString("0", CultureInfo.InvariantCulture),
-        _ => Value.ToString("0.##", CultureInfo.InvariantCulture)
+        "count" => Value.ToString("0", CultureInfo.InvariantCulture),
+        // Anything else is a domain level unit — kWh, GPU-hours — carried through verbatim.
+        _ => Value.ToString("0.#", CultureInfo.InvariantCulture) + " " + Unit
     };
 
     /// <summary>

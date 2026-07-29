@@ -16,6 +16,12 @@ public sealed record Incident
 
     public required string Site { get; init; }
 
+    /// <summary>
+    /// The domain's own nouns. Every user-visible string derived from this incident is composed
+    /// from these, so the engine never hard-codes the vocabulary of one industry.
+    /// </summary>
+    public required IncidentVocabulary Vocabulary { get; init; }
+
     public required DateTimeOffset DetectedAt { get; init; }
 
     public required DateTimeOffset DepartureDeadline { get; init; }

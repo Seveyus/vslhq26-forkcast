@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Text;
 using Forkcast.Core.Comparison;
+using Forkcast.Core.Incidents;
 using Forkcast.Core.Plans;
 using Forkcast.Core.Verification;
 
@@ -15,11 +16,13 @@ public sealed class RecommendationService
     public Recommendation Build(
         PlanComparison comparison,
         IReadOnlyList<ResponsePlan> plans,
-        IReadOnlyList<Claim> claims)
+        IReadOnlyList<Claim> claims,
+        IncidentVocabulary words)
     {
         ArgumentNullException.ThrowIfNull(comparison);
         ArgumentNullException.ThrowIfNull(plans);
         ArgumentNullException.ThrowIfNull(claims);
+        ArgumentNullException.ThrowIfNull(words);
 
         var recommended = comparison.Recommended;
         var plan = plans.FirstOrDefault(p => p.Id == comparison.RecommendedPlanId)
@@ -36,7 +39,7 @@ public sealed class RecommendationService
         {
             rationale.Add(new RationalePoint
             {
-                Text = $"Expected on-time departures rise from {baseOnTime.DisplayValue} to "
+                Text = $"Expected {words.OnTimeMetricLabel} rise from {baseOnTime.DisplayValue} to "
                        + $"{altOnTime.DisplayValue}, a gain of {improvement.DisplayValue}.",
                 ClaimIds = ["baseline-on-time", "alternative-on-time", "on-time-improvement"]
             });
@@ -47,7 +50,7 @@ public sealed class RecommendationService
         {
             rationale.Add(new RationalePoint
             {
-                Text = $"Vehicles at risk fall from {baseRisk.DisplayValue} to {altRisk.DisplayValue}.",
+                Text = $"{Capitalise(words.UnitPlural)} at risk fall from {baseRisk.DisplayValue} to {altRisk.DisplayValue}.",
                 ClaimIds = ["baseline-at-risk", "alternative-at-risk"]
             });
         }
@@ -57,8 +60,8 @@ public sealed class RecommendationService
         {
             rationale.Add(new RationalePoint
             {
-                Text = $"Energy still missing at departure falls from {baseUnmet.DisplayValue} to "
-                       + $"{altUnmet.DisplayValue} across the fleet.",
+                Text = $"{Capitalise(words.ShortfallLabel)} at {words.DeadlineNoun} falls from "
+                       + $"{baseUnmet.DisplayValue} to {altUnmet.DisplayValue}.",
                 ClaimIds = ["baseline-unmet-energy", "alternative-unmet-energy"]
             });
         }
@@ -82,7 +85,7 @@ public sealed class RecommendationService
             DecisionRule = comparison.DecisionRule,
             ResidualRisk = recommended.RiskLevel,
             CriticalConstraint = recommended.CriticalConstraint,
-            DeterministicSummary = BuildDeterministicSummary(comparison, plan, byId)
+            DeterministicSummary = BuildDeterministicSummary(comparison, plan, byId, words)
         };
     }
 
@@ -93,7 +96,8 @@ public sealed class RecommendationService
     private static string BuildDeterministicSummary(
         PlanComparison comparison,
         ResponsePlan plan,
-        IReadOnlyDictionary<string, Claim> byId)
+        IReadOnlyDictionary<string, Claim> byId,
+        IncidentVocabulary words)
     {
         var seed = comparison.Alternative.Seed.ToString(CultureInfo.InvariantCulture);
         var trials = comparison.Alternative.TrialCount.ToString(CultureInfo.InvariantCulture);
@@ -107,7 +111,7 @@ public sealed class RecommendationService
             && byId.TryGetValue("baseline-on-time", out var baseOnTime)
             && byId.TryGetValue("on-time-improvement", out var improvement))
         {
-            text.Append(altOnTime.DisplayValue).Append(" on-time departures against ")
+            text.Append(altOnTime.DisplayValue).Append(' ').Append(words.OnTimeMetricLabel).Append(" against ")
                 .Append(baseOnTime.DisplayValue).Append(" for the baseline, a gain of ")
                 .Append(improvement.DisplayValue).Append(". ");
         }
@@ -115,14 +119,15 @@ public sealed class RecommendationService
         if (byId.TryGetValue("baseline-at-risk", out var baseRisk)
             && byId.TryGetValue("alternative-at-risk", out var altRisk))
         {
-            text.Append("Vehicles at risk fall from ").Append(baseRisk.DisplayValue)
+            text.Append(Capitalise(words.UnitPlural)).Append(" at risk fall from ").Append(baseRisk.DisplayValue)
                 .Append(" to ").Append(altRisk.DisplayValue).Append(". ");
         }
 
         if (byId.TryGetValue("baseline-unmet-energy", out var baseUnmet)
             && byId.TryGetValue("alternative-unmet-energy", out var altUnmet))
         {
-            text.Append("Unmet energy at departure falls from ").Append(baseUnmet.DisplayValue)
+            text.Append(Capitalise(words.ShortfallLabel)).Append(" at ").Append(words.DeadlineNoun)
+                .Append(" falls from ").Append(baseUnmet.DisplayValue)
                 .Append(" to ").Append(altUnmet.DisplayValue).Append(". ");
         }
 
@@ -137,4 +142,7 @@ public sealed class RecommendationService
 
         return text.ToString();
     }
+
+    private static string Capitalise(string text) =>
+        text.Length == 0 ? text : char.ToUpperInvariant(text[0]) + text[1..];
 }

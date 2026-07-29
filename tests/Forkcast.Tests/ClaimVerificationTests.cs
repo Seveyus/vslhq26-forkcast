@@ -22,7 +22,7 @@ public class ClaimVerificationTests
     [Fact]
     public void The_demo_produces_eight_verified_claims()
     {
-        var claims = _claimSets.Build(BuildComparison());
+        var claims = _claimSets.Build(BuildComparison(), DemoScenario.Vocabulary);
 
         Assert.Equal(8, claims.Count);
         Assert.All(claims, c => Assert.True(c.Verified, $"Claim {c.Id} did not verify."));
@@ -36,7 +36,7 @@ public class ClaimVerificationTests
     public void Every_claim_still_resolves_to_the_simulation_field_it_names()
     {
         var comparison = BuildComparison();
-        var claims = _claimSets.Build(comparison);
+        var claims = _claimSets.Build(comparison, DemoScenario.Vocabulary);
 
         foreach (var claim in claims)
         {
@@ -51,7 +51,7 @@ public class ClaimVerificationTests
     public void A_tampered_claim_no_longer_matches_its_source()
     {
         var comparison = BuildComparison();
-        var claim = _claimSets.Build(comparison).Single(c => c.Id == "alternative-on-time");
+        var claim = _claimSets.Build(comparison, DemoScenario.Vocabulary).Single(c => c.Id == "alternative-on-time");
 
         var tampered = claim with { Value = claim.Value + 5.0 };
         var resolved = ClaimSetBuilder.Resolve(tampered.SourceField, comparison);
@@ -72,7 +72,7 @@ public class ClaimVerificationTests
     [Fact]
     public void A_narrative_built_from_claim_values_is_accepted()
     {
-        var claims = _claimSets.Build(BuildComparison());
+        var claims = _claimSets.Build(BuildComparison(), DemoScenario.Vocabulary);
         var onTime = claims.Single(c => c.Id == "alternative-on-time");
         var atRisk = claims.Single(c => c.Id == "alternative-at-risk");
 
@@ -90,7 +90,7 @@ public class ClaimVerificationTests
     [Fact]
     public void An_invented_number_is_rejected_and_the_narrative_is_replaced()
     {
-        var claims = _claimSets.Build(BuildComparison());
+        var claims = _claimSets.Build(BuildComparison(), DemoScenario.Vocabulary);
         var narrative = "Acting avoids £12,400 of penalties and recovers 3.5 hours of depot time.";
 
         var result = _verifier.Verify(
@@ -108,7 +108,7 @@ public class ClaimVerificationTests
     [Fact]
     public void One_invented_number_discards_the_whole_narrative()
     {
-        var claims = _claimSets.Build(BuildComparison());
+        var claims = _claimSets.Build(BuildComparison(), DemoScenario.Vocabulary);
         var onTime = claims.Single(c => c.Id == "alternative-on-time");
 
         var narrative = $"On-time departures reach {onTime.DisplayValue}, saving £4,900.";
@@ -122,7 +122,7 @@ public class ClaimVerificationTests
     [Fact]
     public void Rounded_forms_of_a_claim_are_accepted()
     {
-        var claims = _claimSets.Build(BuildComparison());
+        var claims = _claimSets.Build(BuildComparison(), DemoScenario.Vocabulary);
         var onTime = claims.Single(c => c.Id == "alternative-on-time");
         var rounded = Math.Round(onTime.Value, 0, MidpointRounding.AwayFromZero);
 
@@ -135,7 +135,7 @@ public class ClaimVerificationTests
     [Fact]
     public void Clock_times_and_vehicle_identifiers_are_not_treated_as_quantities()
     {
-        var claims = _claimSets.Build(BuildComparison());
+        var claims = _claimSets.Build(BuildComparison(), DemoScenario.Vocabulary);
 
         var findings = _verifier.FindUnsupportedNumbers(
             "At 18:40 the fault was raised; EV-04 and CP-09 were affected before the 06:00 deadline.",
@@ -148,7 +148,7 @@ public class ClaimVerificationTests
     [Fact]
     public void Facts_taken_from_the_incident_are_allowed()
     {
-        var claims = _claimSets.Build(BuildComparison());
+        var claims = _claimSets.Build(BuildComparison(), DemoScenario.Vocabulary);
 
         var findings = _verifier.FindUnsupportedNumbers(
             "All 20 vehicles share 8 working charge points; 6 are on priority routes. "
@@ -162,7 +162,7 @@ public class ClaimVerificationTests
     [Fact]
     public void An_empty_narrative_falls_back_without_reporting_invented_numbers()
     {
-        var claims = _claimSets.Build(BuildComparison());
+        var claims = _claimSets.Build(BuildComparison(), DemoScenario.Vocabulary);
 
         var result = _verifier.Verify(null, "azure-openai", "fallback", claims, Context());
 
@@ -176,7 +176,7 @@ public class ClaimVerificationTests
     [Fact]
     public void An_empty_allow_list_still_catches_invented_numbers()
     {
-        var claims = _claimSets.Build(BuildComparison());
+        var claims = _claimSets.Build(BuildComparison(), DemoScenario.Vocabulary);
 
         var findings = _verifier.FindUnsupportedNumbers(
             "There are 20 vehicles.", claims, VerificationContext.Empty);
@@ -188,7 +188,7 @@ public class ClaimVerificationTests
     [Fact]
     public void Claims_render_with_their_unit()
     {
-        var claims = _claimSets.Build(BuildComparison());
+        var claims = _claimSets.Build(BuildComparison(), DemoScenario.Vocabulary);
 
         Assert.EndsWith("%", claims.Single(c => c.Id == "alternative-on-time").DisplayValue, StringComparison.Ordinal);
         Assert.StartsWith("£", claims.Single(c => c.Id == "additional-cost").DisplayValue, StringComparison.Ordinal);
@@ -199,7 +199,7 @@ public class ClaimVerificationTests
     [Fact]
     public void Every_claim_explains_how_it_was_calculated()
     {
-        var claims = _claimSets.Build(BuildComparison());
+        var claims = _claimSets.Build(BuildComparison(), DemoScenario.Vocabulary);
 
         Assert.All(claims, c => Assert.False(string.IsNullOrWhiteSpace(c.Label)));
         Assert.All(claims, c => Assert.False(string.IsNullOrWhiteSpace(c.CalculationMethod)));
@@ -209,7 +209,7 @@ public class ClaimVerificationTests
     [Fact]
     public void A_missing_fallback_is_a_programming_error()
     {
-        var claims = _claimSets.Build(BuildComparison());
+        var claims = _claimSets.Build(BuildComparison(), DemoScenario.Vocabulary);
 
         Assert.Throws<ArgumentException>(
             () => _verifier.Verify("text", "azure-openai", "   ", claims, Context()));

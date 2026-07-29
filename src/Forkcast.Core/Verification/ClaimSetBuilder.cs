@@ -1,4 +1,5 @@
 using Forkcast.Core.Comparison;
+using Forkcast.Core.Incidents;
 using Forkcast.Core.Simulation;
 
 namespace Forkcast.Core.Verification;
@@ -65,9 +66,10 @@ public sealed class ClaimSetBuilder
         };
     }
 
-    public IReadOnlyList<Claim> Build(PlanComparison comparison)
+    public IReadOnlyList<Claim> Build(PlanComparison comparison, IncidentVocabulary words)
     {
         ArgumentNullException.ThrowIfNull(comparison);
+        ArgumentNullException.ThrowIfNull(words);
 
         var baseline = comparison.Baseline;
         var alternative = comparison.Alternative;
@@ -77,57 +79,57 @@ public sealed class ClaimSetBuilder
         var drafts = new (string Id, string Label, string Unit, string Source, string Method)[]
         {
             ("baseline-on-time",
-                $"{baseline.PlanName}: on-time departures",
+                $"{baseline.PlanName}: {words.OnTimeMetricLabel}",
                 "%",
                 "baseline.onTimeDeparturePct",
-                "Mean share of vehicles reaching their route state of charge before their "
+                $"Mean share of {words.UnitPlural} reaching their required level before their "
                 + "ready-by time, averaged over every trial"),
 
             ("alternative-on-time",
-                $"{alternative.PlanName}: on-time departures",
+                $"{alternative.PlanName}: {words.OnTimeMetricLabel}",
                 "%",
                 "alternative.onTimeDeparturePct",
-                "Mean share of vehicles reaching their route state of charge before their "
+                $"Mean share of {words.UnitPlural} reaching their required level before their "
                 + "ready-by time, averaged over every trial"),
 
             ("on-time-improvement",
-                "Improvement in on-time departures",
+                $"Improvement in {words.OnTimeMetricLabel}",
                 "percentage points",
                 "comparison.onTimeImprovementPp",
                 "Alternative on-time percentage minus baseline on-time percentage"),
 
             ("baseline-at-risk",
-                $"{baseline.PlanName}: vehicles at risk",
-                "vehicles",
+                $"{baseline.PlanName}: {words.UnitPlural} at risk",
+                "count",
                 "baseline.vehiclesAtRisk",
-                "Count of vehicles whose on-time probability across all trials falls below 90 percent"),
+                $"Count of {words.UnitPlural} whose on-time probability across all trials falls below 90 percent"),
 
             ("alternative-at-risk",
-                $"{alternative.PlanName}: vehicles at risk",
-                "vehicles",
+                $"{alternative.PlanName}: {words.UnitPlural} at risk",
+                "count",
                 "alternative.vehiclesAtRisk",
-                "Count of vehicles whose on-time probability across all trials falls below 90 percent"),
+                $"Count of {words.UnitPlural} whose on-time probability across all trials falls below 90 percent"),
 
             ("additional-cost",
                 "Net additional operational cost of acting",
                 "GBP",
                 "comparison.additionalCostGbp",
                 "Alternative total operational cost minus baseline total operational cost, where "
-                + "total cost is metered energy priced against the time-of-use tariff plus any "
-                + "call-out and buffer energy charges. Net, so it is lower than the intervention "
-                + "cost alone by the metered energy the towed battery displaces"),
+                + "total cost is metered throughput priced against the time-of-use tariff plus any "
+                + $"call-out and {words.BufferLabel} charges. Net, so it is lower than the "
+                + $"intervention cost alone by the metered cost the {words.BufferLabel} displaces"),
 
             ("baseline-unmet-energy",
-                $"{baseline.PlanName}: unmet energy at departure",
-                "kWh",
+                $"{baseline.PlanName}: {words.ShortfallLabel} at {words.DeadlineNoun}",
+                words.LevelUnit,
                 "baseline.expectedUnmetEnergyKwh",
-                "Mean total energy still missing across the fleet at ready-by time"),
+                $"Mean total {words.ShortfallLabel} across all {words.UnitPlural} at ready-by time"),
 
             ("alternative-unmet-energy",
-                $"{alternative.PlanName}: unmet energy at departure",
-                "kWh",
+                $"{alternative.PlanName}: {words.ShortfallLabel} at {words.DeadlineNoun}",
+                words.LevelUnit,
                 "alternative.expectedUnmetEnergyKwh",
-                "Mean total energy still missing across the fleet at ready-by time")
+                $"Mean total {words.ShortfallLabel} across all {words.UnitPlural} at ready-by time")
         };
 
         var claims = new List<Claim>(drafts.Length);

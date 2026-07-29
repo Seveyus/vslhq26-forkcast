@@ -78,24 +78,28 @@ export const api = {
 
   health: () => request('/api/health', healthSchema),
 
-  demoIncident: (): Promise<DemoIncident> => request('/api/demo/incident', demoIncidentSchema),
+  demoIncident: (scenario?: string): Promise<DemoIncident> =>
+    request(
+      `/api/demo/incident${scenario ? `?scenario=${encodeURIComponent(scenario)}` : ''}`,
+      demoIncidentSchema,
+    ),
 
-  run: (narrative?: string): Promise<Decision> =>
+  run: (narrative?: string, scenario?: string): Promise<Decision> =>
     request('/api/simulations/run', decisionSchema, {
       method: 'POST',
-      body: JSON.stringify({ narrative }),
+      body: JSON.stringify({ narrative, scenario }),
     }),
 
-  challenge: (question: string, narrative?: string): Promise<Decision> =>
+  challenge: (question: string, narrative?: string, scenario?: string): Promise<Decision> =>
     request('/api/simulations/challenge', decisionSchema, {
       method: 'POST',
-      body: JSON.stringify({ question, narrative }),
+      body: JSON.stringify({ question, narrative, scenario }),
     }),
 
-  probe: (submitted: string, narrative?: string): Promise<VerificationProbe> =>
+  probe: (submitted: string, narrative?: string, scenario?: string): Promise<VerificationProbe> =>
     request('/api/verification/probe', verificationProbeSchema, {
       method: 'POST',
-      body: JSON.stringify({ submitted, narrative }),
+      body: JSON.stringify({ submitted, narrative, scenario }),
     }),
 }
 

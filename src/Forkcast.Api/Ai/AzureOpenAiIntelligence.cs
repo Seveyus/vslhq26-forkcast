@@ -220,31 +220,10 @@ public sealed class AzureOpenAiIntelligence(
         {
             Kind = kind,
             Value = Math.Clamp(response.Value, 0, 1440),
-            Label = Describe(kind, response.Value),
+            Label = AssumptionLabeller.Describe(kind, response.Value),
             Question = question
         };
     }
-
-    private static string Describe(AssumptionKind kind, double value) => kind switch
-    {
-        AssumptionKind.BufferArrivalDelayMinutes =>
-            $"The temporary battery buffer arrives {Duration(value)} late",
-        AssumptionKind.BufferUnavailable => "The temporary battery buffer cannot be sourced",
-        AssumptionKind.AdditionalChargePointOutage =>
-            $"A further {value:0} charge point{(Math.Abs(value - 1) < 0.5 ? "" : "s")} goes offline",
-        AssumptionKind.DeadlineEarlierMinutes =>
-            $"Every departure is brought forward by {Duration(value)}",
-        AssumptionKind.FastChargerRepaired => "The fast charger is repaired during the night",
-        _ => "No supported assumption was recognised in this question"
-    };
-
-    private static string Duration(double minutes) => minutes switch
-    {
-        60 => "one hour",
-        120 => "two hours",
-        < 60 => string.Create(CultureInfo.InvariantCulture, $"{minutes:0} minutes"),
-        _ => string.Create(CultureInfo.InvariantCulture, $"{minutes / 60.0:0.#} hours")
-    };
 
     /// <summary>
     /// One chat completion in JSON mode at temperature zero. Returns null on any failure, which

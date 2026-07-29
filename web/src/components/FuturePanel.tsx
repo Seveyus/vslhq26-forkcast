@@ -1,5 +1,5 @@
 import type { Incident, Outcome, Plan } from '../api/schema'
-import { energy, money, percent, riskTone } from '../lib/format'
+import { money, percent, riskTone } from '../lib/format'
 import { useAnimatedNumber } from '../lib/useAnimatedNumber'
 import { Timeline } from './Timeline'
 
@@ -16,6 +16,7 @@ export function FuturePanel({ label, plan, outcome, incident, recommended, peakK
   const onTime = useAnimatedNumber(outcome.onTimeDeparturePct)
   const atRisk = useAnimatedNumber(outcome.vehiclesAtRisk)
   const tone = riskTone(outcome.riskLevel)
+  const words = incident.vocabulary
 
   const spread = Math.max(1, outcome.onTimeDeparturePctP95 - outcome.onTimeDeparturePctP5)
 
@@ -35,7 +36,7 @@ export function FuturePanel({ label, plan, outcome, incident, recommended, peakK
       <div className="future__headline">
         <div className="future__figure">
           <strong>{percent(onTime)}</strong>
-          <span>on-time departures</span>
+          <span>{words.onTimeMetricLabel}</span>
         </div>
         <div className={`pill pill--${tone}`}>{outcome.riskLevel} risk</div>
       </div>
@@ -65,7 +66,7 @@ export function FuturePanel({ label, plan, outcome, incident, recommended, peakK
 
       <dl className="metrics">
         <div className="metric">
-          <dt>Vehicles at risk</dt>
+          <dt>{words.unitPlural} at risk</dt>
           <dd className={outcome.vehiclesAtRisk > 2 ? 'is-bad' : 'is-good'}>
             {Math.round(atRisk)}
             <small> of {incident.vehicleCount}</small>
@@ -75,15 +76,20 @@ export function FuturePanel({ label, plan, outcome, incident, recommended, peakK
           <dt>Intervention cost</dt>
           <dd>
             {money(outcome.additionalCostGbp)}
-            <small className="metric__note">hire and buffer energy</small>
+            <small className="metric__note">call-out and {words.bufferLabel}</small>
           </dd>
         </div>
         <div className="metric">
-          <dt>Unmet energy</dt>
-          <dd>{energy(outcome.expectedUnmetEnergyKwh)}</dd>
+          <dt>{words.shortfallLabel}</dt>
+          <dd>
+            {outcome.expectedUnmetEnergyKwh.toFixed(
+              outcome.expectedUnmetEnergyKwh >= 100 ? 0 : 1,
+            )}{' '}
+            <small>{words.levelUnit}</small>
+          </dd>
         </div>
         <div className="metric">
-          <dt>Priority routes</dt>
+          <dt>{words.priorityLabelPlural}</dt>
           <dd className={outcome.priorityOnTimeDeparturePct >= 99 ? 'is-good' : 'is-bad'}>
             {percent(outcome.priorityOnTimeDeparturePct, 0)}
           </dd>

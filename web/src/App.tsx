@@ -14,6 +14,7 @@ import { VerifierProbePanel } from './components/VerifierProbePanel'
 const STEP_MS = 420
 
 export function App() {
+  const [scenarioKey, setScenarioKey] = useState<string | undefined>(undefined)
   const [demo, setDemo] = useState<DemoIncident | null>(null)
   const [narrative, setNarrative] = useState('')
   const [decision, setDecision] = useState<Decision | null>(null)
@@ -40,11 +41,13 @@ export function App() {
     let cancelled = false
 
     api
-      .demoIncident()
+      .demoIncident(scenarioKey)
       .then((loaded) => {
         if (!cancelled) {
           setDemo(loaded)
           setNarrative(loaded.narrative)
+          setDecision(null)
+          setError(null)
         }
       })
       .catch((cause: unknown) => {
@@ -56,7 +59,7 @@ export function App() {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [scenarioKey])
 
   // The steps advance on their own clock while the request is in flight. The result appears when
   // both have finished, so the animation never holds a finished answer back for long and never
@@ -82,7 +85,7 @@ export function App() {
     const started = performance.now()
 
     try {
-      const result = await api.run(narrative)
+      const result = await api.run(narrative, scenarioKey)
       const remaining = steps.length * STEP_MS - (performance.now() - started)
       if (remaining > 0) {
         await new Promise((resolve) => window.setTimeout(resolve, remaining))
@@ -93,7 +96,7 @@ export function App() {
     } finally {
       setRunning(false)
     }
-  }, [narrative, steps.length])
+  }, [narrative, scenarioKey, steps.length])
 
   const challenge = useCallback(
     async (question: string) => {
@@ -101,14 +104,14 @@ export function App() {
       setError(null)
 
       try {
-        setDecision(await api.challenge(question, narrative))
+        setDecision(await api.challenge(question, narrative, scenarioKey))
       } catch (cause: unknown) {
         setError(toForkcastError(cause))
       } finally {
         setChallenging(false)
       }
     },
-    [narrative],
+    [narrative, scenarioKey],
   )
 
   const reset = useCallback(async () => {
@@ -116,13 +119,13 @@ export function App() {
     setError(null)
 
     try {
-      setDecision(await api.run(narrative))
+      setDecision(await api.run(narrative, scenarioKey))
     } catch (cause: unknown) {
       setError(toForkcastError(cause))
     } finally {
       setChallenging(false)
     }
-  }, [narrative])
+  }, [narrative, scenarioKey])
 
   const settled = decision != null && !running
   useEffect(() => {
@@ -184,6 +187,42 @@ export function App() {
 
         {!incident && !error && <p className="loading">Loading the incident…</p>}
 
+        {demo && demo.scenarios.length > 1 && (
+          <section className="domains" aria-label="Choose an incident">
+            <div className="domains__intro">
+              <p className="eyebrow">One engine, unrelated domains</p>
+              <h2>Switch the incident</h2>
+              <p className="panel__sub">
+                These two sites share no vocabulary, no units and no failure mode. Neither needed a
+                line of change in the simulation, the comparison, the claim layer or the
+                recommendation — the nouns are data.
+              </p>
+            </div>
+            <ul className="domains__list">
+              {demo.scenarios.map((option) => {
+                const active = option.key === demo.scenarioKey
+                return (
+                  <li key={option.key}>
+                    <button
+                      type="button"
+                      className={`domain${active ? ' is-active' : ''}`}
+                      aria-pressed={active}
+                      disabled={running || challenging}
+                      onClick={() => setScenarioKey(option.key)}
+                    >
+                      <span className="domain__label">{option.domainLabel}</span>
+                      <span className="domain__title">{option.title}</span>
+                      <span className="domain__meta">
+                        {option.unitCount} units · {option.resourceCount} resources
+                      </span>
+                    </button>
+                  </li>
+                )
+              })}
+            </ul>
+          </section>
+        )}
+
         {incident && (
           <IncidentCard
             incident={incident}
@@ -244,7 +283,11 @@ export function App() {
               <VerificationPanel decision={decision} />
 
               {demo && demo.exampleProbes.length > 0 && (
-                <VerifierProbePanel examples={demo.exampleProbes} narrative={narrative} />
+                <VerifierProbePanel
+                  examples={demo.exampleProbes}
+                  narrative={narrative}
+                  scenario={scenarioKey}
+                />
               )}
 
               {demo && (

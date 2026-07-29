@@ -1,5 +1,5 @@
 import type { Incident } from '../api/schema'
-import { clock, energy } from '../lib/format'
+import { clock } from '../lib/format'
 
 interface Props {
   incident: Incident
@@ -20,18 +20,25 @@ export function IncidentCard({
   onRestore,
   edited,
 }: Props) {
+  const words = incident.vocabulary
   const chips = [
-    { label: `${incident.vehicleCount} vehicles`, tone: 'plain' },
-    { label: `${incident.operationalChargePointCount} charge points`, tone: 'plain' },
-    { label: `Deadline ${clock(incident.departureDeadline)}`, tone: 'plain' },
+    { label: `${incident.vehicleCount} ${words.unitPlural}`, tone: 'plain' },
+    { label: `${incident.operationalChargePointCount} ${words.resourcePlural}`, tone: 'plain' },
+    {
+      label: `${words.deadlineNoun} ${clock(incident.departureDeadline)}`,
+      tone: 'plain',
+    },
     {
       label: `${incident.failedChargePointCount} critical failure${
         incident.failedChargePointCount === 1 ? '' : 's'
       }`,
       tone: 'bad',
     },
-    { label: `${incident.priorityVehicleCount} priority routes`, tone: 'plain' },
-    { label: `${energy(incident.totalRequiredEnergyKwh)} needed`, tone: 'plain' },
+    { label: `${incident.priorityVehicleCount} ${words.priorityLabelPlural}`, tone: 'plain' },
+    {
+      label: `${incident.totalRequiredEnergyKwh.toFixed(0)} ${words.levelUnit} needed`,
+      tone: 'plain',
+    },
   ] as const
 
   return (

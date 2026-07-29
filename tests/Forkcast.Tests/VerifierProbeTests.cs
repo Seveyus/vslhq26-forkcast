@@ -30,9 +30,11 @@ public class VerifierProbeTests : IClassFixture<WebApplicationFactory<Program>>
         _client = factory.CreateClient();
     }
 
-    private IReadOnlyList<Claim> DemoClaims() => _claimSets.Build(_comparisons.Compare(
-        _engine.Run(DemoScenario.Incident, DemoScenario.PlanA),
-        _engine.Run(DemoScenario.Incident, DemoScenario.PlanB)));
+    private IReadOnlyList<Claim> DemoClaims() => _claimSets.Build(
+        _comparisons.Compare(
+            _engine.Run(DemoScenario.Incident, DemoScenario.PlanA),
+            _engine.Run(DemoScenario.Incident, DemoScenario.PlanB)),
+        DemoScenario.Vocabulary);
 
     private static VerificationContext Context() =>
         VerificationContext.FromIncident(DemoScenario.Incident, SimulationOptions.Default);
@@ -64,7 +66,7 @@ public class VerifierProbeTests : IClassFixture<WebApplicationFactory<Program>>
         var fleet = findings.Single(f => f.Token == "20");
         Assert.True(fleet.Supported);
         Assert.Null(fleet.ClaimId);
-        Assert.Equal("vehicles in the fleet", fleet.Reason);
+        Assert.Equal("vehicles in scope", fleet.Reason);
 
         var invented = findings.Single(f => f.Token == "4,200");
         Assert.False(invented.Supported);

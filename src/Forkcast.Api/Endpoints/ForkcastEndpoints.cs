@@ -17,47 +17,58 @@ public static class ForkcastEndpoints
 
     private const int MaxTrialCount = 2000;
 
-    public const string SuggestedChallenge =
-        "What happens if the temporary battery arrives one hour late?";
-
-    private static readonly string[] ExampleChallenges =
-    [
-        SuggestedChallenge,
-        "What if the battery unit cannot be sourced at all?",
-        "What if another charge point goes down?",
-        "What if the fast charger is repaired overnight?",
-        "What if every route has to depart 45 minutes earlier?"
-    ];
+    /// <summary>Shown in validation messages as the shape of a usable question.</summary>
+    public static string SuggestedChallenge => ScenarioCatalog.Fleet.SuggestedChallenge;
 
     /// <summary>
     /// Paragraphs written to be submitted to the verifier, so the guarantee can be tested rather
-    /// than taken on trust. Each one reads plausibly; only the last is actually supportable.
+    /// than taken on trust.
     /// </summary>
-    private static readonly ProbeExampleDto[] ExampleProbes =
-    [
-        new(
-            "One invented figure",
-            "Reprioritising the yard queue and calling out the battery unit lifts on-time "
-            + "departures to 97.2%, and avoids roughly £4,200 of contractual penalty exposure "
-            + "across the six priority routes.",
-            "The 97.2% is a claim. The £4,200 is not — no simulation output produces it."),
-        new(
-            "Confident and entirely invented",
-            "This response recovers 14 hours of depot throughput, improves fleet utilisation by "
-            + "23%, and pays for itself within 5 weeks.",
-            "Three figures, none of them traceable to anything the engine computed."),
-        new(
-            "A plausible rounding",
-            "On-time departures reach 98% with zero vehicles left at risk.",
-            "Close to the truth is still not the truth: the run returns 97.2% and one vehicle at "
-            + "risk, so neither figure is supported."),
-        new(
-            "Honest, and it passes",
-            "Reprioritising the queue and activating the battery buffer raises expected on-time "
-            + "departures from 60.9% to 97.2%, a gain of 36.3 pp, and cuts vehicles at risk from "
-            + "9 to 1 across the 20 in the fleet.",
-            "Every figure here is a claim value or an incident fact, so it survives the check.")
-    ];
+    /// <remarks>
+    /// Composed from the scenario's own vocabulary, so the demonstration reads correctly in any
+    /// domain. The three attacks carry figures no simulation can produce, which is what makes them
+    /// attacks. The fourth uses only facts stated in the incident — counts the allow-list can
+    /// account for — so it passes by construction and cannot drift out of date.
+    /// </remarks>
+    private static IReadOnlyList<ProbeExampleDto> ProbesFor(string scenarioKey)
+    {
+        var scenario = ScenarioCatalog.Resolve(scenarioKey);
+        var words = scenario.Incident.Vocabulary;
+        var units = scenario.Incident.VehicleCount;
+        var resources = scenario.Incident.OperationalChargePointCount;
+        var priority = scenario.Incident.PriorityVehicleCount;
+
+        return
+        [
+            new(
+                "One invented figure",
+                $"Acting on this lifts {words.OnTimeMetricLabel} sharply, and avoids roughly "
+                + $"£4,200 of contractual penalty exposure across the {priority} "
+                + $"{words.PriorityLabelPlural}.",
+                $"The {priority} is an incident fact. The £4,200 is not \u2014 no simulation output "
+                + "produces it."),
+            new(
+                "Confident and entirely invented",
+                $"This response recovers 14 hours of {words.DomainLabel.ToLowerInvariant()} "
+                + "throughput, improves utilisation by 23%, and pays for itself within 5 weeks.",
+                "Three figures, none of them traceable to anything the engine computed."),
+            new(
+                "A plausible rounding",
+                $"{Capitalise(words.OnTimeMetricLabel)} reach 98% with zero {words.UnitPlural} "
+                + "left at risk.",
+                "Close to the truth is still not the truth. Neither figure is a claim value, so "
+                + "neither is supported."),
+            new(
+                "Honest, and it passes",
+                $"All {units} {words.UnitPlural} are competing for {resources} "
+                + $"{words.Resources(resources)}, and {priority} of them are "
+                + $"{words.PriorityLabelPlural}.",
+                "Every figure here is a fact stated in the incident, so it survives the check.")
+        ];
+    }
+
+    private static string Capitalise(string text) =>
+        text.Length == 0 ? text : char.ToUpperInvariant(text[0]) + text[1..];
 
     public static IEndpointRouteBuilder MapForkcast(this IEndpointRouteBuilder app)
     {
@@ -75,25 +86,38 @@ public static class ForkcastEndpoints
             .WithName("GetHealth")
             .WithSummary("Liveness, version and which intelligence provider is answering.");
 
-        api.MapGet("/demo/incident", () => TypedResults.Ok(
-                new DemoIncidentResponse(
-                    DemoScenario.Incident.ToDto(),
-                    DemoScenario.NarrativeText,
-                    DemoScenario.Plans.Select(p => p.ToDto()).ToList(),
-                    SuggestedChallenge,
-                    ExampleChallenges,
-                    ExampleProbes,
+        api.MapGet("/scenarios", () => TypedResults.Ok(
+                ScenarioCatalog.All.Select(s => s.ToSummaryDto()).ToList()))
+            .WithName("GetScenarios")
+            .WithSummary(
+                "The shipped incidents. Two unrelated domains run on the same engine; adding one "
+                + "is a matter of supplying data, not of editing the decision logic.");
+
+        api.MapGet("/demo/incident", (string? scenario) =>
+            {
+                var chosen = ScenarioCatalog.Resolve(scenario);
+                return TypedResults.Ok(new DemoIncidentResponse(
+                    chosen.Incident.ToDto(),
+                    chosen.Narrative,
+                    chosen.Plans.Select(p => p.ToDto()).ToList(),
+                    chosen.SuggestedChallenge,
+                    chosen.ExampleChallenges,
+                    ProbesFor(chosen.Key),
+                    ScenarioCatalog.All.Select(s => s.ToSummaryDto()).ToList(),
+                    chosen.Key,
                     SimulationOptions.DefaultSeed,
-                    SimulationOptions.DefaultTrialCount)))
+                    SimulationOptions.DefaultTrialCount));
+            })
             .WithName("GetDemoIncident")
-            .WithSummary("The preloaded demonstration incident and the two response plans.");
+            .WithSummary("A preloaded incident and its two response plans.");
 
         api.MapGet("/demo/result", async (
+                string? scenario,
                 ForkcastRunner runner,
                 CancellationToken cancellationToken) =>
             {
                 var (result, _) = await runner.RunAsync(
-                    null, SimulationOptions.Default, cancellationToken);
+                    null, SimulationOptions.Default, scenario, cancellationToken);
                 return TypedResults.Ok(result.ToResponse());
             })
             .WithName("GetDemoResult")
@@ -109,7 +133,8 @@ public static class ForkcastEndpoints
                     return problem;
                 }
 
-                var resolved = await runner.ResolveAsync(request.Narrative, cancellationToken);
+                var resolved = await runner.ResolveAsync(
+                    request.Narrative, request.Scenario, cancellationToken);
 
                 return TypedResults.Ok(new ParseIncidentResponse(
                     resolved.Incident.ToDto(),
@@ -136,7 +161,7 @@ public static class ForkcastEndpoints
                 }
 
                 var (result, resolved) = await runner.RunAsync(
-                    request.Narrative, options, cancellationToken);
+                    request.Narrative, options, request.Scenario, cancellationToken);
 
                 return TypedResults.Ok(result.ToResponse(BuildNotes(resolved)));
             })
@@ -164,7 +189,7 @@ public static class ForkcastEndpoints
                 }
 
                 var (result, resolved) = await runner.ChallengeAsync(
-                    request.Narrative, request.Question, options, cancellationToken);
+                    request.Narrative, request.Question, options, request.Scenario, cancellationToken);
 
                 return TypedResults.Ok(result.ToResponse(BuildNotes(resolved)));
             })
@@ -192,7 +217,7 @@ public static class ForkcastEndpoints
                 }
 
                 var probe = await runner.ProbeAsync(
-                    request.Narrative, request.Submitted, options, cancellationToken);
+                    request.Narrative, request.Submitted, options, request.Scenario, cancellationToken);
 
                 return TypedResults.Ok(probe.ToResponse());
             })

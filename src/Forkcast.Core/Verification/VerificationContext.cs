@@ -26,17 +26,18 @@ public sealed record VerificationContext
         ArgumentNullException.ThrowIfNull(incident);
         ArgumentNullException.ThrowIfNull(options);
 
+        var words = incident.Vocabulary;
         var allowed = new Dictionary<double, string>
         {
-            [incident.VehicleCount] = "vehicles in the fleet",
-            [incident.OperationalChargePointCount] = "operational charge points",
-            [incident.ChargePoints.Count] = "charge points on site",
-            [incident.FailedChargePointCount] = "failed charge points",
-            [incident.PriorityVehicleCount] = "priority-route vehicles",
+            [incident.VehicleCount] = $"{words.UnitPlural} in scope",
+            [incident.OperationalChargePointCount] = $"operational {words.ResourcePlural}",
+            [incident.ChargePoints.Count] = $"{words.ResourcePlural} on site",
+            [incident.FailedChargePointCount] = $"failed {words.ResourcePlural}",
+            [incident.PriorityVehicleCount] = words.PriorityLabelPlural,
             [options.Seed] = "simulation seed",
             [options.TrialCount] = "simulated trials",
             [options.AtRiskProbabilityThreshold * 100.0] = "at-risk probability threshold",
-            [incident.Constraints.AcArrayCapacityKw] = "AC array capacity in kW"
+            [incident.Constraints.AcArrayCapacityKw] = $"{words.CapacityPoolLabel} in {words.RateUnit}"
         };
 
         var acRating = incident.ChargePoints
@@ -44,7 +45,7 @@ public sealed record VerificationContext
             .Sum(c => c.RatedPowerKw);
         if (acRating > 0)
         {
-            allowed[acRating] = "combined AC connector rating in kW";
+            allowed[acRating] = $"combined {words.ResourceSingular} rating in {words.RateUnit}";
         }
 
         return new VerificationContext { AllowedValues = allowed };

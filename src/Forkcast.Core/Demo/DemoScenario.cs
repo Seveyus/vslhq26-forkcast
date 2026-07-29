@@ -27,6 +27,27 @@ public static class DemoScenario
         Six vehicles are assigned to priority routes that leave first.
         """;
 
+    /// <summary>The nouns this domain uses. The engine reads them; it never assumes them.</summary>
+    public static IncidentVocabulary Vocabulary { get; } = new()
+    {
+        DomainKey = "fleet",
+        DomainLabel = "Electric delivery depot",
+        UnitSingular = "vehicle",
+        UnitPlural = "vehicles",
+        ResourceSingular = "charge point",
+        ResourcePlural = "charge points",
+        ConnectorNoun = "connector",
+        LevelUnit = "kWh",
+        RateUnit = "kW",
+        DeadlineNoun = "departure",
+        OnTimeMetricLabel = "on-time departures",
+        PriorityLabelSingular = "priority route",
+        PriorityLabelPlural = "priority routes",
+        CapacityPoolLabel = "AC array capacity",
+        BufferLabel = "towed battery unit",
+        ShortfallLabel = "unmet energy"
+    };
+
     public static Incident Incident { get; } = BuildIncident();
 
     /// <summary>Do nothing differently: keep the overnight rota exactly as it was planned.</summary>
@@ -128,6 +149,7 @@ public static class DemoScenario
         Title = "Fast charger failure at Reading delivery depot",
         Narrative = NarrativeText,
         Site = "Reading delivery depot",
+        Vocabulary = Vocabulary,
         DetectedAt = At(0, 18, 40),
         DepartureDeadline = At(1, 6, 0),
         Fleet = BuildFleet(),

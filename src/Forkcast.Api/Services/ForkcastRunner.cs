@@ -42,11 +42,14 @@ public sealed class ForkcastRunner(
     /// </summary>
     public async Task<ResolvedIncident> ResolveAsync(
         string? narrative,
+        string? scenarioKey = null,
         CancellationToken cancellationToken = default)
     {
-        if (string.IsNullOrWhiteSpace(narrative))
+        var scenario = ScenarioCatalog.Resolve(scenarioKey);
+
+        if (string.IsNullOrWhiteSpace(narrative) || narrative.Trim() == scenario.Narrative.Trim())
         {
-            return new ResolvedIncident(DemoScenario.Incident, "demo", [], []);
+            return new ResolvedIncident(scenario.Incident, "demo", [], []);
         }
 
         ExtractionResult extraction;
@@ -63,14 +66,14 @@ public sealed class ForkcastRunner(
             // The reading step is an enhancement, not a dependency. Falling back to the site
             // template is better than refusing to answer.
             return new ResolvedIncident(
-                DemoScenario.Incident,
+                scenario.Incident,
                 "fallback",
                 ["The incident could not be read automatically, so the site template was used."],
                 []);
         }
 
         var (incident, adjustments) = composer.Compose(
-            extraction.Draft, DemoScenario.Incident, narrative);
+            extraction.Draft, scenario.Incident, narrative);
 
         return new ResolvedIncident(incident, extraction.Source, extraction.Notes, adjustments);
     }
@@ -78,10 +81,11 @@ public sealed class ForkcastRunner(
     public async Task<(DecisionResult Result, ResolvedIncident Resolved)> RunAsync(
         string? narrative,
         SimulationOptions options,
+        string? scenarioKey = null,
         CancellationToken cancellationToken = default)
     {
-        var resolved = await ResolveAsync(narrative, cancellationToken);
-        var plans = await WordPlansAsync(resolved.Incident, cancellationToken);
+        var resolved = await ResolveAsync(narrative, scenarioKey, cancellationToken);
+        var plans = await WordPlansAsync(resolved.Incident, scenarioKey, cancellationToken);
         var result = await decisions.DecideAsync(resolved.Incident, plans, options, cancellationToken);
 
         return (result, resolved);
@@ -91,10 +95,11 @@ public sealed class ForkcastRunner(
         string? narrative,
         string question,
         SimulationOptions options,
+        string? scenarioKey = null,
         CancellationToken cancellationToken = default)
     {
-        var resolved = await ResolveAsync(narrative, cancellationToken);
-        var plans = await WordPlansAsync(resolved.Incident, cancellationToken);
+        var resolved = await ResolveAsync(narrative, scenarioKey, cancellationToken);
+        var plans = await WordPlansAsync(resolved.Incident, scenarioKey, cancellationToken);
         var result = await decisions.ChallengeAsync(
             resolved.Incident, plans, question, options, cancellationToken);
 
@@ -115,11 +120,12 @@ public sealed class ForkcastRunner(
         string? narrative,
         string submitted,
         SimulationOptions options,
+        string? scenarioKey = null,
         CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(submitted);
 
-        var (result, _) = await RunAsync(narrative, options, cancellationToken);
+        var (result, _) = await RunAsync(narrative, options, scenarioKey, cancellationToken);
         var claims = result.Verification.Claims;
         var context = VerificationContext.FromIncident(result.Incident, options);
 
@@ -147,9 +153,10 @@ public sealed class ForkcastRunner(
     /// </remarks>
     private async Task<IReadOnlyList<ResponsePlan>> WordPlansAsync(
         Incident incident,
+        string? scenarioKey,
         CancellationToken cancellationToken)
     {
-        var plans = DemoScenario.PlansFor(incident);
+        var plans = ScenarioCatalog.Resolve(scenarioKey).PlansFor(incident);
 
         if (!intelligence.IsLive)
         {

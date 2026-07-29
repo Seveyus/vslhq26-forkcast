@@ -124,7 +124,8 @@ export function Timeline({ incident, outcome, recommended, peakKw }: Props) {
           <em className="timeline__key timeline__key--grid" /> site supply
           {hasBuffer && (
             <>
-              <em className="timeline__key timeline__key--buffer" /> towed battery
+              <em className="timeline__key timeline__key--buffer" />{' '}
+              {incident.vocabulary.bufferLabel}
             </>
           )}
         </span>

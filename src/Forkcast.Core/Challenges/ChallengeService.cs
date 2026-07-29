@@ -15,7 +15,21 @@ namespace Forkcast.Core.Challenges;
 /// </remarks>
 public sealed partial class ChallengeService
 {
-    public AssumptionOverride Interpret(string question)
+    /// <summary>Words too common to identify anything, dropped when learning a domain's nouns.</summary>
+    private static readonly string[] Stopwords =
+        ["the", "and", "for", "with", "from", "into", "unit", "units", "point", "points"];
+
+    /// <summary>
+    /// Reads a what-if question into one of the supported levers.
+    /// </summary>
+    /// <param name="question">The question, in the user's own words.</param>
+    /// <param name="words">
+    /// The incident's vocabulary, when one is known. Supplying it teaches the matcher the domain's
+    /// own nouns, so "what if the burst capacity is late" is recognised in a compute hall for the
+    /// same reason "what if the battery unit is late" is recognised at a depot. Without it the
+    /// matcher falls back to the terms it ships with.
+    /// </param>
+    public AssumptionOverride Interpret(string question, IncidentVocabulary? words = null)
     {
         if (string.IsNullOrWhiteSpace(question))
         {
@@ -25,10 +39,26 @@ public sealed partial class ChallengeService
         var text = question.Trim();
         var lower = text.ToLowerInvariant();
 
-        var mentionsBuffer = lower.Contains("buffer")
-                             || lower.Contains("battery unit")
-                             || lower.Contains("temporary battery")
-                             || lower.Contains("towed");
+        var bufferTerms = new List<string>
+        {
+            "buffer", "battery unit", "temporary battery", "towed", "burst capacity",
+            "extra capacity", "spare capacity", "standby capacity"
+        };
+        var resourceTerms = new List<string>
+        {
+            "charger", "charge point", "connector", "node", "worker", "slot", "rack"
+        };
+
+        if (words is not null)
+        {
+            bufferTerms.AddRange(Significant(words.BufferLabel));
+            resourceTerms.AddRange(Significant(words.ResourceSingular));
+            resourceTerms.AddRange(Significant(words.ResourcePlural));
+            resourceTerms.AddRange(Significant(words.ConnectorNoun));
+        }
+
+        var mentionsBuffer = bufferTerms.Exists(term => lower.Contains(term, StringComparison.Ordinal));
+        var mentionsResource = resourceTerms.Exists(term => lower.Contains(term, StringComparison.Ordinal));
 
         if (mentionsBuffer
             && (lower.Contains("never") || lower.Contains("unavailable")
@@ -40,46 +70,49 @@ public sealed partial class ChallengeService
             {
                 Kind = AssumptionKind.BufferUnavailable,
                 Value = 0,
-                Label = "The temporary battery buffer cannot be sourced",
+                Label = AssumptionLabeller.Describe(AssumptionKind.BufferUnavailable, 0),
                 Question = text
             };
         }
 
-        if (mentionsBuffer && (lower.Contains("late") || lower.Contains("delay") || lower.Contains("slip")))
+        if (mentionsBuffer
+            && (lower.Contains("late") || lower.Contains("delay") || lower.Contains("slip")
+                || lower.Contains("behind schedule")))
         {
             var minutes = ExtractDurationMinutes(lower) ?? 60.0;
             return new AssumptionOverride
             {
                 Kind = AssumptionKind.BufferArrivalDelayMinutes,
                 Value = minutes,
-                Label = $"The temporary battery buffer arrives {DescribeDuration(minutes)} late",
+                Label = AssumptionLabeller.Describe(AssumptionKind.BufferArrivalDelayMinutes, minutes),
                 Question = text
             };
         }
 
-        if ((lower.Contains("charger") || lower.Contains("charge point") || lower.Contains("connector"))
+        if (mentionsResource
             && (lower.Contains("also fail") || lower.Contains("another") || lower.Contains("second")
-                || lower.Contains("more fail") || lower.Contains("goes down") || lower.Contains("go down")))
+                || lower.Contains("more fail") || lower.Contains("goes down") || lower.Contains("go down")
+                || lower.Contains("drops out") || lower.Contains("is lost")))
         {
             var count = ExtractLeadingCount(lower) ?? 1;
             return new AssumptionOverride
             {
                 Kind = AssumptionKind.AdditionalChargePointOutage,
                 Value = count,
-                Label = $"A further {count} charge point{(count == 1 ? "" : "s")} goes offline",
+                Label = AssumptionLabeller.Describe(AssumptionKind.AdditionalChargePointOutage, count),
                 Question = text
             };
         }
 
         if ((lower.Contains("repair") || lower.Contains("fixed") || lower.Contains("back online")
-             || lower.Contains("restored"))
-            && (lower.Contains("fast charger") || lower.Contains("cp-09") || lower.Contains("dc")))
+             || lower.Contains("restored") || lower.Contains("recovered"))
+            && (mentionsResource || lower.Contains("fast charger") || lower.Contains("dc")))
         {
             return new AssumptionOverride
             {
                 Kind = AssumptionKind.FastChargerRepaired,
                 Value = 1,
-                Label = "The fast charger is repaired during the night",
+                Label = AssumptionLabeller.Describe(AssumptionKind.FastChargerRepaired, 1),
                 Question = text
             };
         }
@@ -87,14 +120,15 @@ public sealed partial class ChallengeService
         if ((lower.Contains("earlier") || lower.Contains("brought forward") || lower.Contains("sooner")
              || lower.Contains("bring forward"))
             && (lower.Contains("depart") || lower.Contains("deadline") || lower.Contains("leave")
-                || lower.Contains("route")))
+                || lower.Contains("route") || lower.Contains("cut-off") || lower.Contains("cutoff")
+                || lower.Contains("complete")))
         {
             var minutes = ExtractDurationMinutes(lower) ?? 60.0;
             return new AssumptionOverride
             {
                 Kind = AssumptionKind.DeadlineEarlierMinutes,
                 Value = minutes,
-                Label = $"Every departure is brought forward by {DescribeDuration(minutes)}",
+                Label = AssumptionLabeller.Describe(AssumptionKind.DeadlineEarlierMinutes, minutes),
                 Question = text
             };
         }
@@ -235,6 +269,12 @@ public sealed partial class ChallengeService
             var n => int.TryParse(n, out var parsed) ? parsed : 1
         };
     }
+
+    /// <summary>The identifying words of a label, for keyword matching.</summary>
+    private static IEnumerable<string> Significant(string label) =>
+        label.ToLowerInvariant()
+            .Split([' ', '-', '/'], StringSplitOptions.RemoveEmptyEntries)
+            .Where(word => word.Length >= 4 && !Stopwords.Contains(word));
 
     private static string DescribeDuration(double minutes) => minutes switch
     {

@@ -46,8 +46,8 @@ public sealed class DecisionService(
 
         var outcomes = plans.Select(plan => engine.Run(incident, plan, opts)).ToList();
         var comparison = comparisons.Compare(outcomes[0], outcomes[1]);
-        var claims = claimSets.Build(comparison);
-        var recommendation = recommendations.Build(comparison, plans, claims);
+        var claims = claimSets.Build(comparison, incident.Vocabulary);
+        var recommendation = recommendations.Build(comparison, plans, claims, incident.Vocabulary);
 
         var candidate = await SafeWriteSummaryAsync(
             incident, comparison, recommendation, claims, opts, cancellationToken);
@@ -92,7 +92,20 @@ public sealed class DecisionService(
         var opts = (options ?? SimulationOptions.Default).Validated();
         var baselineResult = await DecideAsync(incident, plans, opts, cancellationToken);
 
-        var assumption = await SafeInterpretAsync(question, cancellationToken);
+        // The classifier is trusted for the lever, never for the wording: the sentence a user
+        // reads is composed here from this incident's own vocabulary.
+        var assumption = (await SafeInterpretAsync(question, cancellationToken))
+            .Relabel(incident.Vocabulary);
+
+        // The classifier may not know this domain's nouns. The deterministic matcher does when it
+        // is handed the vocabulary, so an unrecognised question gets one domain-aware second look
+        // before we tell the user nothing was changed.
+        if (!assumption.Recognised)
+        {
+            assumption = challenges.Interpret(question, incident.Vocabulary)
+                .Relabel(incident.Vocabulary);
+        }
+
         if (!assumption.Recognised)
         {
             return baselineResult with { Assumption = assumption };
@@ -104,14 +117,15 @@ public sealed class DecisionService(
         return challenged with
         {
             Assumption = assumption,
-            Delta = BuildDelta(baselineResult, challenged, assumption)
+            Delta = BuildDelta(baselineResult, challenged, assumption, incident.Vocabulary)
         };
     }
 
     private static DecisionDelta BuildDelta(
         DecisionResult before,
         DecisionResult after,
-        AssumptionOverride assumption)
+        AssumptionOverride assumption,
+        IncidentVocabulary words)
     {
         var previous = before.Comparison.Recommended;
         var current = after.Comparison.Recommended;
@@ -127,9 +141,9 @@ public sealed class DecisionService(
 
         var summary = string.Create(
             CultureInfo.InvariantCulture,
-            $"{assumption.Label}. This {direction} expected on-time departures from "
+            $"{assumption.Label}. This {direction} expected {words.OnTimeMetricLabel} from "
             + $"{previous.OnTimeDeparturePct:0.#}% to {current.OnTimeDeparturePct:0.#}%, and moves "
-            + $"vehicles at risk from {previous.VehiclesAtRisk} to {current.VehiclesAtRisk}.");
+            + $"{words.UnitPlural} at risk from {previous.VehiclesAtRisk} to {current.VehiclesAtRisk}.");
 
         return new DecisionDelta
         {

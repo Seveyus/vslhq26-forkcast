@@ -5,6 +5,7 @@ import type { NumberFinding, ProbeExample, VerificationProbe } from '../api/sche
 interface Props {
   examples: readonly ProbeExample[]
   narrative: string
+  scenario?: string
 }
 
 /**
@@ -15,17 +16,26 @@ interface Props {
  * this panel lets anyone write one and watch it get caught. It calls the same verifier, against
  * the same claim set, that the product applies to its own generated prose.
  */
-export function VerifierProbePanel({ examples, narrative }: Props) {
-  const [submitted, setSubmitted] = useState(examples[0]?.narrative ?? '')
+export function VerifierProbePanel({ examples, narrative, scenario }: Props) {
+  const first = examples[0]?.narrative ?? ''
+  const [submitted, setSubmitted] = useState(first)
   const [result, setResult] = useState<VerificationProbe | null>(null)
   const [pending, setPending] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [seeded, setSeeded] = useState(first)
+
+  // A domain switch replaces the examples, so the box must not keep the other domain's wording.
+  if (seeded !== first) {
+    setSeeded(first)
+    setSubmitted(first)
+    setResult(null)
+  }
 
   const run = async (text: string) => {
     setPending(true)
     setError(null)
     try {
-      setResult(await api.probe(text, narrative))
+      setResult(await api.probe(text, narrative, scenario))
     } catch (cause: unknown) {
       setError(cause instanceof ForkcastError ? cause.message : 'The verifier could not be reached.')
     } finally {
