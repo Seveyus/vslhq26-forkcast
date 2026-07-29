@@ -8,6 +8,7 @@ import { FuturePanel } from './components/FuturePanel'
 import { IncidentCard } from './components/IncidentCard'
 import { RecommendationPanel } from './components/RecommendationPanel'
 import { VerificationPanel } from './components/VerificationPanel'
+import { VerifierProbePanel } from './components/VerifierProbePanel'
 
 /** Long enough to read, short enough that nobody is waiting on theatre. */
 const STEP_MS = 420
@@ -241,6 +242,10 @@ export function App() {
 
               <RecommendationPanel decision={decision} />
               <VerificationPanel decision={decision} />
+
+              {demo && demo.exampleProbes.length > 0 && (
+                <VerifierProbePanel examples={demo.exampleProbes} narrative={narrative} />
+              )}
 
               {demo && (
                 <ChallengePanel

@@ -3,9 +3,11 @@ import {
   decisionSchema,
   demoIncidentSchema,
   healthSchema,
+  verificationProbeSchema,
   type Decision,
   type DemoIncident,
   type Health,
+  type VerificationProbe,
 } from './schema'
 
 const BASE_URL = (import.meta.env.VITE_FORKCAST_API ?? 'http://localhost:5199').replace(/\/$/, '')
@@ -88,6 +90,12 @@ export const api = {
     request('/api/simulations/challenge', decisionSchema, {
       method: 'POST',
       body: JSON.stringify({ question, narrative }),
+    }),
+
+  probe: (submitted: string, narrative?: string): Promise<VerificationProbe> =>
+    request('/api/verification/probe', verificationProbeSchema, {
+      method: 'POST',
+      body: JSON.stringify({ submitted, narrative }),
     }),
 }
 

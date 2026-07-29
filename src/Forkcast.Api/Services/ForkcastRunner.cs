@@ -5,6 +5,7 @@ using Forkcast.Core.Demo;
 using Forkcast.Core.Incidents;
 using Forkcast.Core.Plans;
 using Forkcast.Core.Simulation;
+using Forkcast.Core.Verification;
 
 namespace Forkcast.Api.Services;
 
@@ -15,13 +16,25 @@ public sealed record ResolvedIncident(
     IReadOnlyList<string> Notes,
     IReadOnlyList<DraftAdjustment> Adjustments);
 
+/// <summary>The verifier's verdict on a paragraph somebody submitted to it.</summary>
+public sealed record VerificationProbe(
+    bool Accepted,
+    string Submitted,
+    IReadOnlyList<NumberFinding> Findings,
+    string Displayed,
+    string DisplayedSource,
+    IReadOnlyList<Claim> Claims,
+    long Seed,
+    int TrialCount);
+
 /// <summary>
 /// The application service behind the endpoints: read the incident, then decide.
 /// </summary>
 public sealed class ForkcastRunner(
     IIncidentIntelligence intelligence,
     IncidentComposer composer,
-    DecisionService decisions)
+    DecisionService decisions,
+    ClaimVerifier verifier)
 {
     /// <summary>
     /// Turns incident text into a runnable incident. Empty text means the preloaded demo, which
@@ -86,6 +99,42 @@ public sealed class ForkcastRunner(
             resolved.Incident, plans, question, options, cancellationToken);
 
         return (result, resolved);
+    }
+
+    /// <summary>
+    /// Runs an arbitrary paragraph past the verifier, against the real claim set for the
+    /// incident, and reports a verdict on every number in it.
+    /// </summary>
+    /// <remarks>
+    /// This is the guarantee offered for inspection rather than asserted. Anyone can hand it a
+    /// convincing-sounding paragraph and watch which figures it can account for and which it
+    /// cannot. It is the same <see cref="ClaimVerifier"/> instance and the same claim set the
+    /// product uses on its own generated prose — there is no separate, friendlier check here.
+    /// </remarks>
+    public async Task<VerificationProbe> ProbeAsync(
+        string? narrative,
+        string submitted,
+        SimulationOptions options,
+        CancellationToken cancellationToken = default)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(submitted);
+
+        var (result, _) = await RunAsync(narrative, options, cancellationToken);
+        var claims = result.Verification.Claims;
+        var context = VerificationContext.FromIncident(result.Incident, options);
+
+        var findings = verifier.AnalyseNumbers(submitted, claims, context);
+        var accepted = findings.TrueForAll(finding => finding.Supported);
+
+        return new VerificationProbe(
+            Accepted: accepted,
+            Submitted: submitted.Trim(),
+            Findings: findings,
+            Displayed: accepted ? submitted.Trim() : result.Recommendation.DeterministicSummary,
+            DisplayedSource: accepted ? "submitted" : "deterministic",
+            Claims: claims,
+            Seed: options.Seed,
+            TrialCount: options.TrialCount);
     }
 
     /// <summary>

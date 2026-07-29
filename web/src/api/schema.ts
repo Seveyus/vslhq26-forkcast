@@ -212,12 +212,43 @@ export const decisionSchema = z.object({
   notes: z.array(z.string()),
 })
 
+export const probeExampleSchema = z.object({
+  label: z.string(),
+  narrative: z.string(),
+  expectation: z.string(),
+})
+
+export const numberFindingSchema = z.object({
+  token: z.string(),
+  value: z.number(),
+  context: z.string(),
+  supported: z.boolean(),
+  claimId: z.string().nullish(),
+  reason: z.string().nullish(),
+})
+
+export const verificationProbeSchema = z.object({
+  accepted: z.boolean(),
+  submitted: z.string(),
+  numbersFound: z.number(),
+  numbersSupported: z.number(),
+  numbersUnsupported: z.number(),
+  findings: z.array(numberFindingSchema),
+  displayed: z.string(),
+  displayedSource: z.string(),
+  verdict: z.string(),
+  simulationSeed: z.number(),
+  trialCount: z.number(),
+  claims: z.array(claimSchema),
+})
+
 export const demoIncidentSchema = z.object({
   incident: incidentSchema,
   narrative: z.string(),
   plans: z.array(planSchema),
   suggestedChallenge: z.string(),
   exampleChallenges: z.array(z.string()),
+  exampleProbes: z.array(probeExampleSchema),
   defaultSeed: z.number(),
   defaultTrialCount: z.number(),
 })
@@ -240,3 +271,6 @@ export type RiskLevel = z.infer<typeof riskLevelSchema>
 export type Decision = z.infer<typeof decisionSchema>
 export type DemoIncident = z.infer<typeof demoIncidentSchema>
 export type Health = z.infer<typeof healthSchema>
+export type ProbeExample = z.infer<typeof probeExampleSchema>
+export type NumberFinding = z.infer<typeof numberFindingSchema>
+export type VerificationProbe = z.infer<typeof verificationProbeSchema>

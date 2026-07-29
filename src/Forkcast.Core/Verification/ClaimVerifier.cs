@@ -73,6 +73,24 @@ public sealed partial class ClaimVerifier
     public List<UnsupportedNumber> FindUnsupportedNumbers(
         string text,
         IReadOnlyList<Claim> claims,
+        VerificationContext context) =>
+        AnalyseNumbers(text, claims, context)
+            .Where(finding => !finding.Supported)
+            .Select(finding => new UnsupportedNumber { Token = finding.Token, Context = finding.Context })
+            .ToList();
+
+    /// <summary>
+    /// Reports a verdict on every number in <paramref name="text"/>, supported or not, naming
+    /// what backs each one.
+    /// </summary>
+    /// <remarks>
+    /// This is the inspectable form of the check. It exists so the guarantee can be demonstrated
+    /// adversarially rather than merely asserted: hand it a paragraph, and it shows which figures
+    /// it can account for, which it cannot, and why.
+    /// </remarks>
+    public List<NumberFinding> AnalyseNumbers(
+        string text,
+        IReadOnlyList<Claim> claims,
         VerificationContext context)
     {
         ArgumentNullException.ThrowIfNull(text);
@@ -84,16 +102,7 @@ public sealed partial class ClaimVerifier
         var masked = IdentifierPattern().Replace(text, m => new string('•', m.Length));
         masked = ClockTimePattern().Replace(masked, m => new string('•', m.Length));
 
-        var supported = new HashSet<double>();
-        foreach (var claim in claims)
-        {
-            foreach (var form in claim.AcceptableForms())
-            {
-                supported.Add(form);
-            }
-        }
-
-        var findings = new List<UnsupportedNumber>();
+        var findings = new List<NumberFinding>();
         foreach (Match match in NumberPattern().Matches(masked))
         {
             var token = match.Value;
@@ -103,20 +112,23 @@ public sealed partial class ClaimVerifier
                 continue;
             }
 
-            if (supported.Any(s => Math.Abs(s - value) < Epsilon))
-            {
-                continue;
-            }
+            var backing = claims.FirstOrDefault(
+                claim => claim.AcceptableForms().Any(form => Math.Abs(form - value) < Epsilon));
 
-            if (context.TryDescribe(value, out _))
-            {
-                continue;
-            }
+            var evidence = backing is not null
+                ? (Supported: true, ClaimId: backing.Id, Reason: backing.Label)
+                : context.TryDescribe(value, out var reason)
+                    ? (Supported: true, ClaimId: (string?)null, Reason: reason)
+                    : (Supported: false, ClaimId: null, Reason: null);
 
-            findings.Add(new UnsupportedNumber
+            findings.Add(new NumberFinding
             {
                 Token = token,
-                Context = ExtractContext(text, match.Index, match.Length)
+                Value = value,
+                Context = ExtractContext(text, match.Index, match.Length),
+                Supported = evidence.Supported,
+                ClaimId = evidence.ClaimId,
+                Reason = evidence.Reason
             });
         }
 

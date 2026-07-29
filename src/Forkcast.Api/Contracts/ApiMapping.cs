@@ -1,3 +1,4 @@
+using Forkcast.Api.Services;
 using Forkcast.Core.Ai;
 using Forkcast.Core.Challenges;
 using Forkcast.Core.Comparison;
@@ -202,4 +203,36 @@ internal static class ApiMapping
 
     public static AdjustmentDto ToDto(this DraftAdjustment adjustment) =>
         new(adjustment.Field, adjustment.Reason);
+
+    public static VerificationProbeResponse ToResponse(this VerificationProbe probe)
+    {
+        ArgumentNullException.ThrowIfNull(probe);
+
+        var supported = probe.Findings.Count(f => f.Supported);
+        var unsupported = probe.Findings.Count - supported;
+
+        return new VerificationProbeResponse(
+            probe.Accepted,
+            probe.Submitted,
+            probe.Findings.Count,
+            supported,
+            unsupported,
+            probe.Findings
+                .Select(f => new NumberFindingDto(
+                    f.Token, f.Value, f.Context, f.Supported, f.ClaimId, f.Reason))
+                .ToList(),
+            probe.Displayed,
+            probe.DisplayedSource,
+            probe.Accepted
+                ? "Every number in this paragraph is backed by a claim or an incident fact, so it "
+                  + "would be shown as written."
+                : $"{unsupported} number{(unsupported == 1 ? "" : "s")} in this paragraph "
+                  + $"{(unsupported == 1 ? "is" : "are")} not backed by any claim, so the whole "
+                  + "paragraph is discarded and the deterministic summary is shown instead.",
+            probe.Seed,
+            probe.TrialCount,
+            probe.Claims.Select(ToPublicDto).ToList());
+    }
+
+    private static ClaimDto ToPublicDto(Claim claim) => ToDto(claim);
 }

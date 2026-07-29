@@ -1373,6 +1373,174 @@ textarea {
   margin-top: 1.35rem;
 }
 
+/* --- try to fool it ----------------------------------------------------- */
+
+.probe {
+  border-color: rgba(74, 158, 255, 0.3);
+}
+
+.probe__examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.1rem;
+}
+
+.probe__form {
+  display: grid;
+  gap: 1rem;
+}
+
+.probe__text {
+  font-size: 0.95rem;
+}
+
+.probe__actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.probe__result {
+  margin-top: 1.6rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+  padding: 1.5rem 1.65rem;
+}
+
+.probe__result.is-rejected {
+  border-color: rgba(255, 112, 137, 0.4);
+}
+
+.probe__result.is-accepted {
+  border-color: rgba(53, 211, 154, 0.4);
+}
+
+.probe__counts {
+  display: flex;
+  gap: 1.75rem;
+  flex-wrap: wrap;
+  padding-bottom: 1.15rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--text-faint);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  font-weight: 600;
+}
+
+.probe__counts strong {
+  font-size: 1.35rem;
+  font-weight: 660;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  margin-right: 0.4rem;
+  color: var(--text);
+}
+
+.probe__counts .is-good strong {
+  color: var(--good);
+}
+
+.probe__counts .is-bad strong {
+  color: var(--bad);
+}
+
+.probe__marked {
+  font-size: 1.06rem;
+  line-height: 1.85;
+  color: var(--text);
+}
+
+.tok {
+  background: none;
+  border-radius: 5px;
+  padding: 0.08em 0.3em;
+  font-weight: 640;
+  font-variant-numeric: tabular-nums;
+}
+
+.tok--ok {
+  color: var(--good);
+  background: var(--good-soft);
+  box-shadow: inset 0 0 0 1px rgba(53, 211, 154, 0.4);
+}
+
+.tok--bad {
+  color: var(--bad);
+  background: var(--bad-soft);
+  box-shadow: inset 0 0 0 1px rgba(255, 112, 137, 0.45);
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+}
+
+.probe__ledger {
+  display: grid;
+  gap: 0.45rem;
+  margin-top: 1.35rem;
+}
+
+.probe__ledger li {
+  display: flex;
+  gap: 0.85rem;
+  align-items: baseline;
+  flex-wrap: wrap;
+  font-size: 0.86rem;
+  color: var(--text-dim);
+  padding-left: 0.9rem;
+  border-left: 2px solid var(--line-strong);
+}
+
+.probe__ledger li.is-ok {
+  border-left-color: var(--good);
+}
+
+.probe__ledger li.is-bad {
+  border-left-color: var(--bad);
+}
+
+.probe__ledger li > code:first-child {
+  font-weight: 660;
+  font-size: 0.9rem;
+  color: var(--text);
+  min-width: 4.5rem;
+}
+
+.probe__ledger li.is-bad > code:first-child {
+  color: var(--bad);
+}
+
+.probe__verdict {
+  margin-top: 1.5rem;
+  color: var(--text);
+  font-size: 0.98rem;
+  line-height: 1.7;
+}
+
+.probe__displayed {
+  margin-top: 1.4rem;
+  padding: 1.1rem 1.25rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg-deep);
+  border: 1px solid var(--line);
+}
+
+.probe__displayed p {
+  margin-top: 0.5rem;
+  color: var(--text-dim);
+  font-size: 0.94rem;
+  line-height: 1.7;
+}
+
+.probe__foot {
+  margin-top: 1.1rem;
+  color: var(--text-faint);
+  font-size: 0.8rem;
+}
+
 /* --- architecture ------------------------------------------------------- */
 
 .flow {

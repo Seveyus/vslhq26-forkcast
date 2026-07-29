@@ -28,6 +28,16 @@ public sealed record RunSimulationRequest : SimulationRequest
     public string? Narrative { get; init; }
 }
 
+public sealed record VerificationProbeRequest : SimulationRequest
+{
+    [Description("Incident text. Omit to probe against the preloaded demonstration incident.")]
+    public string? Narrative { get; init; }
+
+    /// <summary>The paragraph to submit to the verifier.</summary>
+    [Description("A paragraph of prose to submit to the claim verifier.")]
+    public string Submitted { get; init; } = string.Empty;
+}
+
 public sealed record ChallengeRequest : SimulationRequest
 {
     [Description("Incident text. Omit to run the preloaded demonstration incident.")]

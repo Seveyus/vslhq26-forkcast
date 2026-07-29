@@ -29,6 +29,36 @@ public static class ForkcastEndpoints
         "What if every route has to depart 45 minutes earlier?"
     ];
 
+    /// <summary>
+    /// Paragraphs written to be submitted to the verifier, so the guarantee can be tested rather
+    /// than taken on trust. Each one reads plausibly; only the last is actually supportable.
+    /// </summary>
+    private static readonly ProbeExampleDto[] ExampleProbes =
+    [
+        new(
+            "One invented figure",
+            "Reprioritising the yard queue and calling out the battery unit lifts on-time "
+            + "departures to 97.2%, and avoids roughly £4,200 of contractual penalty exposure "
+            + "across the six priority routes.",
+            "The 97.2% is a claim. The £4,200 is not — no simulation output produces it."),
+        new(
+            "Confident and entirely invented",
+            "This response recovers 14 hours of depot throughput, improves fleet utilisation by "
+            + "23%, and pays for itself within 5 weeks.",
+            "Three figures, none of them traceable to anything the engine computed."),
+        new(
+            "A plausible rounding",
+            "On-time departures reach 98% with zero vehicles left at risk.",
+            "Close to the truth is still not the truth: the run returns 97.2% and one vehicle at "
+            + "risk, so neither figure is supported."),
+        new(
+            "Honest, and it passes",
+            "Reprioritising the queue and activating the battery buffer raises expected on-time "
+            + "departures from 60.9% to 97.2%, a gain of 36.3 pp, and cuts vehicles at risk from "
+            + "9 to 1 across the 20 in the fleet.",
+            "Every figure here is a claim value or an incident fact, so it survives the check.")
+    ];
+
     public static IEndpointRouteBuilder MapForkcast(this IEndpointRouteBuilder app)
     {
         var api = app.MapGroup("/api").WithTags("Forkcast");
@@ -52,6 +82,7 @@ public static class ForkcastEndpoints
                     DemoScenario.Plans.Select(p => p.ToDto()).ToList(),
                     SuggestedChallenge,
                     ExampleChallenges,
+                    ExampleProbes,
                     SimulationOptions.DefaultSeed,
                     SimulationOptions.DefaultTrialCount)))
             .WithName("GetDemoIncident")
@@ -140,6 +171,37 @@ public static class ForkcastEndpoints
             .WithName("ChallengeSimulation")
             .WithSummary("Reruns the simulation with one assumption changed and reports the difference.");
 
+        api.MapPost("/verification/probe", async Task<Results<Ok<VerificationProbeResponse>, ProblemHttpResult>> (
+                VerificationProbeRequest request,
+                ForkcastRunner runner,
+                CancellationToken cancellationToken) =>
+            {
+                if (Validate.Narrative(request.Narrative, required: false) is { } narrativeProblem)
+                {
+                    return narrativeProblem;
+                }
+
+                if (Validate.Submitted(request.Submitted) is { } submittedProblem)
+                {
+                    return submittedProblem;
+                }
+
+                if (!Validate.TryBuildOptions(request.Seed, request.TrialCount, out var options, out var problem))
+                {
+                    return problem!;
+                }
+
+                var probe = await runner.ProbeAsync(
+                    request.Narrative, request.Submitted, options, cancellationToken);
+
+                return TypedResults.Ok(probe.ToResponse());
+            })
+            .WithName("ProbeVerification")
+            .WithSummary(
+                "Submits an arbitrary paragraph to the claim verifier and reports a verdict on "
+                + "every number in it. The same verifier and claim set the product applies to its "
+                + "own generated prose.");
+
         return app;
     }
 
@@ -177,6 +239,22 @@ public static class ForkcastEndpoints
                 ? Problem(
                     "The question is too long.",
                     $"Questions must be {MaxQuestionLength} characters or fewer.")
+                : null;
+        }
+
+        public static ProblemHttpResult? Submitted(string? submitted)
+        {
+            if (string.IsNullOrWhiteSpace(submitted))
+            {
+                return Problem(
+                    "Nothing was submitted.",
+                    "Paste a paragraph for the verifier to check.");
+            }
+
+            return submitted.Length > MaxNarrativeLength
+                ? Problem(
+                    "The paragraph is too long.",
+                    $"Submitted text must be {MaxNarrativeLength} characters or fewer.")
                 : null;
         }
 

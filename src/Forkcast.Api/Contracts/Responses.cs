@@ -196,12 +196,40 @@ public sealed record DecisionResponse(
     DeltaDto? Delta,
     IReadOnlyList<string> Notes);
 
+public sealed record NumberFindingDto(
+    string Token,
+    double Value,
+    string Context,
+    bool Supported,
+    string? ClaimId,
+    string? Reason);
+
+public sealed record VerificationProbeResponse(
+    bool Accepted,
+    string Submitted,
+    int NumbersFound,
+    int NumbersSupported,
+    int NumbersUnsupported,
+    IReadOnlyList<NumberFindingDto> Findings,
+    /// <summary>What the interface would put on screen after the check.</summary>
+    string Displayed,
+    /// <summary>"submitted" when the text survived, "deterministic" when it was replaced.</summary>
+    string DisplayedSource,
+    string Verdict,
+    long SimulationSeed,
+    int TrialCount,
+    IReadOnlyList<ClaimDto> Claims);
+
+/// <summary>A ready-made paragraph for the verifier demonstration.</summary>
+public sealed record ProbeExampleDto(string Label, string Narrative, string Expectation);
+
 public sealed record DemoIncidentResponse(
     IncidentDto Incident,
     string Narrative,
     IReadOnlyList<PlanDto> Plans,
     string SuggestedChallenge,
     IReadOnlyList<string> ExampleChallenges,
+    IReadOnlyList<ProbeExampleDto> ExampleProbes,
     long DefaultSeed,
     int DefaultTrialCount);
 
