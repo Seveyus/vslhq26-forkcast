@@ -6,7 +6,12 @@ An AI decision agent for operational incidents. A manager describes what broke; 
 the constraints, builds two response strategies, simulates the consequences of each, verifies
 every number it is about to show, and recommends one.
 
-> **The model can write the explanation. It is never allowed to invent the numbers.**
+> **Forkcast draws a hard boundary between language and evidence. The model can explain a
+> decision. It cannot invent the numbers behind it.**
+
+That boundary is the product. Everything else here is in service of it, and you can attack it
+yourself in the running app: [**write a figure it cannot support**](#try-to-fool-it) and watch the
+paragraph around it get discarded.
 
 | | |
 |---|---|
@@ -16,6 +21,8 @@ every number it is about to show, and recommends one.
 | **Secondary category** | Best Azure OpenAI / LLM-Powered App |
 | **Demo video** | [`./demo/demo.mp4`](./demo/demo.mp4) |
 | **Stack** | ASP.NET Core Minimal API · C# · Azure OpenAI · React + TypeScript + Vite · deterministic Monte Carlo · xUnit |
+| **Domains shipped** | An electric delivery depot and a GPU compute hall, on the same engine |
+| **Tests** | 150, `dotnet test` |
 
 ---
 
@@ -44,7 +51,30 @@ Forkcast splits the problem along the line where each tool is actually good.
 5. **Recommends**, under a stated rule, with the evidence attached.
 6. **Lets you challenge it.** Change an assumption and the simulation genuinely reruns.
 
-### The demo incident
+### Two domains, one engine
+
+Forkcast ships two incidents that share no vocabulary, no units and no failure mode. Switch
+between them in the interface. Neither required a line of change in the simulation, the
+comparison, the claim layer or the recommendation — the nouns are data, not code.
+
+| | Electric delivery depot | GPU compute hall |
+|---|---|---|
+| What is queued | 20 vehicles | 24 batch jobs |
+| Competing for | 8 charge points | 10 GPU nodes |
+| What failed | the 150 kW fast charger | two racks, chilled-water fault |
+| Hard deadline | last departure 06:00 | reporting cut-off 05:30 |
+| Measured in | kWh at kW | GPU-hours at GPU-hours/hour |
+| Do nothing | **60.9%** on-time departures | **57.8%** on-time completions |
+| Act | **97.2%** | **94.7%** |
+| Intervention | towed battery unit, £379 | burst capacity in the paired region, £483 |
+
+The engine's own strings follow the domain, which is what stops "it generalises" being an
+adjective. The depot reports *"2.6 vehicles never reach a free connector before their departure"*;
+the compute hall reports *"2.4 jobs never reach a free worker slot before their cut-off"*. Same
+code path, same sentence template, different nouns. There are tests asserting that neither
+domain's critical constraint contains the other's words.
+
+### The worked example
 
 At 18:40 the fast charger at an electric delivery depot fails. Twenty vehicles must depart by
 06:00, eight AC charge points remain, and six routes are priority.
@@ -122,6 +152,32 @@ Watch it work: the verification panel shows `8 verified claims · 0 unsupported 
 model ever invents a figure, that panel shows the rejected token, its context, and the fact that
 the deterministic summary was substituted.
 
+### Try to fool it
+
+A guarantee you have to take on trust is not much of a guarantee, so the app exposes the verifier
+directly. Paste any paragraph into the **Try to fool it** panel — or `POST` it to
+`/api/verification/probe` — and it reports a verdict on every number in it: which claim backs each
+figure, or which incident fact does, or that nothing does.
+
+```bash
+curl -s -X POST http://localhost:5199/api/verification/probe \
+  -H 'Content-Type: application/json' \
+  -d '{"submitted":"Reprioritising lifts on-time departures to 97.2%, avoiding £4,200 of penalties."}' \
+  | jq '{accepted, verdict, findings: [.findings[] | {token, supported, claimId}]}'
+```
+
+```
+97.2   supported    claim alternative-on-time
+4,200  unsupported  nothing produces this figure
+→ rejected; the deterministic summary is shown instead
+```
+
+It is the same `ClaimVerifier` instance and the same claim set the product applies to its own
+generated prose. There is no separate, friendlier check for visitors. Four worked examples ship
+with it — one invented figure among true ones, an entirely invented paragraph, a plausible
+rounding (`98%` when the run says `97.2%`), and an honest one that passes — and a test submits all
+four and asserts each behaves as its label promises.
+
 ---
 
 ## Running it
@@ -146,7 +202,7 @@ document at `/openapi/v1.json`.
 
 ```bash
 dotnet build          # 0 warnings — warnings are errors
-dotnet test           # 131 tests
+dotnet test           # 150 tests
 cd web && npm run build
 ```
 
@@ -176,6 +232,10 @@ is how unusual incident wording is read and how the explanation is written.
 | `POST /api/incidents/parse` | Incident text → structured incident |
 | `POST /api/simulations/run` | Simulate both plans, return the verified recommendation |
 | `POST /api/simulations/challenge` | Change one assumption, rerun, report the difference |
+| `POST /api/verification/probe` | Submit any paragraph to the claim verifier and get a verdict per number |
+| `GET /api/scenarios` | The shipped domains |
+
+Every simulation endpoint takes an optional `scenario` of `"fleet"` or `"compute"`.
 
 ```bash
 curl -s http://localhost:5199/api/demo/result | jq '.verification.verifiedClaims'
@@ -210,6 +270,16 @@ curl -s -X POST http://localhost:5199/api/simulations/challenge \
 
 ![Challenging the recommendation](demo/assets/07-challenge.png)
 
+**Try to fool it** — every number in a submitted paragraph gets a verdict:
+
+![The verifier probe](demo/assets/11-probe.png)
+
+**Switch the domain** — the same engine, an unrelated incident:
+
+![The domain switcher](demo/assets/12-domains.png)
+
+![The compute hall compared](demo/assets/13-compute-futures.png)
+
 Every screenshot is captured from the running application by
 [`web/scripts/capture.mjs`](web/scripts/capture.mjs). None of them is a mock-up.
 
@@ -218,7 +288,11 @@ Every screenshot is captured from the running application by
 **[`demo/demo.mp4`](demo/demo.mp4)** — 2:48, 1920×1080, H.264.
 
 Built with [HyperFrames](https://hyperframes.heygen.com) from the same captured screens, so the
-film shows the submitted application rather than a separate mock-up of it. Every figure spoken or
+film shows the submitted application rather than a separate mock-up of it. Fifteen seconds in its
+middle are an **uncut screen capture** — visible cursor, a real click on *Simulate*, the real
+wait, the real numbers arriving, then a real click on *Test assumption* — recorded by
+[`web/scripts/record-live.mjs`](web/scripts/record-live.mjs) driving the actual UI against the
+actual API. Every figure spoken or
 shown in it is one the engine returns at seed `20260728`, and the test
 `Published_demo_figures_hold` fails if the engine ever stops returning them.
 
@@ -245,7 +319,7 @@ src/
     Challenges/           the closed set of challengeable assumptions
     Ai/                   the language boundary, and its deterministic implementation
   Forkcast.Api/           Minimal API, DTO mapping, Azure OpenAI provider
-tests/Forkcast.Tests/     131 tests
+tests/Forkcast.Tests/     150 tests
 web/                      React + TypeScript + Vite, one page
 demo/                     screenshots and the demo video
 ```
@@ -266,6 +340,14 @@ problem does not need them, and each one would be another thing between a review
 - `Derived_seeds_do_not_depend_on_runtime_string_hashing`
 - `A_failing_language_model_does_not_take_the_decision_down`
 - `Failed_and_remaining_connectors_are_told_apart`
+- `The_critical_constraint_speaks_the_domain_language` — neither domain's constraint string
+  contains the other's nouns
+- `Published_compute_figures_hold_and_differ_from_the_fleet` — the second domain is not the first
+  one relabelled
+- `The_offered_examples_behave_as_their_labels_promise` — the verifier demonstration cannot start
+  teaching the wrong lesson
+- `The_analyser_and_the_rejection_list_agree` — the inspectable verdict and the enforced one are
+  the same computation
 
 ---
 
@@ -308,6 +390,38 @@ solve.
   the energy supplier, plus validation against measured outcomes before anyone trusted a number.
 - **Human operators remain responsible.** Forkcast recommends. It does not act, and it is not
   designed to be believed without the evidence it shows alongside.
+- **The domain types still carry the first domain's names.** `Vehicle` and `ChargePoint` are the
+  internal type names in both domains; only the user-facing vocabulary is data. That is a
+  deliberate trade to avoid a risky rename late in the build, and it is the next thing to fix.
+- **Both scenarios price in pounds.** The currency is not yet part of the vocabulary.
+- **The verifier checks numerals, not claims about causation.** A paragraph can pass the check and
+  still be misleading in its wording; the guarantee is specifically about figures.
+
+## Prior work, and what is new here
+
+Forkcast is informed by earlier work of mine on electric-fleet depot operations. The problem
+framing, the demonstration scenario and the conviction that a language model must not be allowed
+near the arithmetic all come from that experience rather than from nothing — and the brief this
+repository was built from stated them up front.
+
+What this implementation contributes:
+
+- **Claim-level provenance.** Every displayed figure is a typed claim carrying its source field,
+  its calculation method, its seed and its trial count, and it is only `Verified` if it still
+  round-trips to the simulation output it names.
+- **Rejection rather than correction.** Generated prose containing one unsupported figure is
+  discarded whole, and the verifier is exposed for anyone to attack.
+- **A domain-agnostic engine, demonstrated.** Two unrelated domains run on the same simulation,
+  comparison, claim and recommendation code, with the vocabulary supplied as data.
+- **Interactive assumption challenges.** A closed set of levers, each rerunning the simulation
+  rather than generating prose about it.
+- **A .NET and Azure implementation** with the language boundary off the critical path.
+
+> **For the author to complete before submission.** State plainly whether any source code, UI
+> assets or generated output from a previous project were reused here, and say so either way. If
+> the honest answer is that this implementation was written from scratch during the event from a
+> brief informed by prior work, say exactly that — it is both true and defensible. Do not claim
+> the concept originated during the event if it did not.
 
 ## Where this goes next
 
