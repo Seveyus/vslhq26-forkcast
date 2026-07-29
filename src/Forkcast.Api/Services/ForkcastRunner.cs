@@ -1,7 +1,9 @@
+using Forkcast.Api.Ai;
 using Forkcast.Core.Ai;
 using Forkcast.Core.Decisions;
 using Forkcast.Core.Demo;
 using Forkcast.Core.Incidents;
+using Forkcast.Core.Plans;
 using Forkcast.Core.Simulation;
 
 namespace Forkcast.Api.Services;
@@ -66,7 +68,7 @@ public sealed class ForkcastRunner(
         CancellationToken cancellationToken = default)
     {
         var resolved = await ResolveAsync(narrative, cancellationToken);
-        var plans = DemoScenario.PlansFor(resolved.Incident);
+        var plans = await WordPlansAsync(resolved.Incident, cancellationToken);
         var result = await decisions.DecideAsync(resolved.Incident, plans, options, cancellationToken);
 
         return (result, resolved);
@@ -79,10 +81,52 @@ public sealed class ForkcastRunner(
         CancellationToken cancellationToken = default)
     {
         var resolved = await ResolveAsync(narrative, cancellationToken);
-        var plans = DemoScenario.PlansFor(resolved.Incident);
+        var plans = await WordPlansAsync(resolved.Incident, cancellationToken);
         var result = await decisions.ChallengeAsync(
             resolved.Incident, plans, question, options, cancellationToken);
 
         return (result, resolved);
+    }
+
+    /// <summary>
+    /// Lets the model phrase the two plans, and nothing more.
+    /// </summary>
+    /// <remarks>
+    /// Only the description text is taken. The charging policy, the charge target, the buffer and
+    /// its costs are all left exactly as the domain defines them, so no wording the model produces
+    /// can change what is simulated. Wording that fails <see cref="PlanWording"/> is dropped.
+    /// </remarks>
+    private async Task<IReadOnlyList<ResponsePlan>> WordPlansAsync(
+        Incident incident,
+        CancellationToken cancellationToken)
+    {
+        var plans = DemoScenario.PlansFor(incident);
+
+        if (!intelligence.IsLive)
+        {
+            return plans;
+        }
+
+        try
+        {
+            var narratives = await intelligence.DescribePlansAsync(incident, plans, cancellationToken);
+            var byId = narratives.ToDictionary(n => n.PlanId, StringComparer.Ordinal);
+
+            return plans
+                .Select(plan =>
+                    byId.TryGetValue(plan.Id, out var wording)
+                    && PlanWording.IsAcceptable(wording.Description)
+                        ? plan with { Description = wording.Description }
+                        : plan)
+                .ToList();
+        }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+        {
+            throw;
+        }
+        catch (Exception)
+        {
+            return plans;
+        }
     }
 }

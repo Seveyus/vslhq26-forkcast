@@ -1,8 +1,9 @@
 using System.Text.Json.Serialization;
+using Forkcast.Api.Ai;
+using Forkcast.Api.Configuration;
 using Forkcast.Api.Diagnostics;
 using Forkcast.Api.Endpoints;
 using Forkcast.Api.Services;
-using Forkcast.Core.Ai;
 using Forkcast.Core.Challenges;
 using Forkcast.Core.Comparison;
 using Forkcast.Core.Decisions;
@@ -17,6 +18,13 @@ using Scalar.AspNetCore;
 var builder = WebApplication.CreateBuilder(args);
 
 const string LocalFrontendCors = "forkcast-local";
+
+// Makes the documented flow work: copy .env.example to .env and the API picks it up. A real
+// shell export still wins, and .env is git-ignored.
+if (DotEnv.Locate(builder.Environment.ContentRootPath) is { } envFile)
+{
+    builder.Configuration.AddDotEnvFile(envFile);
+}
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
@@ -48,11 +56,14 @@ builder.Services.AddSingleton<ClaimVerifier>();
 builder.Services.AddSingleton<RecommendationService>();
 builder.Services.AddSingleton<ChallengeService>();
 builder.Services.AddSingleton<IncidentComposer>();
-builder.Services.AddSingleton<DecisionService>();
+
+// Scoped, because it depends on the intelligence provider, which may be a typed HttpClient.
+builder.Services.AddScoped<DecisionService>();
 builder.Services.AddScoped<ForkcastRunner>();
 
-// The language boundary. Nothing else in the graph depends on a model being reachable.
-builder.Services.AddSingleton<IIncidentIntelligence, DeterministicIntelligence>();
+// The language boundary. Azure OpenAI when credentials are present, the deterministic provider
+// otherwise. Nothing else in the graph depends on a model being reachable.
+builder.Services.AddForkcastIntelligence(builder.Configuration);
 
 var app = builder.Build();
 
@@ -79,6 +90,7 @@ app.MapScalarApiReference(options => options.WithTitle("Forkcast API"));
 app.MapForkcast();
 app.MapGet("/", () => Results.Redirect("/scalar/v1")).ExcludeFromDescription();
 
+app.LogIntelligenceProvider();
 app.Run();
 
 /// <summary>Exposed so the test project can start the API in memory.</summary>
