@@ -270,6 +270,64 @@ export const verificationProbeSchema = z.object({
   claims: z.array(claimSchema),
 })
 
+export const briefingBeatSchema = z.object({
+  id: z.string(),
+  kind: z.string(),
+  startSeconds: z.number(),
+  durationSeconds: z.number(),
+  heading: z.string(),
+  caption: z.string(),
+  claimIds: z.array(z.string()),
+})
+
+export const canvasUnitSchema = z.object({
+  id: z.string(),
+  label: z.string(),
+  isPriority: z.boolean(),
+  onTimeProbability: z.number(),
+  shortfallLevel: z.number(),
+  slackMinutes: z.number(),
+  atRisk: z.boolean(),
+})
+
+export const briefingSchema = z.object({
+  domainKey: z.string(),
+  domainLabel: z.string(),
+  title: z.string(),
+  situation: z.string(),
+  recommendedPlanId: z.string(),
+  headline: z.string(),
+  seed: z.number(),
+  trialCount: z.number(),
+  verifiedClaims: z.number(),
+  unsupportedNumbers: z.number(),
+  totalSeconds: z.number(),
+  counterfactualLabel: z.string().nullish(),
+  claims: z.array(claimSchema),
+  beats: z.array(briefingBeatSchema),
+  resources: z.array(
+    z.object({
+      id: z.string(),
+      kind: z.string(),
+      rate: z.number(),
+      operational: z.boolean(),
+      faultCode: z.string().nullish(),
+    }),
+  ),
+  plans: z.array(
+    z.object({
+      planId: z.string(),
+      planName: z.string(),
+      recommended: z.boolean(),
+      onTimePct: z.number(),
+      atRiskCount: z.number(),
+      riskLevel: z.string(),
+      units: z.array(canvasUnitSchema),
+    }),
+  ),
+  vocabulary: vocabularySchema,
+})
+
 export const demoIncidentSchema = z.object({
   incident: incidentSchema,
   narrative: z.string(),
@@ -306,3 +364,5 @@ export type Vocabulary = z.infer<typeof vocabularySchema>
 export type ScenarioSummary = z.infer<typeof scenarioSummarySchema>
 export type NumberFinding = z.infer<typeof numberFindingSchema>
 export type VerificationProbe = z.infer<typeof verificationProbeSchema>
+export type Briefing = z.infer<typeof briefingSchema>
+export type BriefingBeat = z.infer<typeof briefingBeatSchema>

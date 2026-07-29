@@ -250,6 +250,7 @@ internal static class ApiMapping
             briefing.UnsupportedNumbers,
             briefing.TotalSeconds,
             briefing.CounterfactualLabel,
+            briefing.Claims.Select(ToDto).ToList(),
             briefing.Beats
                 .Select(b => new BriefingBeatDto(
                     b.Id, b.Kind, b.StartSeconds, b.DurationSeconds, b.Heading, b.Caption, b.ClaimIds))

@@ -26,7 +26,7 @@ one worked example; a GPU compute hall runs on the same engine.
 | **Demo video** | [`./demo/demo.mp4`](./demo/demo.mp4) |
 | **Stack** | ASP.NET Core Minimal API · C# · Azure OpenAI · React + TypeScript + Vite · deterministic Monte Carlo · xUnit |
 | **Domains shipped** | An electric delivery depot and a GPU compute hall, on the same engine |
-| **Tests** | 155, `dotnet test` |
+| **Tests** | 164, `dotnet test` |
 
 ---
 
@@ -196,6 +196,30 @@ and the do-nothing board is untouched because the lever never applied to it.
 
 ![The canvas after a counterfactual](demo/assets/15-canvas-after.png)
 
+### Evidence-synced decision film
+
+The canvas is for **exploring** a decision. The film is for **communicating** one. Both read the same
+verified state.
+
+> **Forkcast does not turn a model answer into a video. It turns a verified decision state into a
+> video.**
+
+Press **Play decision film** and the brief plays back as scenes, with an evidence rail that advances
+with them: for the scene on screen, the claim ids it is permitted to show, their source fields, their
+verified status, the seed and the trial count. A scene with no figure in it says so — *no numerical
+claim required for this scene* — rather than borrowing one.
+
+![The decision film playing, with the evidence rail](demo/assets/17-film-futures.png)
+
+The player composes no figure of its own. It renders `beat.caption`, which the server built from
+claim display values, and the claims named in `beat.claimIds`. Switch domain and the scenes re-word
+themselves; run a counterfactual and the film marks itself stale — *decision state changed, film
+regenerated from updated evidence* — then plays the new one.
+
+```
+Simulation → Claim set → Verified decision state → Counterfactual Canvas → Decision Film → MP4
+```
+
 ### The decision brief, exported from verified state
 
 `GET /api/briefing/export` returns the animated brief for whatever is currently on screen: timed
@@ -214,6 +238,11 @@ curl -s 'http://localhost:5199/api/briefing/export?scenario=compute&question=Wha
 92s   counterfactual  The burst capacity … arrives one hour late: on-time completions 94.7% to 85.6%…
 112s  close           See both futures before you decide.
 ```
+
+`npm run briefing:export -- --scenario compute` freezes that same payload to
+`demo/generated/`, validating it first: every beat must reference only claims the payload carries,
+the beats must tile the timeline with no gap, and the totals must agree. A renderer handed a broken
+brief would produce a confident, wrong film, so the export refuses rather than writes.
 
 Switch domain and the beats re-word themselves. Apply a counterfactual and a beat appears carrying
 the real before-and-after. Every caption is composed from claim display values, incident facts and
@@ -245,7 +274,7 @@ document at `/openapi/v1.json`.
 
 ```bash
 dotnet build          # 0 warnings — warnings are errors
-dotnet test           # 155 tests
+dotnet test           # 164 tests
 cd web && npm run build
 ```
 
@@ -277,7 +306,7 @@ is how unusual incident wording is read and how the explanation is written.
 | `POST /api/simulations/challenge` | Change one assumption, rerun, report the difference |
 | `POST /api/verification/probe` | Submit any paragraph to the claim verifier and get a verdict per number |
 | `GET /api/scenarios` | The shipped domains |
-| `GET /api/briefing/export` | The animated decision brief for the current verified state |
+| `GET /api/briefing/export` | The animated decision brief for the current verified state, claims included |
 
 Every simulation endpoint takes an optional `scenario` of `"fleet"` or `"compute"`.
 
@@ -363,7 +392,7 @@ src/
     Challenges/           the closed set of challengeable assumptions
     Ai/                   the language boundary, and its deterministic implementation
   Forkcast.Api/           Minimal API, DTO mapping, Azure OpenAI provider
-tests/Forkcast.Tests/     155 tests
+tests/Forkcast.Tests/     164 tests
 web/                      React + TypeScript + Vite, one page
 demo/                     screenshots and the demo video
 ```
@@ -392,8 +421,11 @@ problem does not need them, and each one would be another thing between a review
   teaching the wrong lesson
 - `The_analyser_and_the_rejection_list_agree` — the inspectable verdict and the enforced one are
   the same computation
-- `Every_number_in_every_caption_survives_the_verifier` — the exported brief is held to the same
-  rule as the model's prose
+- `Every_number_in_every_caption_survives_the_verifier` and
+  `No_caption_carries_a_figure_the_verifier_would_reject` — the exported brief is held to the same
+  rule as the model's prose, in both domains
+- `A_beat_can_only_reference_a_claim_the_payload_carries` — the film cannot cite evidence it was
+  never given
 
 ---
 
@@ -424,8 +456,12 @@ solve.
   re-plug delays and a towed battery. It does **not** model battery charge curves, thermal
   behaviour, cable losses, degradation or driver behaviour. It is a decision-support simulation,
   not a physical one.
-- **The operational data is synthetic.** The depot, fleet, tariff and costs are plausible and
-  hand-authored. They are not measurements from a real site.
+- **The operational data is synthetic**, and deliberately so: the demo has to be reproducible from a
+  published seed, auditable by a stranger, and free of anyone's private operational detail. The
+  interface says so on the situation card. What a production integration would look like is written
+  up in [`docs/operational-data-contract.md`](docs/operational-data-contract.md), with a worked
+  snapshot per domain in [`docs/examples/`](docs/examples/) — **no connector is implemented**, and
+  nothing in the running application reaches an external service.
 - **It is not a fleet optimiser.** It compares two named strategies. It does not search for the
   best one.
 - **Two plans, not N.** The comparison is deliberately head-to-head.

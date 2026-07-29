@@ -1,0 +1,62 @@
+{
+  "sourceSystem": "example-batch-scheduler",
+  "snapshotAt": "2026-07-28T17:20:00+01:00",
+  "site": "Slough compute hall",
+  "detectedAt": "2026-07-28T17:20:00+01:00",
+  "deadline": "2026-07-29T05:30:00+01:00",
+  "dataQuality": "synthetic",
+  "failures": [
+    "Racks R7 and R8 offline - chilled-water loop fault CHW-221"
+  ],
+  "vocabulary": {
+    "unitPlural": "jobs",
+    "resourcePlural": "GPU nodes",
+    "levelUnit": "GPU-hours",
+    "rateUnit": "GPU-hours per hour"
+  },
+  "units": [
+    {
+      "id": "JOB-01",
+      "label": "Regulated: capital markets",
+      "capacity": 110,
+      "currentLevelPct": 29,
+      "requiredLevelPct": 88,
+      "deadline": "2026-07-29T04:10:00+01:00",
+      "isPriority": true,
+      "maxSharedRate": 11,
+      "maxDedicatedRate": 60,
+      "assignedResourceId": "GPU-01"
+    }
+  ],
+  "resources": [
+    {
+      "id": "GPU-01",
+      "kind": "shared",
+      "ratedRate": 11,
+      "isOperational": true
+    },
+    {
+      "id": "RACK-R7",
+      "kind": "dedicated",
+      "ratedRate": 96,
+      "isOperational": false,
+      "faultCode": "CHW-221"
+    }
+  ],
+  "siteConstraints": {
+    "sharedPoolCapacity": 78,
+    "readyAheadMinutes": 12,
+    "handoverBaseMinutes": 12,
+    "handoverTailMeanMinutes": 8,
+    "recoveryProbability": 0.2
+  },
+  "costCurve": [
+    {
+      "label": "Overnight trough",
+      "from": "2026-07-28T23:00:00+01:00",
+      "to": "2026-07-29T05:00:00+01:00",
+      "pricePerUnit": 0.094,
+      "currency": "GBP"
+    }
+  ]
+}

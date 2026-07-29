@@ -5,6 +5,7 @@ import { AgentProgress } from './components/AgentProgress'
 import { ArchitectureSection } from './components/ArchitectureSection'
 import { ChallengePanel } from './components/ChallengePanel'
 import { CounterfactualCanvas } from './components/CounterfactualCanvas'
+import { DecisionFilmPlayer } from './components/DecisionFilmPlayer'
 import { FuturePanel } from './components/FuturePanel'
 import { IncidentCard } from './components/IncidentCard'
 import { RecommendationPanel } from './components/RecommendationPanel'
@@ -23,6 +24,7 @@ export function App() {
   const [running, setRunning] = useState(false)
   const [challenging, setChallenging] = useState(false)
   const [activeStep, setActiveStep] = useState(0)
+  const [appliedQuestion, setAppliedQuestion] = useState<string | undefined>(undefined)
 
   const resultRef = useRef<HTMLDivElement>(null)
 
@@ -49,6 +51,7 @@ export function App() {
           setNarrative(loaded.narrative)
           setDecision(null)
           setError(null)
+          setAppliedQuestion(undefined)
         }
       })
       .catch((cause: unknown) => {
@@ -87,6 +90,7 @@ export function App() {
 
     try {
       const result = await api.run(narrative, scenarioKey)
+      setAppliedQuestion(undefined)
       const remaining = steps.length * STEP_MS - (performance.now() - started)
       if (remaining > 0) {
         await new Promise((resolve) => window.setTimeout(resolve, remaining))
@@ -106,6 +110,7 @@ export function App() {
 
       try {
         setDecision(await api.challenge(question, narrative, scenarioKey))
+        setAppliedQuestion(question)
       } catch (cause: unknown) {
         setError(toForkcastError(cause))
       } finally {
@@ -121,6 +126,7 @@ export function App() {
 
     try {
       setDecision(await api.run(narrative, scenarioKey))
+      setAppliedQuestion(undefined)
     } catch (cause: unknown) {
       setError(toForkcastError(cause))
     } finally {
@@ -285,6 +291,14 @@ export function App() {
               </section>
 
               <CounterfactualCanvas decision={decision} />
+
+              <DecisionFilmPlayer
+                scenario={scenarioKey}
+                question={appliedQuestion}
+                stateToken={`${decision.incident.vocabulary.domainKey}:${
+                  decision.assumption?.recognised ? decision.assumption.kind : 'base'
+                }:${decision.outcomes.map((o) => o.onTimeDeparturePct).join('-')}`}
+              />
               <RecommendationPanel decision={decision} />
               <VerificationPanel decision={decision} />
 

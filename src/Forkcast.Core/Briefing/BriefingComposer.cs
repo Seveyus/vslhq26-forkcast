@@ -119,6 +119,7 @@ public sealed class BriefingComposer
             TrialCount = result.TrialCount,
             VerifiedClaims = result.Verification.VerifiedClaims,
             UnsupportedNumbers = result.Verification.UnsupportedNumbers,
+            Claims = result.Verification.Claims,
             Beats = beats,
             Resources = result.Incident.ChargePoints
                 .Select(point => new CanvasResource

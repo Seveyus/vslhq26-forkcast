@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "briefing:export": "node scripts/briefing-export.mjs",
+    "capture": "node scripts/capture.mjs",
+    "capture:live": "node scripts/record-live.mjs"
   },
   "dependencies": {
     "react": "^19.2.7",

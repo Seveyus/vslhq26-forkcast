@@ -296,6 +296,7 @@ public sealed record BriefingResponse(
     int UnsupportedNumbers,
     double TotalSeconds,
     string? CounterfactualLabel,
+    IReadOnlyList<ClaimDto> Claims,
     IReadOnlyList<BriefingBeatDto> Beats,
     IReadOnlyList<CanvasResourceDto> Resources,
     IReadOnlyList<CanvasPlanDto> Plans,
