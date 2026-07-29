@@ -22,6 +22,37 @@ public sealed class DeterministicIntelligence(ChallengeService challenges) : IIn
 
     public bool IsLive => false;
 
+    // A single report usually states several counts for the same noun: how many failed, how many
+    // remain, how many are on priority routes. These queries say which sentence answers which
+    // question, so the reader picks the right one instead of the first one.
+
+    private static readonly CountQuery FleetQuery = new()
+    {
+        Nouns = ["vehicles", "vans", "trucks", "hgvs"],
+        Prefer = ["depart", "leave", "must", "on the road", "out by"],
+        Avoid = ["priority", "at risk", "already"]
+    };
+
+    private static readonly CountQuery OperationalConnectorQuery = new()
+    {
+        Nouns = ["charge points", "chargers", "charging points", "connectors", "bays"],
+        Prefer = ["remain", "available", "still", "working", "operational", "left", "usable"],
+        Avoid = ["fail", "offline", "down", "faulty", "out of service", "lost", "dead"]
+    };
+
+    private static readonly CountQuery FailedConnectorQuery = new()
+    {
+        Nouns = ["charge points", "chargers", "charging points", "connectors", "bays"],
+        Prefer = ["fail", "offline", "down", "faulty", "out of service", "lost", "dead"],
+        RequirePreferred = true
+    };
+
+    private static readonly CountQuery PriorityQuery = new()
+    {
+        Nouns = ["priority routes", "priority route", "priority"],
+        Prefer = ["priority"]
+    };
+
     public Task<ExtractionResult> ExtractAsync(
         string narrative,
         CancellationToken cancellationToken = default)
@@ -36,10 +67,10 @@ public sealed class DeterministicIntelligence(ChallengeService challenges) : IIn
         {
             DetectedAtLocalTime = times.Count > 0 ? times[0] : null,
             DeadlineLocalTime = times.Count > 1 ? times[^1] : null,
-            VehicleCount = TextFacts.CountBefore(narrative, "vehicles", "vans", "trucks"),
-            OperationalChargePointCount = TextFacts.CountBefore(
-                narrative, "chargers", "charge points", "charging points", "connectors"),
-            PriorityVehicleCount = TextFacts.CountBefore(narrative, "priority routes", "priority"),
+            VehicleCount = TextFacts.Count(narrative, FleetQuery),
+            OperationalChargePointCount = TextFacts.Count(narrative, OperationalConnectorQuery),
+            FailedChargePointCount = TextFacts.Count(narrative, FailedConnectorQuery),
+            PriorityVehicleCount = TextFacts.Count(narrative, PriorityQuery),
             MinInitialStateOfChargePct = range?.Min,
             MaxInitialStateOfChargePct = range?.Max,
             Failures = []

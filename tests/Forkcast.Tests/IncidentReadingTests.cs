@@ -163,6 +163,49 @@ public class IncidentReadingTests
     }
 
     [Fact]
+    public void A_count_is_not_taken_from_a_neighbouring_sentence()
+    {
+        Assert.Null(TextFacts.CountBefore("We had 40 today. Some vans are late.", "vans"));
+    }
+
+    /// <summary>
+    /// A report routinely states two counts for the same noun. Reading the first one is how a
+    /// naive parser turns "two chargers failed, ten remain" into a two-charger depot.
+    /// </summary>
+    [Fact]
+    public async Task Failed_and_remaining_connectors_are_told_apart()
+    {
+        var extraction = await Reader().ExtractAsync(
+            "At 19:15 two chargers failed at our Leeds hub. 28 vans must leave by 05:30. "
+            + "Ten charge points remain available. Nine vehicles are on priority routes.");
+
+        Assert.Equal(28, extraction.Draft.VehicleCount);
+        Assert.Equal(10, extraction.Draft.OperationalChargePointCount);
+        Assert.Equal(2, extraction.Draft.FailedChargePointCount);
+        Assert.Equal(9, extraction.Draft.PriorityVehicleCount);
+    }
+
+    [Fact]
+    public async Task A_fleet_count_is_not_taken_from_the_priority_sentence()
+    {
+        var extraction = await Reader().ExtractAsync(
+            "31 vehicles must depart by 04:00. Seven vehicles are on priority routes.");
+
+        Assert.Equal(31, extraction.Draft.VehicleCount);
+        Assert.Equal(7, extraction.Draft.PriorityVehicleCount);
+    }
+
+    [Fact]
+    public async Task A_report_with_no_failure_wording_reports_no_failed_connectors()
+    {
+        var extraction = await Reader().ExtractAsync(
+            "Twelve charge points are available for 18 vans leaving by 05:00.");
+
+        Assert.Equal(12, extraction.Draft.OperationalChargePointCount);
+        Assert.Null(extraction.Draft.FailedChargePointCount);
+    }
+
+    [Fact]
     public async Task A_narrative_with_no_facts_reports_what_it_could_not_find()
     {
         var extraction = await Reader().ExtractAsync("Something went wrong at the depot.");

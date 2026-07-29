@@ -89,9 +89,29 @@ public static class DemoScenario
 
     public static IReadOnlyList<ResponsePlan> Plans { get; } = [PlanA, PlanB];
 
-    /// <summary>Rebuilds the two response plans against a possibly modified incident.</summary>
-    public static IReadOnlyList<ResponsePlan> PlansFor(Incident incident) =>
-        ReferenceEquals(incident, Incident) ? Plans : [PlanA, PlanB];
+    /// <summary>How long after detection the towed battery unit can realistically be on site.</summary>
+    public static TimeSpan BufferLeadTime { get; } = PlanB.MobileBuffer!.PlannedArrival - Incident.DetectedAt;
+
+    /// <summary>
+    /// Rebuilds the two response plans against a possibly modified incident, keeping the call-out
+    /// lead time rather than the absolute arrival clock time.
+    /// </summary>
+    public static IReadOnlyList<ResponsePlan> PlansFor(Incident incident)
+    {
+        ArgumentNullException.ThrowIfNull(incident);
+
+        if (incident.DetectedAt == Incident.DetectedAt)
+        {
+            return Plans;
+        }
+
+        var buffer = PlanB.MobileBuffer! with
+        {
+            PlannedArrival = incident.DetectedAt + BufferLeadTime
+        };
+
+        return [PlanA, PlanB with { MobileBuffer = buffer }];
+    }
 
     private static DateTimeOffset At(int dayOffset, int hour, int minute) => new DateTimeOffset(
         IncidentDate.Year,

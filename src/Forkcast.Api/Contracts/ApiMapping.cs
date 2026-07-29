@@ -1,0 +1,205 @@
+using Forkcast.Core.Ai;
+using Forkcast.Core.Challenges;
+using Forkcast.Core.Comparison;
+using Forkcast.Core.Decisions;
+using Forkcast.Core.Incidents;
+using Forkcast.Core.Plans;
+using Forkcast.Core.Recommendations;
+using Forkcast.Core.Simulation;
+using Forkcast.Core.Verification;
+
+namespace Forkcast.Api.Contracts;
+
+/// <summary>
+/// Projects the domain onto the wire contract.
+/// </summary>
+/// <remarks>
+/// Kept as an explicit mapping rather than serialising the domain directly, so that renaming a
+/// field in the engine cannot silently change the shape the frontend depends on.
+/// </remarks>
+internal static class ApiMapping
+{
+    public static IncidentDto ToDto(this Incident incident) => new(
+        incident.Id,
+        incident.Title,
+        incident.Narrative,
+        incident.Site,
+        incident.DetectedAt,
+        incident.DepartureDeadline,
+        Math.Round((incident.DepartureDeadline - incident.DetectedAt).TotalHours, 2),
+        incident.VehicleCount,
+        incident.PriorityVehicleCount,
+        incident.OperationalChargePointCount,
+        incident.ChargePoints.Count,
+        incident.FailedChargePointCount,
+        Math.Round(incident.TotalRequiredEnergyKwh, 1),
+        incident.Failures,
+        incident.Fleet.Select(ToDto).ToList(),
+        incident.ChargePoints.Select(ToDto).ToList(),
+        incident.Tariff.Select(ToDto).ToList(),
+        new ConstraintsDto(
+            incident.Constraints.AcArrayCapacityKw,
+            incident.Constraints.PreDepartureReadyMinutes,
+            incident.Constraints.PlugSwapBaseMinutes,
+            incident.Constraints.FaultRecoveryProbability));
+
+    private static VehicleDto ToDto(Vehicle vehicle) => new(
+        vehicle.Id,
+        vehicle.Route,
+        vehicle.BatteryCapacityKwh,
+        vehicle.InitialStateOfChargePct,
+        vehicle.RequiredStateOfChargePct,
+        Math.Round(vehicle.RequiredEnergyKwh, 1),
+        vehicle.IsPriorityRoute,
+        vehicle.ScheduledDeparture,
+        vehicle.RosteredChargePointId);
+
+    private static ChargePointDto ToDto(ChargePoint point) => new(
+        point.Id,
+        point.Kind.ToString(),
+        point.RatedPowerKw,
+        point.IsOperational,
+        point.FaultCode,
+        point.FaultSummary);
+
+    private static TariffWindowDto ToDto(TariffWindow window) => new(
+        window.Label, window.From, window.To, window.PricePerKwhGbp);
+
+    public static PlanDto ToDto(this ResponsePlan plan) => new(
+        plan.Id,
+        plan.Name,
+        plan.Headline,
+        plan.Description,
+        plan.Actions,
+        plan.ChargingPolicy.ToString(),
+        plan.ChargeTargetPolicy.ToString(),
+        plan.MobileBuffer is { } buffer
+            ? new MobileBufferDto(
+                buffer.Outlets,
+                buffer.OutletPowerKw,
+                buffer.StoredEnergyKwh,
+                buffer.PlannedArrival,
+                buffer.CallOutCostGbp)
+            : null);
+
+    public static OutcomeDto ToDto(this PlanOutcome outcome) => new(
+        outcome.PlanId,
+        outcome.PlanName,
+        outcome.Seed,
+        outcome.TrialCount,
+        outcome.OnTimeDeparturePct,
+        outcome.OnTimeDeparturePctP5,
+        outcome.OnTimeDeparturePctP95,
+        outcome.PriorityOnTimeDeparturePct,
+        outcome.VehiclesAtRisk,
+        outcome.ExpectedLateVehicles,
+        outcome.ExpectedUnmetEnergyKwh,
+        outcome.ExpectedEnergyCostGbp,
+        outcome.ExpectedInterventionCostGbp,
+        outcome.ExpectedOperationalCostGbp,
+        outcome.ExpectedBufferEnergyKwh,
+        outcome.ExpectedGridEnergyKwh,
+        outcome.ChargePointUtilisationPct,
+        outcome.RiskLevel.ToString(),
+        outcome.CriticalConstraint,
+        outcome.Vehicles
+            .Select(v => new VehicleOutcomeDto(
+                v.VehicleId, v.Route, v.IsPriorityRoute, v.OnTimeProbability,
+                v.ExpectedShortfallKwh, v.ExpectedSlackMinutes, v.IsAtRisk))
+            .ToList(),
+        outcome.LoadCurve
+            .Select(s => new LoadSampleDto(
+                s.At, s.GridPowerKw, s.BufferPowerKw, s.VehiclesCharging, s.VehiclesReady))
+            .ToList());
+
+    public static ComparisonDto ToDto(this PlanComparison comparison) => new(
+        comparison.Baseline.PlanId,
+        comparison.Alternative.PlanId,
+        comparison.RecommendedPlanId,
+        comparison.DecisionRule,
+        comparison.OnTimeImprovementPp,
+        comparison.VehiclesAtRiskAvoided,
+        comparison.UnmetEnergyAvoidedKwh,
+        comparison.AdditionalCostGbp,
+        comparison.CostPerDepartureSecuredGbp);
+
+    public static RecommendationDto ToDto(this Recommendation recommendation) => new(
+        recommendation.RecommendedPlanId,
+        recommendation.RecommendedPlanName,
+        recommendation.Headline,
+        recommendation.Actions,
+        recommendation.Rationale
+            .Select(r => new RationalePointDto(r.Text, r.ClaimIds))
+            .ToList(),
+        recommendation.DecisionRule,
+        recommendation.ResidualRisk.ToString(),
+        recommendation.CriticalConstraint,
+        recommendation.DeterministicSummary);
+
+    public static VerificationDto ToDto(this ClaimVerification verification) => new(
+        verification.TotalClaims,
+        verification.VerifiedClaims,
+        verification.UnsupportedNumbers,
+        verification.AllClaimsVerified,
+        verification.NarrativeAccepted,
+        verification.NarrativeSource,
+        verification.SimulationSeed,
+        verification.TrialCount,
+        verification.Claims.Select(ToDto).ToList(),
+        verification.Unsupported
+            .Select(u => new UnsupportedNumberDto(u.Token, u.Context))
+            .ToList());
+
+    private static ClaimDto ToDto(Claim claim) => new(
+        claim.Id,
+        claim.Label,
+        claim.Value,
+        claim.DisplayValue,
+        claim.Unit,
+        claim.SourceField,
+        claim.CalculationMethod,
+        claim.SimulationSeed,
+        claim.TrialCount,
+        claim.Verified);
+
+    private static AssumptionDto ToDto(AssumptionOverride assumption) => new(
+        assumption.Kind.ToString(),
+        assumption.Value,
+        assumption.Label,
+        assumption.Question,
+        assumption.Recognised);
+
+    private static DeltaDto ToDto(DecisionDelta delta) => new(
+        delta.PreviousOnTimeDeparturePct,
+        delta.OnTimeDeparturePct,
+        delta.OnTimeChangePp,
+        delta.PreviousVehiclesAtRisk,
+        delta.VehiclesAtRisk,
+        delta.PreviousRiskLevel.ToString(),
+        delta.RiskLevel.ToString(),
+        delta.RecommendationChanged,
+        delta.Summary);
+
+    public static DecisionResponse ToResponse(
+        this DecisionResult result,
+        IReadOnlyList<string>? notes = null) => new(
+        result.Incident.ToDto(),
+        result.Plans.Select(ToDto).ToList(),
+        result.Outcomes.Select(ToDto).ToList(),
+        result.Comparison.ToDto(),
+        result.Recommendation.ToDto(),
+        result.Verification.ToDto(),
+        result.ExecutiveSummary,
+        result.Seed,
+        result.TrialCount,
+        new IntelligenceDto(
+            result.IntelligenceProvider,
+            result.IntelligenceLive,
+            result.IntelligenceLive ? "Azure OpenAI connected" : "Deterministic demo mode"),
+        result.Assumption is null ? null : ToDto(result.Assumption),
+        result.Delta is null ? null : ToDto(result.Delta),
+        notes ?? []);
+
+    public static AdjustmentDto ToDto(this DraftAdjustment adjustment) =>
+        new(adjustment.Field, adjustment.Reason);
+}
