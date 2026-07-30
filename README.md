@@ -23,7 +23,7 @@ one worked example; a GPU compute hall runs on the same engine.
 | **Members** | _(solo — add teammates here)_ |
 | **Primary category** | Best AI Agent or Workflow Automation |
 | **Secondary category** | Best Azure OpenAI / LLM-Powered App |
-| **Demo video** | [`./demo/demo.mp4`](./demo/demo.mp4) |
+| **Demo video** | [`./demo/demo-smooth.mp4`](./demo/demo-smooth.mp4) |
 | **Stack** | ASP.NET Core Minimal API · C# · Azure OpenAI · React + TypeScript + Vite · deterministic Monte Carlo · xUnit |
 | **Domains shipped** | An electric delivery depot and a GPU compute hall, on the same engine |
 | **Tests** | 164, `dotnet test` |
@@ -358,7 +358,8 @@ Every screenshot is captured from the running application by
 
 ## Demo video
 
-**[`demo/demo.mp4`](demo/demo.mp4)** — 2:48, 1920×1080, H.264.
+**[`demo/demo-smooth.mp4`](demo/demo-smooth.mp4)** — 2:48, 1920×1080, H.264. This is the
+submission cut. `demo/demo.mp4` is the earlier cut of the same film, kept for reference.
 
 Built with [HyperFrames](https://hyperframes.heygen.com) from the same captured screens, so the
 film shows the submitted application rather than a separate mock-up of it. Fifteen seconds in its
@@ -508,11 +509,12 @@ What this implementation contributes:
   rather than generating prose about it.
 - **A .NET and Azure implementation** with the language boundary off the critical path.
 
-> **For the author to complete before submission.** State plainly whether any source code, UI
-> assets or generated output from a previous project were reused here, and say so either way. If
-> the honest answer is that this implementation was written from scratch during the event from a
-> brief informed by prior work, say exactly that — it is both true and defensible. Do not claim
-> the concept originated during the event if it did not.
+**On prior work.** No source code, UI assets or generated output from any previous project were
+reused here. Everything in this repository was written during the event. The author has worked on
+fleet and depot problems before, and that experience informed the choice of domain and what a
+credible incident looks like — but the engine, the claim layer, the interface and the film were
+all built from scratch for this hackathon. Third-party dependencies are the ones declared in
+`Forkcast.*.csproj` and `web/package.json`, used as published.
 
 ## Where this goes next
 
