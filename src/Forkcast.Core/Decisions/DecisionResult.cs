@@ -47,6 +47,18 @@ public sealed record DecisionResult
 /// <summary>How a challenged run differs from the run it was launched from.</summary>
 public sealed record DecisionDelta
 {
+    /// <summary>
+    /// The verified claim that backed the previously recommended plan's on-time result.
+    /// Its ID is namespaced with "previous-" so it can travel beside the challenged run's
+    /// current claim set without colliding with it.
+    /// </summary>
+    public required Claim PreviousOnTimeClaim { get; init; }
+
+    /// <summary>
+    /// The verified claim that backed the previously recommended plan's at-risk count.
+    /// </summary>
+    public required Claim PreviousAtRiskClaim { get; init; }
+
     public required double PreviousOnTimeDeparturePct { get; init; }
 
     public required double OnTimeDeparturePct { get; init; }

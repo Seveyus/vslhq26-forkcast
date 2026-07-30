@@ -109,8 +109,9 @@ export function App() {
       setError(null)
 
       try {
-        setDecision(await api.challenge(question, narrative, scenarioKey))
-        setAppliedQuestion(question)
+        const result = await api.challenge(question, narrative, scenarioKey)
+        setDecision(result)
+        setAppliedQuestion(result.assumption?.recognised ? question : undefined)
       } catch (cause: unknown) {
         setError(toForkcastError(cause))
       } finally {
@@ -219,7 +220,18 @@ export function App() {
                       className={`domain${active ? ' is-active' : ''}`}
                       aria-pressed={active}
                       disabled={running || challenging}
-                      onClick={() => setScenarioKey(option.key)}
+                      onClick={() => {
+                        if (!active) {
+                          // Never leave the previous domain's verified result under a newly
+                          // selected domain while its incident is loading (or if loading fails).
+                          setDecision(null)
+                          setDemo(null)
+                          setNarrative('')
+                          setAppliedQuestion(undefined)
+                          setError(null)
+                          setScenarioKey(option.key)
+                        }
+                      }}
                     >
                       <span className="domain__label">{option.domainLabel}</span>
                       <span className="domain__title">{option.title}</span>
@@ -293,11 +305,11 @@ export function App() {
               <CounterfactualCanvas decision={decision} />
 
               <DecisionFilmPlayer
+                decision={decision}
                 scenario={scenarioKey}
                 question={appliedQuestion}
-                stateToken={`${decision.incident.vocabulary.domainKey}:${
-                  decision.assumption?.recognised ? decision.assumption.kind : 'base'
-                }:${decision.outcomes.map((o) => o.onTimeDeparturePct).join('-')}`}
+                narrative={decision.incident.narrative}
+                decisionPending={challenging}
               />
               <RecommendationPanel decision={decision} />
               <VerificationPanel decision={decision} />

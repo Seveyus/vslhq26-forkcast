@@ -129,6 +129,15 @@ public sealed class DecisionService(
     {
         var previous = before.Comparison.Recommended;
         var current = after.Comparison.Recommended;
+        var previousPrefix = previous.PlanId == before.Comparison.Baseline.PlanId
+            ? "baseline"
+            : "alternative";
+        var previousOnTimeClaim = PreviousClaim(
+            before.Verification.Claims,
+            $"{previousPrefix}-on-time");
+        var previousAtRiskClaim = PreviousClaim(
+            before.Verification.Claims,
+            $"{previousPrefix}-at-risk");
         var change = Math.Round(
             current.OnTimeDeparturePct - previous.OnTimeDeparturePct, 1, MidpointRounding.AwayFromZero);
 
@@ -147,6 +156,8 @@ public sealed class DecisionService(
 
         return new DecisionDelta
         {
+            PreviousOnTimeClaim = previousOnTimeClaim,
+            PreviousAtRiskClaim = previousAtRiskClaim,
             PreviousOnTimeDeparturePct = previous.OnTimeDeparturePct,
             OnTimeDeparturePct = current.OnTimeDeparturePct,
             OnTimeChangePp = change,
@@ -157,6 +168,16 @@ public sealed class DecisionService(
             RecommendationChanged =
                 before.Comparison.RecommendedPlanId != after.Comparison.RecommendedPlanId,
             Summary = summary
+        };
+    }
+
+    private static Claim PreviousClaim(IReadOnlyList<Claim> claims, string id)
+    {
+        var claim = claims.Single(c => string.Equals(c.Id, id, StringComparison.Ordinal));
+        return claim with
+        {
+            Id = $"previous-{claim.Id}",
+            Label = $"Previous recommended outcome: {claim.Label}"
         };
     }
 

@@ -199,6 +199,8 @@ internal static class ApiMapping
         assumption.Recognised);
 
     private static DeltaDto ToDto(DecisionDelta delta) => new(
+        ToDto(delta.PreviousOnTimeClaim),
+        ToDto(delta.PreviousAtRiskClaim),
         delta.PreviousOnTimeDeparturePct,
         delta.OnTimeDeparturePct,
         delta.OnTimeChangePp,

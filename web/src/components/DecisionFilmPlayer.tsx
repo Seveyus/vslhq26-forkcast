@@ -1,177 +1,300 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { api, ForkcastError } from '../api/client'
-import type { Briefing, BriefingBeat, Claim } from '../api/schema'
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useReducer,
+  useRef,
+  useState,
+} from 'react'
+import { api } from '../api/client'
+import type { Briefing, Decision } from '../api/schema'
+import {
+  TARGET_PLAYBACK_SECONDS,
+  activeBeatIndex,
+  briefingMatchesDecision,
+  decisionEvidenceClaims,
+  decisionFilmStateToken,
+  displayClaimId,
+  displaySourceField,
+  initialPlaybackState,
+  playbackReducer,
+  playbackScale,
+  resolveBeatClaims,
+} from './decisionFilm'
 
 interface Props {
+  decision: Decision
   scenario?: string
-  /** The counterfactual currently applied, so the film is briefed on the same state. */
+  /** The recognised counterfactual currently applied to the Decision response. */
   question?: string
-  /** Bumped whenever the decision changes, to invalidate a stale film. */
-  stateToken: string
+  /** The same incident text used to produce the Decision response. */
+  narrative: string
+  /** Stops the old film as soon as a counterfactual request begins. */
+  decisionPending: boolean
 }
 
-/** Browser playback is a compressed read of the render timeline, not a different one. */
-const TARGET_SECONDS = 26
-
 /**
- * The decision film: the verified state, played back.
- *
- * The canvas is for exploring a decision; this is for communicating one. Both read the same
- * verified state, and this component renders exactly what `/api/briefing/export` returns — the
- * beats, their captions, and the claims each beat is permitted to show. It composes no figure of
- * its own, which is what makes the claim on the tin true: the film is generated from the verified
- * decision state, not from a script.
+ * The decision film is a projection of the verified Decision response already on screen. It
+ * renders the server's beats and captions, but resolves every scene boundary against the current
+ * Decision evidence before it presents that scene as verified.
  */
-export function DecisionFilmPlayer({ scenario, question, stateToken }: Props) {
+export function DecisionFilmPlayer({
+  decision,
+  scenario,
+  question,
+  narrative,
+  decisionPending,
+}: Props) {
   const [briefing, setBriefing] = useState<Briefing | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
-  const [stale, setStale] = useState(false)
-  const [playing, setPlaying] = useState(false)
-  const [elapsed, setElapsed] = useState(0)
+  const [regenerated, setRegenerated] = useState(false)
+  const [clock, dispatch] = useReducer(playbackReducer, initialPlaybackState)
 
   const loadedToken = useRef<string | null>(null)
+  const latestToken = useRef('')
+  const requestController = useRef<AbortController | null>(null)
   const frame = useRef(0)
   const startedAt = useRef(0)
 
-  const scale = briefing && briefing.totalSeconds > 0 ? TARGET_SECONDS / briefing.totalSeconds : 1
-  const runtime = briefing ? briefing.totalSeconds * scale : 0
+  const evidence = useMemo(() => decisionEvidenceClaims(decision), [decision])
+  const stateToken = useMemo(() => decisionFilmStateToken(decision), [decision])
+  const requestToken = `${scenario ?? ''}\u0000${question ?? ''}\u0000${stateToken}`
+  latestToken.current = requestToken
 
-  // A new decision makes any loaded film a description of a world that no longer applies.
-  useEffect(() => {
-    if (loadedToken.current !== null && loadedToken.current !== stateToken) {
-      setStale(true)
-      setPlaying(false)
-      setElapsed(0)
-    }
-  }, [stateToken])
+  const scale = briefing ? playbackScale(briefing.totalSeconds) : 1
+  const runtime = briefing ? briefing.totalSeconds * scale : TARGET_PLAYBACK_SECONDS
 
   const load = useCallback(async () => {
+    requestController.current?.abort()
+    const controller = new AbortController()
+    requestController.current = controller
+    const expectedToken = requestToken
+
     setLoading(true)
     setError(null)
+
     try {
-      const next = await api.briefing(scenario, question)
+      const next = await api.briefing(scenario, question, narrative, controller.signal)
+      if (controller.signal.aborted || latestToken.current !== expectedToken) {
+        return null
+      }
+      if (!briefingMatchesDecision(next, decision)) {
+        throw new Error('Briefing does not match the current verified decision.')
+      }
+
       setBriefing(next)
-      loadedToken.current = stateToken
-      setStale(false)
-      setElapsed(0)
+      loadedToken.current = expectedToken
+      dispatch({ type: 'reset' })
       return next
-    } catch (cause: unknown) {
-      setError(
-        cause instanceof ForkcastError ? cause.message : 'The decision brief could not be loaded.',
-      )
+    } catch {
+      if (controller.signal.aborted || latestToken.current !== expectedToken) {
+        return null
+      }
+      setBriefing(null)
+      setError('The verified briefing could not be loaded.')
       return null
     } finally {
-      setLoading(false)
+      if (requestController.current === controller) {
+        requestController.current = null
+        setLoading(false)
+      }
     }
-  }, [scenario, question, stateToken])
+  }, [decision, narrative, question, requestToken, scenario])
 
-  const play = useCallback(async () => {
-    const current = stale || !briefing ? await load() : briefing
-    if (current) {
-      setElapsed(0)
-      setPlaying(true)
+  // A completed decision change immediately removes the previous film. If the user had already
+  // prepared a film, prepare its evidence-synchronised replacement without autoplaying it.
+  useEffect(() => {
+    const hadRequestInFlight = requestController.current !== null
+    requestController.current?.abort()
+    requestController.current = null
+
+    const previous = loadedToken.current
+    if (
+      hadRequestInFlight ||
+      (previous !== null && previous !== requestToken)
+    ) {
+      setBriefing(null)
+      setError(null)
+      setLoading(false)
+      setRegenerated(true)
+      dispatch({ type: 'reset' })
+      void load()
     }
-  }, [briefing, stale, load])
+  }, [load, requestToken])
 
   useEffect(() => {
-    if (!playing || runtime <= 0) {
+    if (decisionPending) {
+      dispatch({ type: 'pause' })
+    }
+  }, [decisionPending])
+
+  useEffect(
+    () => () => {
+      requestController.current?.abort()
+      requestController.current = null
+      cancelAnimationFrame(frame.current)
+    },
+    [],
+  )
+
+  useEffect(() => {
+    if (!clock.playing || runtime <= 0) {
       return
     }
 
-    startedAt.current = performance.now() - elapsed * 1000
+    startedAt.current = performance.now() - clock.elapsed * 1000
 
     const tick = () => {
       const next = (performance.now() - startedAt.current) / 1000
-      if (next >= runtime) {
-        setElapsed(runtime)
-        setPlaying(false)
-        return
+      dispatch({ type: 'tick', elapsed: next, runtime })
+      if (next < runtime) {
+        frame.current = requestAnimationFrame(tick)
       }
-      setElapsed(next)
-      frame.current = requestAnimationFrame(tick)
     }
 
     frame.current = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(frame.current)
-    // elapsed is the resume point, deliberately not a dependency.
+    // clock.elapsed is the resume point, not a dependency: every tick updates it.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [playing, runtime])
+  }, [clock.playing, runtime])
 
-  const beats = briefing?.beats ?? []
-  const activeIndex = useMemo(() => {
-    if (beats.length === 0) {
-      return 0
+  const start = useCallback(async () => {
+    const current = briefing ?? (await load())
+    if (current && latestToken.current === requestToken) {
+      dispatch({
+        type: 'play',
+        runtime: current.totalSeconds * playbackScale(current.totalSeconds),
+      })
     }
-    const at = elapsed / Math.max(scale, 1e-6)
-    const found = beats.findIndex((beat) => at < beat.startSeconds + beat.durationSeconds)
-    return found < 0 ? beats.length - 1 : found
-  }, [beats, elapsed, scale])
+  }, [briefing, load, requestToken])
 
-  const active = beats[activeIndex] as BriefingBeat | undefined
-  const claimsById = useMemo(
-    () => new Map((briefing?.claims ?? []).map((claim) => [claim.id, claim])),
-    [briefing],
+  const restart = useCallback(async () => {
+    const current = briefing ?? (await load())
+    if (current && latestToken.current === requestToken) {
+      // Restart while already playing must also move the RAF wall-clock origin.
+      startedAt.current = performance.now()
+      dispatch({ type: 'restart' })
+    }
+  }, [briefing, load, requestToken])
+
+  const beats = useMemo(() => briefing?.beats ?? [], [briefing])
+  const activeIndex = useMemo(
+    () => activeBeatIndex(beats, clock.elapsed, scale),
+    [beats, clock.elapsed, scale],
   )
-  const activeClaims = (active?.claimIds ?? [])
-    .map((id) => claimsById.get(id))
-    .filter((claim): claim is Claim => claim != null)
+  const active = beats[activeIndex]
+  const resolution = useMemo(
+    () => resolveBeatClaims(active?.claimIds ?? [], evidence),
+    [active, evidence],
+  )
+  const unverified = resolution.claims.filter((claim) => !claim.verified)
+  const sceneBlocked = resolution.unknownIds.length > 0 || unverified.length > 0
+
+  useEffect(() => {
+    if (import.meta.env.DEV && resolution.unknownIds.length > 0) {
+      console.warn(
+        `Decision Film blocked unresolved claim ids: ${resolution.unknownIds.join(', ')}`,
+      )
+    }
+  }, [resolution.unknownIds])
+
+  const progress = Math.min(100, (clock.elapsed / Math.max(runtime, Number.EPSILON)) * 100)
+  const playLabel = loading
+    ? 'Preparing verified playback…'
+    : clock.playing
+      ? 'Playing verified future'
+      : briefing && clock.elapsed > 0 && clock.elapsed < runtime
+        ? 'Resume'
+        : clock.elapsed >= runtime
+          ? 'Play again'
+          : 'Play verified future'
+  const showBoards =
+    !sceneBlocked &&
+    (active?.kind === 'futures' ||
+      active?.kind === 'risk' ||
+      active?.kind === 'recommendation')
+  const riskScene = active?.id === 'risk' || active?.kind === 'risk'
 
   return (
     <section className="panel film" id="film">
       <header className="panel__head">
         <div>
-          <p className="eyebrow">Generated from verified state</p>
-          <h2>Decision film</h2>
+          <p className="eyebrow">Decision film</p>
+          <h2>Watch the decision unfold</h2>
           <p className="panel__sub">
-            Watch both operational futures unfold. Every figure shown below is linked to the same
-            evidence ledger used by the recommendation.
+            A visual briefing generated from the current simulation and constrained by its evidence
+            ledger.
           </p>
         </div>
-        <div className="film__controls">
+        <div className="film__controls" aria-label="Decision film controls">
           <button
             type="button"
             className="button button--primary"
-            onClick={() => void play()}
-            disabled={loading}
+            onClick={() => void start()}
+            disabled={loading || decisionPending || clock.playing}
           >
-            {loading ? 'Briefing…' : playing ? 'Restart' : 'Play decision film'}
+            {playLabel}
           </button>
           {briefing && (
-            <button
-              type="button"
-              className="button button--ghost"
-              onClick={() => setPlaying((was) => !was)}
-              disabled={loading || elapsed >= runtime}
-            >
-              {playing ? 'Pause' : 'Resume'}
-            </button>
+            <>
+              <button
+                type="button"
+                className="button button--ghost"
+                onClick={() => dispatch({ type: 'pause' })}
+                disabled={loading || decisionPending || !clock.playing}
+              >
+                Pause
+              </button>
+              <button
+                type="button"
+                className="button button--ghost"
+                onClick={() => void restart()}
+                disabled={loading || decisionPending}
+              >
+                Restart
+              </button>
+            </>
           )}
         </div>
       </header>
 
-      {error && (
-        <p className="challenge__miss" role="alert">
-          {error}
+      {regenerated && (
+        <p className="film__stale" aria-live="polite">
+          Decision state changed — playback regenerated from updated evidence.
         </p>
       )}
 
-      {stale && (
-        <p className="film__stale">
-          Decision state changed — film regenerated from updated evidence on next play.
+      {error && (
+        <div className="film__error" role="alert">
+          <p>{error}</p>
+          <button
+            type="button"
+            className="button button--ghost"
+            onClick={() => void load()}
+            disabled={loading || decisionPending}
+          >
+            Retry
+          </button>
+        </div>
+      )}
+
+      {loading && !briefing && (
+        <p className="film__idle" aria-live="polite">
+          Preparing verified playback…
         </p>
       )}
 
       {!briefing && !loading && !error && (
         <p className="film__idle">
-          The film is composed from the decision currently on screen: its situation, both futures,
-          the recommendation and the evidence behind each scene. Press play to brief it.
+          Change the assumption, and the film changes with the evidence. Playback starts only when
+          you choose it.
         </p>
       )}
 
       {briefing && (
         <>
-          <div className="film__stage" aria-live="polite">
+          <div className="film__stage">
             <div className="film__chrome">
               <span className="film__domain">{briefing.domainLabel}</span>
               <span className="film__badge">
@@ -180,13 +303,26 @@ export function DecisionFilmPlayer({ scenario, question, stateToken }: Props) {
               </span>
             </div>
 
-            <div className={`scene scene--${active?.kind ?? 'situation'}`} key={active?.id}>
+            <div
+              className={`scene scene--${active?.kind ?? 'situation'}${
+                sceneBlocked ? ' scene--blocked' : ''
+              }`}
+              key={active?.id}
+              aria-live="polite"
+            >
               <p className="scene__kicker">{active?.heading}</p>
-              <p className="scene__caption">{active?.caption}</p>
+              {active?.kind === 'situation' && (
+                <h3 className="scene__title">{briefing.title}</h3>
+              )}
+              <p className="scene__caption">
+                {sceneBlocked
+                  ? 'This scene cannot be presented as verified because its evidence reference is unresolved.'
+                  : active?.caption}
+              </p>
 
-              {activeClaims.length > 0 && (
+              {!sceneBlocked && resolution.claims.length > 0 && (
                 <ul className="scene__figures">
-                  {activeClaims.slice(0, 4).map((claim) => (
+                  {resolution.claims.slice(0, 4).map((claim) => (
                     <li key={claim.id}>
                       <strong>{claim.displayValue}</strong>
                       <span>{claim.label}</span>
@@ -195,20 +331,31 @@ export function DecisionFilmPlayer({ scenario, question, stateToken }: Props) {
                 </ul>
               )}
 
-              {active?.kind === 'futures' && (
+              {showBoards && (
                 <div className="scene__boards">
                   {briefing.plans.map((plan) => (
                     <div
                       key={plan.planId}
                       className={`scene__board${plan.recommended ? ' is-recommended' : ''}`}
                     >
-                      <span className="scene__board-name">{plan.planName}</span>
-                      <ul className="scene__units">
+                      <span className="scene__board-name">
+                        {plan.planName}
+                        {plan.recommended && (
+                          <em className="scene__recommended">Recommended</em>
+                        )}
+                      </span>
+                      <ul className="scene__units" aria-hidden="true">
                         {plan.units.map((unit) => (
                           <li
                             key={unit.id}
                             className={unit.isPriority ? 'is-priority' : undefined}
-                            style={{ opacity: 0.25 + 0.75 * unit.onTimeProbability }}
+                            style={{
+                              opacity: riskScene
+                                ? unit.atRisk
+                                  ? 1
+                                  : 0.22
+                                : 0.35 + 0.65 * unit.onTimeProbability,
+                            }}
                             data-risk={unit.atRisk ? 'true' : 'false'}
                           />
                         ))}
@@ -218,52 +365,88 @@ export function DecisionFilmPlayer({ scenario, question, stateToken }: Props) {
                 </div>
               )}
 
-              {active?.kind === 'situation' && (
+              {!sceneBlocked && active?.kind === 'situation' && (
                 <ul className="scene__resources">
                   {briefing.resources.map((resource) => (
-                    <li key={resource.id} data-down={resource.operational ? 'false' : 'true'}>
+                    <li
+                      key={resource.id}
+                      data-down={resource.operational ? 'false' : 'true'}
+                      aria-label={`${resource.id}, ${
+                        resource.operational ? 'operational' : 'offline'
+                      }`}
+                    >
                       {resource.id}
                     </li>
                   ))}
                 </ul>
               )}
+
+              {!sceneBlocked && active?.kind === 'counterfactual' && (
+                <p className="scene__state">Regenerated from the updated verified decision</p>
+              )}
             </div>
 
             <div className="film__timeline">
-              <div className="film__progress" style={{ width: `${(elapsed / Math.max(runtime, 1e-6)) * 100}%` }} />
-              <ul className="film__beats">
+              <div
+                className="film__progress"
+                style={{ width: `${progress}%` }}
+                role="progressbar"
+                aria-label="Decision film progress"
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={Math.round(progress)}
+              />
+              <ol className="film__beats" aria-label="Decision film beats">
                 {beats.map((beat, index) => (
                   <li
                     key={beat.id}
                     className={index === activeIndex ? 'is-active' : undefined}
                     style={{ flexGrow: beat.durationSeconds }}
                     title={beat.heading}
+                    aria-current={index === activeIndex ? 'step' : undefined}
                   >
                     <span>{beat.heading}</span>
                   </li>
                 ))}
-              </ul>
+              </ol>
             </div>
           </div>
 
-          <aside className="rail">
+          <aside className={`rail${active?.kind === 'evidence' ? ' rail--focus' : ''}`}>
             <header>
               <span className="future__constraint-label">Evidence rail</span>
               <p className="rail__scene">{active?.heading}</p>
               <p className="rail__note">Current scene constrained by the evidence ledger.</p>
             </header>
 
-            {activeClaims.length === 0 ? (
+            {resolution.unknownIds.length > 0 && (
+              <p className="rail__warning" role="alert">
+                Evidence reference unavailable:{' '}
+                <code>{resolution.unknownIds.join(', ')}</code>. No unresolved figure is presented
+                as verified.
+              </p>
+            )}
+
+            {unverified.length > 0 && (
+              <p className="rail__warning" role="alert">
+                This scene contains unverified evidence and has been blocked.
+              </p>
+            )}
+
+            {!sceneBlocked && resolution.claims.length === 0 ? (
               <p className="rail__empty">No numerical claim required for this scene.</p>
             ) : (
               <ul className="rail__claims">
-                {activeClaims.map((claim) => (
-                  <li key={claim.id}>
+                {resolution.claims.map((claim) => (
+                  <li key={claim.id} className={claim.verified ? undefined : 'is-unverified'}>
                     <div className="rail__claim-head">
-                      <code>{claim.id}</code>
+                      <code title={claim.id}>{displayClaimId(claim.id)}</code>
                       <strong>{claim.displayValue}</strong>
                     </div>
-                    <span className="rail__source">{claim.sourceField}</span>
+                    <span className="rail__label">{claim.label}</span>
+                    <span className="rail__source" title={claim.sourceField}>
+                      source · {displaySourceField(claim.sourceField)}
+                    </span>
                     <span className={claim.verified ? 'is-good' : 'is-bad'}>
                       {claim.verified ? 'verified' : 'unverified'}
                     </span>

@@ -197,6 +197,8 @@ public sealed record IntelligenceDto(string Provider, bool Live, string Badge);
 public sealed record AssumptionDto(string Kind, double Value, string Label, string Question, bool Recognised);
 
 public sealed record DeltaDto(
+    ClaimDto PreviousOnTimeClaim,
+    ClaimDto PreviousAtRiskClaim,
     double PreviousOnTimeDeparturePct,
     double OnTimeDeparturePct,
     double OnTimeChangePp,

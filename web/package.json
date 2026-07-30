@@ -7,10 +7,12 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
+    "test:film": "node --experimental-strip-types --disable-warning=ExperimentalWarning --test tests/decisionFilm.test.ts",
     "preview": "vite preview",
     "briefing:export": "node scripts/briefing-export.mjs",
     "capture": "node scripts/capture.mjs",
-    "capture:live": "node scripts/record-live.mjs"
+    "capture:live": "node scripts/record-live.mjs",
+    "smoke:film": "node scripts/smoke-decision-film.mjs"
   },
   "dependencies": {
     "react": "^19.2.7",

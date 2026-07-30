@@ -2062,7 +2062,8 @@ textarea {
 }
 
 .film__idle,
-.film__stale {
+.film__stale,
+.film__error {
   grid-column: 1 / -1;
   color: var(--text-dim);
   font-size: 0.92rem;
@@ -2075,6 +2076,17 @@ textarea {
   border: 1px solid rgba(245, 181, 68, 0.35);
   background: rgba(245, 181, 68, 0.1);
   color: var(--warn);
+}
+
+.film__error {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: space-between;
+  padding: 0.85rem 1.15rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 112, 137, 0.35);
+  background: rgba(255, 112, 137, 0.08);
 }
 
 /* The stage holds a 16:9 frame so playback reads as a film, not a panel repaint. */
@@ -2165,9 +2177,26 @@ textarea {
   max-width: 46ch;
 }
 
+.scene__title {
+  font-size: clamp(1.25rem, 2vw, 1.75rem);
+  line-height: 1.2;
+  font-weight: 640;
+  letter-spacing: -0.025em;
+  color: var(--text);
+}
+
 .scene--close .scene__caption,
 .scene--recommendation .scene__caption {
   font-size: clamp(1.25rem, 2.2vw, 1.9rem);
+}
+
+.scene--blocked {
+  border: 1px solid rgba(255, 112, 137, 0.35);
+  background: rgba(255, 112, 137, 0.06);
+}
+
+.scene--blocked .scene__caption {
+  color: var(--bad);
 }
 
 .scene__figures {
@@ -2216,8 +2245,20 @@ textarea {
 .scene__board-name {
   font-size: 0.72rem;
   color: var(--text-dim);
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
   margin-bottom: 0.5rem;
+}
+
+.scene__recommended {
+  color: var(--good);
+  font-size: 0.58rem;
+  font-style: normal;
+  font-weight: 680;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
 }
 
 .scene__units {
@@ -2261,6 +2302,14 @@ textarea {
   border-color: rgba(255, 112, 137, 0.5);
   color: var(--bad);
   text-decoration: line-through;
+}
+
+.scene__state {
+  color: var(--warn);
+  font-size: 0.7rem;
+  font-weight: 620;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .film__timeline {
@@ -2319,6 +2368,11 @@ textarea {
   gap: 1rem;
 }
 
+.rail--focus {
+  border-color: rgba(74, 158, 255, 0.55);
+  box-shadow: 0 0 0 1px rgba(74, 158, 255, 0.12);
+}
+
 .rail__scene {
   margin-top: 0.4rem;
   font-size: 1rem;
@@ -2338,6 +2392,20 @@ textarea {
   font-style: italic;
 }
 
+.rail__warning {
+  padding: 0.75rem 0.85rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255, 112, 137, 0.35);
+  background: rgba(255, 112, 137, 0.08);
+  color: var(--bad);
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+.rail__warning code {
+  color: inherit;
+}
+
 .rail__claims {
   display: grid;
   gap: 0.7rem;
@@ -2349,6 +2417,10 @@ textarea {
   padding-left: 0.8rem;
   border-left: 2px solid var(--good);
   font-size: 0.78rem;
+}
+
+.rail__claims li.is-unverified {
+  border-left-color: var(--bad);
 }
 
 .rail__claim-head {
@@ -2367,6 +2439,11 @@ textarea {
   font-variant-numeric: tabular-nums;
   font-weight: 660;
   color: var(--text);
+}
+
+.rail__label {
+  color: var(--text-dim);
+  line-height: 1.35;
 }
 
 .rail__source {
