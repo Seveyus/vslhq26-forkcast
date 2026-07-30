@@ -121,20 +121,18 @@ mark('decision ready')
 
 // Frame the adversarial verifier and submit a paragraph with one invented figure in it.
 await page.locator('.probe').scrollIntoViewIfNeeded()
-await page.waitForTimeout(1600)
+// Nudge down so the verdict and the ledger land in frame once they render.
+await page.mouse.wheel(0, 240)
+await page.waitForTimeout(1800)
 mark('probe framed')
 
 await clickAt(page.getByRole('button', { name: 'Submit to the verifier' }))
 await page.waitForSelector('.probe__result', { timeout: 60_000 })
 mark('verdict rendered')
 
-// Hold on the annotated paragraph and the ledger so both are readable.
-await page.waitForTimeout(9500)
-
-// Then the deterministic summary that replaces it.
-await page.locator('.probe__displayed').scrollIntoViewIfNeeded()
-await page.waitForTimeout(6500)
-mark('replacement shown')
+// Hold, with no further scrolling. A scroll mid-take lands half-scrolled frames in the cut.
+await page.waitForTimeout(21_000)
+mark('hold complete')
 
 const video = page.video()
 await context.close()
