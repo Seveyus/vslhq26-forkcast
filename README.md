@@ -20,13 +20,13 @@ one worked example; a GPU compute hall runs on the same engine.
 | | |
 |---|---|
 | **Team** | Forkcast |
-| **Members** | _(solo — add teammates here)_ |
+| **Members** | Yoann Frayce (solo) |
 | **Primary category** | Best AI Agent or Workflow Automation |
 | **Secondary category** | Best Azure OpenAI / LLM-Powered App |
 | **Demo video** | [`./demo/demo-smooth.mp4`](./demo/demo-smooth.mp4) |
 | **Stack** | ASP.NET Core Minimal API · C# · Azure OpenAI · React + TypeScript + Vite · deterministic Monte Carlo · xUnit |
 | **Domains shipped** | An electric delivery depot and a GPU compute hall, on the same engine |
-| **Tests** | 164, `dotnet test` |
+| **Tests** | 169, `dotnet test` |
 
 ---
 
@@ -35,8 +35,8 @@ one worked example; a GPU compute hall runs on the same engine.
 When something breaks on an operational site, the hard part is rarely *what happened*. It is
 **which response to take, in the next ten minutes, with incomplete information**.
 
-Managers do this with a whiteboard and a gut feeling, because the alternative — modelling both
-options properly — takes longer than the window they have. And the obvious modern answer, "ask a
+Managers do this with a whiteboard and a gut feeling, because the alternative, modelling both
+options properly, takes longer than the window they have. And the obvious modern answer, "ask a
 language model", fails in the one way that matters: a model will confidently produce
 `87% on-time` and `£4,200 saved`, and those figures come from nowhere. A wrong number that reads
 fluently is worse than no number at all, because someone acts on it.
@@ -59,7 +59,7 @@ Forkcast splits the problem along the line where each tool is actually good.
 
 Forkcast ships two incidents that share no vocabulary, no units and no failure mode. Switch
 between them in the interface. Neither required a line of change in the simulation, the
-comparison, the claim layer or the recommendation — the nouns are data, not code.
+comparison, the claim layer or the recommendation: the nouns are data, not code.
 
 | | Electric delivery depot | GPU compute hall |
 |---|---|---|
@@ -96,10 +96,10 @@ At 18:40 the fast charger at an electric delivery depot fails. Twenty vehicles m
 
 Ask *"what happens if the temporary battery arrives one hour late?"* and the simulation reruns:
 on-time departures fall **97.2% → 86.7%**, vehicles at risk go **1 → 8**, and residual risk moves
-from Low to High. Those numbers appear nowhere in the frontend — they come back from the engine.
+from Low to High. Those numbers appear nowhere in the frontend; they come back from the engine.
 
-The fleet is the demonstration, not the product. The same structure — constrained resource, hard
-deadline, competing responses — is a factory line, a supply chain, a datacentre cooling loop.
+The fleet is the demonstration, not the product. The same structure (a constrained resource, a hard
+deadline, competing responses) is a factory line, a supply chain, a datacentre cooling loop.
 
 ---
 
@@ -142,7 +142,7 @@ simulation output it names. Edit a value and verification fails.
 
 **Rejection, not correction.** `ClaimVerifier` masks identifiers and clock times, then checks
 every remaining number in the generated prose against the claim set and a short allow-list of
-incident facts. One unsupported figure discards the *whole* paragraph — a narrative that got one
+incident facts. One unsupported figure discards the *whole* paragraph; a narrative that got one
 number wrong is not evidence about the others.
 
 **Common random numbers.** Both plans are evaluated against the *same* sampled nights. The gap
@@ -159,8 +159,8 @@ the deterministic summary was substituted.
 ### Try to fool it
 
 A guarantee you have to take on trust is not much of a guarantee, so the app exposes the verifier
-directly. Paste any paragraph into the **Try to fool it** panel — or `POST` it to
-`/api/verification/probe` — and it reports a verdict on every number in it: which claim backs each
+directly. Paste any paragraph into the **Try to fool it** panel, or `POST` it to
+`/api/verification/probe`, and it reports a verdict on every number in it: which claim backs each
 figure, or which incident fact does, or that nothing does.
 
 ```bash
@@ -178,9 +178,9 @@ curl -s -X POST http://localhost:5199/api/verification/probe \
 
 It is the same `ClaimVerifier` instance and the same claim set the product applies to its own
 generated prose. There is no separate, friendlier check for visitors. Four worked examples ship
-with it — one invented figure among true ones, an entirely invented paragraph, a plausible
-rounding (`98%` when the run says `97.2%`), and an honest one that passes — and a test submits all
-four and asserts each behaves as its label promises.
+with it: one invented figure among true ones, an entirely invented paragraph, a plausible rounding
+(`98%` when the run says `97.2%`), and an honest one that passes. A test submits all four and
+asserts each behaves as its label promises.
 
 ### The counterfactual canvas
 
@@ -191,7 +191,7 @@ failed one struck through. Nothing on it is decoration.
 ![The counterfactual canvas](demo/assets/14-canvas.png)
 
 Run a counterfactual and the board moves with the numbers. Below, the towed battery arrives an hour
-late — eight tiles on the recommended plan turn amber, its on-time figure falls from 97.2% to 86.7%,
+late: eight tiles on the recommended plan turn amber, its on-time figure falls from 97.2% to 86.7%,
 and the do-nothing board is untouched because the lever never applied to it.
 
 ![The canvas after a counterfactual](demo/assets/15-canvas-after.png)
@@ -206,15 +206,15 @@ verified state.
 
 Press **Play decision film** and the brief plays back as scenes, with an evidence rail that advances
 with them: for the scene on screen, the claim ids it is permitted to show, their source fields, their
-verified status, the seed and the trial count. A scene with no figure in it says so — *no numerical
-claim required for this scene* — rather than borrowing one.
+verified status, the seed and the trial count. A scene with no figure in it says so, *no numerical
+claim required for this scene*, rather than borrowing one.
 
 ![The decision film playing, with the evidence rail](demo/assets/17-film-futures.png)
 
 The player composes no figure of its own. It renders `beat.caption`, which the server built from
 claim display values, and the claims named in `beat.claimIds`. Switch domain and the scenes re-word
-themselves; run a counterfactual and the film marks itself stale — *decision state changed, film
-regenerated from updated evidence* — then plays the new one.
+themselves; run a counterfactual and the film marks itself stale, *decision state changed, film
+regenerated from updated evidence*, then plays the new one.
 
 ```
 Simulation → Claim set → Verified decision state → Counterfactual Canvas → Decision Film → MP4
@@ -246,7 +246,7 @@ brief would produce a confident, wrong film, so the export refuses rather than w
 
 Switch domain and the beats re-word themselves. Apply a counterfactual and a beat appears carrying
 the real before-and-after. Every caption is composed from claim display values, incident facts and
-the domain's vocabulary — and a test runs each caption back through the verifier, so the export
+the domain's vocabulary, and a test runs each caption back through the verifier, so the export
 cannot introduce a figure the claim set does not carry. That test has already caught one:
 an earlier evidence caption stated its own tally, which no claim backs.
 
@@ -257,10 +257,10 @@ an earlier evidence caption stated its own tally, which no claim backs.
 Requires the [.NET 9 SDK](https://dotnet.microsoft.com/download) and [Node.js 22+](https://nodejs.org).
 
 ```bash
-# terminal 1 — API on http://localhost:5199
+# terminal 1: API on http://localhost:5199
 dotnet run --project src/Forkcast.Api
 
-# terminal 2 — interface on http://localhost:5173
+# terminal 2: interface on http://localhost:5173
 cd web && npm install && npm run dev
 ```
 
@@ -273,7 +273,7 @@ document at `/openapi/v1.json`.
 ### Verifying the build
 
 ```bash
-dotnet build          # 0 warnings — warnings are errors
+dotnet build          # 0 warnings, warnings are errors
 dotnet test           # 164 tests
 cd web && npm run build
 ```
@@ -291,7 +291,7 @@ AZURE_OPENAI_DEPLOYMENT=<deployment name>
 ```
 
 The API reads `.env` at startup; real environment variables take precedence. Restart it and the
-badge changes to *Azure OpenAI connected*. Every simulated number stays identical — what improves
+badge changes to *Azure OpenAI connected*. Every simulated number stays identical, what improves
 is how unusual incident wording is read and how the explanation is written.
 
 ### API
@@ -335,19 +335,19 @@ curl -s -X POST http://localhost:5199/api/simulations/challenge \
 
 ![The recommendation panel](demo/assets/05-recommendation.png)
 
-**Every number, accounted for** — expand any claim for its source field and calculation:
+**Every number, accounted for**: expand any claim for its source field and calculation:
 
 ![The verification panel](demo/assets/06-verification.png)
 
-**Challenge it** — a real rerun, not a canned answer:
+**Challenge it**: a real rerun, not a canned answer:
 
 ![Challenging the recommendation](demo/assets/07-challenge.png)
 
-**Try to fool it** — every number in a submitted paragraph gets a verdict:
+**Try to fool it**: every number in a submitted paragraph gets a verdict:
 
 ![The verifier probe](demo/assets/11-probe.png)
 
-**Switch the domain** — the same engine, an unrelated incident:
+**Switch the domain**: the same engine, an unrelated incident:
 
 ![The domain switcher](demo/assets/12-domains.png)
 
@@ -358,13 +358,13 @@ Every screenshot is captured from the running application by
 
 ## Demo video
 
-**[`demo/demo-smooth.mp4`](demo/demo-smooth.mp4)** — 2:48, 1920×1080, H.264. This is the
+**[`demo/demo-smooth.mp4`](demo/demo-smooth.mp4)**: 2:48, 1920×1080, H.264. This is the
 submission cut. `demo/demo.mp4` is the earlier cut of the same film, kept for reference.
 
 Built with [HyperFrames](https://hyperframes.heygen.com) from the same captured screens, so the
 film shows the submitted application rather than a separate mock-up of it. Fifteen seconds in its
-middle are an **uncut screen capture** — visible cursor, a real click on *Simulate*, the real
-wait, the real numbers arriving, then a real click on *Test assumption* — recorded by
+middle are an **uncut screen capture**: visible cursor, a real click on *Simulate*, the real
+wait, the real numbers arriving, then a real click on *Test assumption*: recorded by
 [`web/scripts/record-live.mjs`](web/scripts/record-live.mjs) driving the actual UI against the
 actual API. Every figure spoken or
 shown in it is one the engine returns at seed `20260728`, and the test
@@ -386,14 +386,14 @@ npx hyperframes render --quality high --output renders/video.mp4
 
 ```
 src/
-  Forkcast.Core/          pure domain — no framework, no I/O
+  Forkcast.Core/          pure domain, no framework, no I/O
     Simulation/           SplitMix64, trial noise, the engine
     Verification/         claims, the verifier, the allow-list
     Comparison/           the decision rule
     Challenges/           the closed set of challengeable assumptions
     Ai/                   the language boundary, and its deterministic implementation
   Forkcast.Api/           Minimal API, DTO mapping, Azure OpenAI provider
-tests/Forkcast.Tests/     164 tests
+tests/Forkcast.Tests/     169 tests
 web/                      React + TypeScript + Vite, one page
 demo/                     screenshots and the demo video
 ```
@@ -406,7 +406,7 @@ problem does not need them, and each one would be another thing between a review
 
 ### Tests worth looking at
 
-- `Published_demo_figures_hold` — pins the numbers in this README to what the engine returns, so
+- `Published_demo_figures_hold`, pins the numbers in this README to what the engine returns, so
   the README and the video cannot drift away from the product
 - `An_invented_number_is_rejected_and_the_narrative_is_replaced`
 - `One_invented_number_discards_the_whole_narrative`
@@ -414,18 +414,18 @@ problem does not need them, and each one would be another thing between a review
 - `Derived_seeds_do_not_depend_on_runtime_string_hashing`
 - `A_failing_language_model_does_not_take_the_decision_down`
 - `Failed_and_remaining_connectors_are_told_apart`
-- `The_critical_constraint_speaks_the_domain_language` — neither domain's constraint string
+- `The_critical_constraint_speaks_the_domain_language`, neither domain's constraint string
   contains the other's nouns
-- `Published_compute_figures_hold_and_differ_from_the_fleet` — the second domain is not the first
+- `Published_compute_figures_hold_and_differ_from_the_fleet`, the second domain is not the first
   one relabelled
-- `The_offered_examples_behave_as_their_labels_promise` — the verifier demonstration cannot start
+- `The_offered_examples_behave_as_their_labels_promise`, the verifier demonstration cannot start
   teaching the wrong lesson
-- `The_analyser_and_the_rejection_list_agree` — the inspectable verdict and the enforced one are
+- `The_analyser_and_the_rejection_list_agree`, the inspectable verdict and the enforced one are
   the same computation
 - `Every_number_in_every_caption_survives_the_verifier` and
-  `No_caption_carries_a_figure_the_verifier_would_reject` — the exported brief is held to the same
+  `No_caption_carries_a_figure_the_verifier_would_reject`, the exported brief is held to the same
   rule as the model's prose, in both domains
-- `A_beat_can_only_reference_a_claim_the_payload_carries` — the film cannot cite evidence it was
+- `A_beat_can_only_reference_a_claim_the_payload_carries`, the film cannot cite evidence it was
   never given
 
 ---
@@ -434,11 +434,11 @@ problem does not need them, and each one would be another thing between a review
 
 - **No secrets in the repository.** `.env`, `appsettings.Development.json` and `secrets.json` are
   git-ignored; `.env.example` and `appsettings.Example.json` carry only empty placeholders. If a
-  key is ever pushed by accident, rotate it in the Azure portal immediately — removing the commit
+  key is ever pushed by accident, rotate it in the Azure portal immediately, removing the commit
   is not enough.
 - **The key never leaves the backend.** The browser talks only to the Forkcast API.
 - **CORS is an allow-list** of the two local frontend ports. Never `AllowAnyOrigin`.
-- **Input is bounded**: 4000 characters of incident text, 500 for a question, 1–2000 trials.
+- **Input is bounded**: 4000 characters of incident text, 500 for a question, 1-2000 trials.
   Everything else is rejected with problem details.
 - **No stack trace can reach the screen.** Unhandled failures are logged server-side and returned
   as a plain problem document; the frontend has a designed state for every failure, including the
@@ -461,7 +461,7 @@ solve.
   published seed, auditable by a stranger, and free of anyone's private operational detail. The
   interface says so on the situation card. What a production integration would look like is written
   up in [`docs/operational-data-contract.md`](docs/operational-data-contract.md), with a worked
-  snapshot per domain in [`docs/examples/`](docs/examples/) — **no connector is implemented**, and
+  snapshot per domain in [`docs/examples/`](docs/examples/), **no connector is implemented**, and
   nothing in the running application reaches an external service.
 - **It is not a fleet optimiser.** It compares two named strategies. It does not search for the
   best one.
@@ -486,14 +486,14 @@ FleetMind is the EV-fleet application context that motivated this work. Forkcast
 underneath: a reusable engine that simulates, verifies and communicates operational decisions
 across domains. One is an application; the other is the decision technology it would sit on.
 
-That is why the compute hall matters more than it looks. It is not a second feature — it is the
+That is why the compute hall matters more than it looks. It is not a second feature, it is the
 evidence that the engine is not shaped like a depot.
 
 ## Prior work, and what is new here
 
 Forkcast is informed by earlier work of mine on electric-fleet depot operations. The problem
 framing, the demonstration scenario and the conviction that a language model must not be allowed
-near the arithmetic all come from that experience rather than from nothing — and the brief this
+near the arithmetic all come from that experience rather than from nothing, and the brief this
 repository was built from stated them up front.
 
 What this implementation contributes:
@@ -509,12 +509,8 @@ What this implementation contributes:
   rather than generating prose about it.
 - **A .NET and Azure implementation** with the language boundary off the critical path.
 
-**On prior work.** No source code, UI assets or generated output from any previous project were
-reused here. Everything in this repository was written during the event. The author has worked on
-fleet and depot problems before, and that experience informed the choice of domain and what a
-credible incident looks like — but the engine, the claim layer, the interface and the film were
-all built from scratch for this hackathon. Third-party dependencies are the ones declared in
-`Forkcast.*.csproj` and `web/package.json`, used as published.
+Everything in this repository was written during the event. Third-party dependencies are the ones
+declared in `Forkcast.*.csproj` and `web/package.json`, used as published.
 
 ## Where this goes next
 

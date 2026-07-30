@@ -8,7 +8,7 @@ mode: autonomous
 music: none
 ---
 
-## Frame 1 — The bind
+## Frame 1: The bind
 
 - status: animated
 - duration: 15s
@@ -22,7 +22,7 @@ Open cold on the operational bind, not on the product. Two clock figures, 18:40 
 thinning line between them. Numbers arrive as facts, one at a time: twenty vehicles,
 eight charge points, one failure.
 
-## Frame 2 — The promise
+## Frame 2: The promise
 
 - status: animated
 - duration: 11s
@@ -32,9 +32,9 @@ eight charge points, one failure.
 - voiceover: "Forkcast is an AI decision agent for operational incidents. It lets a team see both futures before making the call."
 
 The brand moment. Wordmark, then the tagline resolving beneath it: *See both futures
-before you decide.* Restrained — one accent, no flourish.
+before you decide.* Restrained, one accent, no flourish.
 
-## Frame 3 — Read the incident
+## Frame 3: Read the incident
 
 - status: animated
 - duration: 17s
@@ -45,11 +45,11 @@ before you decide.* Restrained — one accent, no flourish.
 - asset_candidates: assets/02-incident.png
 
 The product's own incident card. Push in slowly on the textarea while the constraint
-chips light in sequence — twenty vehicles, eight charge points, deadline 06:00, one
+chips light in sequence, twenty vehicles, eight charge points, deadline 06:00, one
 critical failure. The last beat lifts a caption: *the model reads. It does not
 calculate.*
 
-## Frame 4 — The engine runs
+## Frame 4: The engine runs
 
 - status: animated
 - duration: 17s
@@ -63,7 +63,7 @@ The agent progress list, ticking through its six steps in time with the narratio
 A counter runs to 500 in the corner. This is the beat that establishes the work is
 real work.
 
-## Frame 5 — Two futures
+## Frame 5: Two futures
 
 - status: animated
 - duration: 27s
@@ -77,7 +77,7 @@ The centrepiece comparison. Both figures count up simultaneously and land togeth
 the recommended panel takes its green ring last. Hold long enough for a judge to read
 all four metrics on each side. The final line earns the common-random-numbers point.
 
-## Frame 6 — The recommendation
+## Frame 6: The recommendation
 
 - status: animated
 - duration: 15s
@@ -90,7 +90,7 @@ all four metrics on each side. The final line earns the common-random-numbers po
 The recommendation headline, then the decision rule card sliding in beside it. The
 point is that the rule is visible and arguable, not buried.
 
-## Frame 7 — Every number, accounted for
+## Frame 7: Every number, accounted for
 
 - status: animated
 - duration: 22s
@@ -105,7 +105,7 @@ source field and calculation. In the last third, a line of generated prose appea
 with an invented figure in it; the figure is struck through in red and the paragraph
 falls away, replaced by the deterministic summary. Give this frame room.
 
-## Frame 8 — Challenge it
+## Frame 8: Challenge it
 
 - status: animated
 - duration: 20s
@@ -119,20 +119,20 @@ The what-if. Type the question, then the figures move: 97.2 rolls down to 86.7 w
 the risk pill goes from Low to High and the at-risk count climbs 1 → 8. The closing
 caption: *these numbers came back from the engine.*
 
-## Frame 9 — How it holds
+## Frame 9: How it holds
 
 - status: animated
 - duration: 16s
 - src: compositions/frames/09-boundary.html
 - transition_in: crossfade
-- scene: The boundary — what the model may do, and what only the engine may do.
+- scene: The boundary, what the model may do, and what only the engine may do.
 - voiceover: "The model may read a report, name a plan, and write the explanation. It may not produce a number, decide which plan wins, or be on the critical path. With no credentials at all, everything you just saw still runs."
 - asset_candidates: assets/09-architecture.png
 
 Two columns resolving out of the pipeline diagram: *the model may* in accent blue,
 *the model may not* in red. Cleanest possible statement of the architecture.
 
-## Frame 10 — Close
+## Frame 10: Close
 
 - status: animated
 - duration: 8s

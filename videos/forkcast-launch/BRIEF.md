@@ -15,7 +15,7 @@ style_preset: TBD
 ## Intent
 
 Forkcast is an AI decision agent for operational incidents. This is the submission
-video for the VSLive! Microsoft AI Hackathon 2026 — it has to survive a room of
+video for the VSLive! Microsoft AI Hackathon 2026, it has to survive a room of
 engineers who have already seen a dozen LLM wrappers today.
 
 The angle is trust, not features. Every product like this can show a confident
@@ -25,7 +25,7 @@ on the thing that actually differentiates the product: the claim verifier. The
 line the room should leave with is the message field above.
 
 Tone: a premium Microsoft product launch. Calm, precise, confident. Not a student
-project, not a startup sizzle reel. No hype adjectives — the numbers do the work.
+project, not a startup sizzle reel. No hype adjectives: the numbers do the work.
 
 ## Assets
 
@@ -33,13 +33,13 @@ Real screens captured from the running application by `web/scripts/capture.mjs`.
 Nothing in this video is a mock-up; every figure on screen came back from the
 .NET engine at seed 20260728.
 
-- `../../demo/assets/02-incident.png` — the incident card, editable, constraints read out
-- `../../demo/assets/03-agent.png` — the agent working through the real request
-- `../../demo/assets/04-futures.png` — the two futures side by side, shared scale
-- `../../demo/assets/05-recommendation.png` — the recommendation, its rule and its evidence
-- `../../demo/assets/06-verification.png` — the verification panel, one claim expanded
-- `../../demo/assets/07-challenge.png` — the what-if, 97.2% to 86.7%
-- `../../demo/assets/09-architecture.png` — how the answer is produced
+- `../../demo/assets/02-incident.png`, the incident card, editable, constraints read out
+- `../../demo/assets/03-agent.png`, the agent working through the real request
+- `../../demo/assets/04-futures.png`, the two futures side by side, shared scale
+- `../../demo/assets/05-recommendation.png`, the recommendation, its rule and its evidence
+- `../../demo/assets/06-verification.png`, the verification panel, one claim expanded
+- `../../demo/assets/07-challenge.png`, the what-if, 97.2% to 86.7%
+- `../../demo/assets/09-architecture.png`, how the answer is produced
 
 ## Customizations
 
