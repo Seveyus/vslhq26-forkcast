@@ -70,6 +70,11 @@ export function IncidentCard({
         onChange={(event) => onNarrativeChange(event.target.value)}
       />
 
+      <p className="provenance" title="Synthetic data is used for privacy, reproducibility and deterministic evaluation.">
+        <span className="provenance__dot" aria-hidden="true" />
+        Data origin: synthetic operational snapshot
+      </p>
+
       <ul className="chips">
         {chips.map((chip) => (
           <li key={chip.label} className={`chip${chip.tone === 'bad' ? ' chip--bad' : ''}`}>

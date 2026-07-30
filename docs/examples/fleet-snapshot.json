@@ -1,0 +1,62 @@
+{
+  "sourceSystem": "example-fleet-management",
+  "snapshotAt": "2026-07-28T18:40:00+01:00",
+  "site": "Reading delivery depot",
+  "detectedAt": "2026-07-28T18:40:00+01:00",
+  "deadline": "2026-07-29T06:00:00+01:00",
+  "dataQuality": "synthetic",
+  "failures": [
+    "CP-09 (150 kW DC fast charger) offline - rectifier fault E-4412"
+  ],
+  "vocabulary": {
+    "unitPlural": "vehicles",
+    "resourcePlural": "charge points",
+    "levelUnit": "kWh",
+    "rateUnit": "kW"
+  },
+  "units": [
+    {
+      "id": "EV-01",
+      "label": "Priority North",
+      "capacity": 110,
+      "currentLevelPct": 31,
+      "requiredLevelPct": 88,
+      "deadline": "2026-07-29T04:40:00+01:00",
+      "isPriority": true,
+      "maxSharedRate": 11,
+      "maxDedicatedRate": 60,
+      "assignedResourceId": "CP-01"
+    }
+  ],
+  "resources": [
+    {
+      "id": "CP-01",
+      "kind": "shared",
+      "ratedRate": 11,
+      "isOperational": true
+    },
+    {
+      "id": "CP-09",
+      "kind": "dedicated",
+      "ratedRate": 150,
+      "isOperational": false,
+      "faultCode": "E-4412"
+    }
+  ],
+  "siteConstraints": {
+    "sharedPoolCapacity": 74,
+    "readyAheadMinutes": 15,
+    "handoverBaseMinutes": 18,
+    "handoverTailMeanMinutes": 10,
+    "recoveryProbability": 0.15
+  },
+  "costCurve": [
+    {
+      "label": "Evening peak",
+      "from": "2026-07-28T18:40:00+01:00",
+      "to": "2026-07-28T20:00:00+01:00",
+      "pricePerUnit": 0.318,
+      "currency": "GBP"
+    }
+  ]
+}

@@ -1,3 +1,5 @@
+using Forkcast.Core.Verification;
+
 namespace Forkcast.Core.Briefing;
 
 /// <summary>One beat of a decision brief: a moment on screen and the evidence behind it.</summary>
@@ -109,6 +111,13 @@ public sealed record DecisionBriefing
     public required int VerifiedClaims { get; init; }
 
     public required int UnsupportedNumbers { get; init; }
+
+    /// <summary>
+    /// The claim set the beats may draw on. Carried in the payload so a renderer can resolve every
+    /// <see cref="BriefingBeat.ClaimIds"/> entry without a second request — and so it can never
+    /// invent one it was not given.
+    /// </summary>
+    public required IReadOnlyList<Claim> Claims { get; init; }
 
     public required IReadOnlyList<BriefingBeat> Beats { get; init; }
 

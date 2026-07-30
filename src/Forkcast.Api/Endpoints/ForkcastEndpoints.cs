@@ -199,16 +199,22 @@ public static class ForkcastEndpoints
         api.MapGet("/briefing/export", async Task<Results<Ok<BriefingResponse>, ProblemHttpResult>> (
                 string? scenario,
                 string? question,
+                string? narrative,
                 ForkcastRunner runner,
                 CancellationToken cancellationToken) =>
             {
+                if (Validate.Narrative(narrative, required: false) is { } narrativeProblem)
+                {
+                    return narrativeProblem;
+                }
+
                 if (question is not null && Validate.Question(question) is { } problem)
                 {
                     return problem;
                 }
 
                 var (briefing, result) = await runner.BriefAsync(
-                    null, question, SimulationOptions.Default, scenario, cancellationToken);
+                    narrative, question, SimulationOptions.Default, scenario, cancellationToken);
 
                 return TypedResults.Ok(briefing.ToResponse(result.Incident.Vocabulary));
             })

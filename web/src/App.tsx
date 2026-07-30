@@ -5,6 +5,7 @@ import { AgentProgress } from './components/AgentProgress'
 import { ArchitectureSection } from './components/ArchitectureSection'
 import { ChallengePanel } from './components/ChallengePanel'
 import { CounterfactualCanvas } from './components/CounterfactualCanvas'
+import { DecisionFilmPlayer } from './components/DecisionFilmPlayer'
 import { FuturePanel } from './components/FuturePanel'
 import { IncidentCard } from './components/IncidentCard'
 import { RecommendationPanel } from './components/RecommendationPanel'
@@ -23,6 +24,7 @@ export function App() {
   const [running, setRunning] = useState(false)
   const [challenging, setChallenging] = useState(false)
   const [activeStep, setActiveStep] = useState(0)
+  const [appliedQuestion, setAppliedQuestion] = useState<string | undefined>(undefined)
 
   const resultRef = useRef<HTMLDivElement>(null)
 
@@ -49,6 +51,7 @@ export function App() {
           setNarrative(loaded.narrative)
           setDecision(null)
           setError(null)
+          setAppliedQuestion(undefined)
         }
       })
       .catch((cause: unknown) => {
@@ -87,6 +90,7 @@ export function App() {
 
     try {
       const result = await api.run(narrative, scenarioKey)
+      setAppliedQuestion(undefined)
       const remaining = steps.length * STEP_MS - (performance.now() - started)
       if (remaining > 0) {
         await new Promise((resolve) => window.setTimeout(resolve, remaining))
@@ -105,7 +109,9 @@ export function App() {
       setError(null)
 
       try {
-        setDecision(await api.challenge(question, narrative, scenarioKey))
+        const result = await api.challenge(question, narrative, scenarioKey)
+        setDecision(result)
+        setAppliedQuestion(result.assumption?.recognised ? question : undefined)
       } catch (cause: unknown) {
         setError(toForkcastError(cause))
       } finally {
@@ -121,6 +127,7 @@ export function App() {
 
     try {
       setDecision(await api.run(narrative, scenarioKey))
+      setAppliedQuestion(undefined)
     } catch (cause: unknown) {
       setError(toForkcastError(cause))
     } finally {
@@ -213,7 +220,18 @@ export function App() {
                       className={`domain${active ? ' is-active' : ''}`}
                       aria-pressed={active}
                       disabled={running || challenging}
-                      onClick={() => setScenarioKey(option.key)}
+                      onClick={() => {
+                        if (!active) {
+                          // Never leave the previous domain's verified result under a newly
+                          // selected domain while its incident is loading (or if loading fails).
+                          setDecision(null)
+                          setDemo(null)
+                          setNarrative('')
+                          setAppliedQuestion(undefined)
+                          setError(null)
+                          setScenarioKey(option.key)
+                        }
+                      }}
                     >
                       <span className="domain__label">{option.domainLabel}</span>
                       <span className="domain__title">{option.title}</span>
@@ -285,6 +303,14 @@ export function App() {
               </section>
 
               <CounterfactualCanvas decision={decision} />
+
+              <DecisionFilmPlayer
+                decision={decision}
+                scenario={scenarioKey}
+                question={appliedQuestion}
+                narrative={decision.incident.narrative}
+                decisionPending={challenging}
+              />
               <RecommendationPanel decision={decision} />
               <VerificationPanel decision={decision} />
 

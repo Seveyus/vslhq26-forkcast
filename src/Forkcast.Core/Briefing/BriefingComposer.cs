@@ -21,7 +21,17 @@ public sealed class BriefingComposer
         ArgumentNullException.ThrowIfNull(result);
 
         var words = result.Incident.Vocabulary;
-        var claims = result.Verification.Claims.ToDictionary(c => c.Id, StringComparer.Ordinal);
+        var briefingClaims = result.Verification.Claims.ToList();
+        if (result.Delta is { } evidenceDelta)
+        {
+            // A challenged result's eight claims describe the changed world. The two "before"
+            // figures come from the separately verified original run, so carry those exact claims
+            // alongside the current set under distinct IDs rather than treating the delta as prose.
+            briefingClaims.Add(evidenceDelta.PreviousOnTimeClaim);
+            briefingClaims.Add(evidenceDelta.PreviousAtRiskClaim);
+        }
+
+        var claims = briefingClaims.ToDictionary(c => c.Id, StringComparer.Ordinal);
         var baseline = result.Comparison.Baseline;
         var alternative = result.Comparison.Alternative;
         var recommended = result.Comparison.Recommended;
@@ -91,15 +101,25 @@ public sealed class BriefingComposer
 
         if (result.Delta is { } delta && result.Assumption is { Recognised: true } assumption)
         {
+            var currentPrefix = recommended.PlanId == baseline.PlanId ? "baseline" : "alternative";
+            var currentOnTimeId = $"{currentPrefix}-on-time";
+            var currentAtRiskId = $"{currentPrefix}-at-risk";
+            var currentOnTime = claims[currentOnTimeId];
+            var currentAtRisk = claims[currentAtRiskId];
+
             beats.Add(Beat(
                 "counterfactual", "counterfactual", 20,
                 "Counterfactual test",
                 string.Create(
                     CultureInfo.InvariantCulture,
                     $"{assumption.Label}: {words.OnTimeMetricLabel} "
-                    + $"{delta.PreviousOnTimeDeparturePct:0.#}% to {delta.OnTimeDeparturePct:0.#}%, "
-                    + $"{words.UnitPlural} at risk {delta.PreviousVehiclesAtRisk} to {delta.VehiclesAtRisk}."),
-                "alternative-on-time", "alternative-at-risk"));
+                    + $"{delta.PreviousOnTimeClaim.DisplayValue} to {currentOnTime.DisplayValue}, "
+                    + $"{words.UnitPlural} at risk {delta.PreviousAtRiskClaim.DisplayValue} "
+                    + $"to {currentAtRisk.DisplayValue}."),
+                delta.PreviousOnTimeClaim.Id,
+                currentOnTimeId,
+                delta.PreviousAtRiskClaim.Id,
+                currentAtRiskId));
         }
 
         beats.Add(Beat(
@@ -117,8 +137,9 @@ public sealed class BriefingComposer
             Headline = result.Recommendation.Headline,
             Seed = result.Seed,
             TrialCount = result.TrialCount,
-            VerifiedClaims = result.Verification.VerifiedClaims,
+            VerifiedClaims = briefingClaims.Count(c => c.Verified),
             UnsupportedNumbers = result.Verification.UnsupportedNumbers,
+            Claims = briefingClaims,
             Beats = beats,
             Resources = result.Incident.ChargePoints
                 .Select(point => new CanvasResource

@@ -199,6 +199,8 @@ internal static class ApiMapping
         assumption.Recognised);
 
     private static DeltaDto ToDto(DecisionDelta delta) => new(
+        ToDto(delta.PreviousOnTimeClaim),
+        ToDto(delta.PreviousAtRiskClaim),
         delta.PreviousOnTimeDeparturePct,
         delta.OnTimeDeparturePct,
         delta.OnTimeChangePp,
@@ -250,6 +252,7 @@ internal static class ApiMapping
             briefing.UnsupportedNumbers,
             briefing.TotalSeconds,
             briefing.CounterfactualLabel,
+            briefing.Claims.Select(ToDto).ToList(),
             briefing.Beats
                 .Select(b => new BriefingBeatDto(
                     b.Id, b.Kind, b.StartSeconds, b.DurationSeconds, b.Heading, b.Caption, b.ClaimIds))

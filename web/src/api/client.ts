@@ -1,11 +1,13 @@
 import type { ZodType } from 'zod'
 import {
+  briefingSchema,
   decisionSchema,
   demoIncidentSchema,
   healthSchema,
   verificationProbeSchema,
   type Decision,
   type DemoIncident,
+  type Briefing,
   type Health,
   type VerificationProbe,
 } from './schema'
@@ -95,6 +97,28 @@ export const api = {
       method: 'POST',
       body: JSON.stringify({ question, narrative, scenario }),
     }),
+
+  /**
+   * The animated brief for the current verified state. The film renders this and nothing else, so
+   * a scene cannot show a figure the payload does not carry.
+   */
+  briefing: (
+    scenario?: string,
+    question?: string,
+    narrative?: string,
+    signal?: AbortSignal,
+  ): Promise<Briefing> => {
+    const query = new URLSearchParams()
+    if (scenario) query.set('scenario', scenario)
+    if (question) query.set('question', question)
+    if (narrative) query.set('narrative', narrative)
+    const suffix = query.toString()
+    return request(
+      `/api/briefing/export${suffix ? `?${suffix}` : ''}`,
+      briefingSchema,
+      { signal },
+    )
+  },
 
   probe: (submitted: string, narrative?: string, scenario?: string): Promise<VerificationProbe> =>
     request('/api/verification/probe', verificationProbeSchema, {

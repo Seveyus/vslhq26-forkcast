@@ -155,6 +155,16 @@ public class ApiEndpointTests : IClassFixture<WebApplicationFactory<Program>>
         Assert.NotNull(challenge.Delta);
         Assert.True(challenge.Delta!.OnTimeChangePp < 0);
         Assert.True(challenge.Delta.VehiclesAtRisk > challenge.Delta.PreviousVehiclesAtRisk);
+        Assert.Equal(
+            challenge.Delta.PreviousOnTimeDeparturePct,
+            challenge.Delta.PreviousOnTimeClaim.Value);
+        Assert.Equal(
+            challenge.Delta.PreviousVehiclesAtRisk,
+            challenge.Delta.PreviousAtRiskClaim.Value);
+        Assert.StartsWith("previous-", challenge.Delta.PreviousOnTimeClaim.Id, StringComparison.Ordinal);
+        Assert.StartsWith("previous-", challenge.Delta.PreviousAtRiskClaim.Id, StringComparison.Ordinal);
+        Assert.True(challenge.Delta.PreviousOnTimeClaim.Verified);
+        Assert.True(challenge.Delta.PreviousAtRiskClaim.Verified);
         Assert.NotEmpty(challenge.Delta.Summary);
         Assert.Equal(0, challenge.Verification.UnsupportedNumbers);
     }

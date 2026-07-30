@@ -235,6 +235,8 @@ export const decisionSchema = z.object({
       riskLevel: riskLevelSchema,
       recommendationChanged: z.boolean(),
       summary: z.string(),
+      previousOnTimeClaim: claimSchema,
+      previousAtRiskClaim: claimSchema,
     })
     .nullish(),
   notes: z.array(z.string()),
@@ -269,6 +271,126 @@ export const verificationProbeSchema = z.object({
   trialCount: z.number(),
   claims: z.array(claimSchema),
 })
+
+export const briefingBeatSchema = z
+  .object({
+    id: z.string().min(1),
+    kind: z.enum([
+      'situation',
+      'futures',
+      'risk',
+      'recommendation',
+      'evidence',
+      'counterfactual',
+      'close',
+    ]),
+    startSeconds: z.number().nonnegative(),
+    durationSeconds: z.number().positive(),
+    heading: z.string().min(1),
+    caption: z.string().min(1),
+    claimIds: z.array(z.string().min(1)),
+  })
+  .strict()
+
+export const canvasUnitSchema = z
+  .object({
+    id: z.string().min(1),
+    label: z.string().min(1),
+    isPriority: z.boolean(),
+    onTimeProbability: z.number().min(0).max(1),
+    shortfallLevel: z.number().nonnegative(),
+    slackMinutes: z.number(),
+    atRisk: z.boolean(),
+  })
+  .strict()
+
+export const briefingSchema = z
+  .object({
+    domainKey: z.enum(['fleet', 'compute']),
+    domainLabel: z.string().min(1),
+    title: z.string().min(1),
+    situation: z.string().min(1),
+    recommendedPlanId: z.string().min(1),
+    headline: z.string().min(1),
+    seed: z.number().int(),
+    trialCount: z.number().int().positive(),
+    verifiedClaims: z.number().int().nonnegative(),
+    unsupportedNumbers: z.number().int().nonnegative(),
+    totalSeconds: z.number().positive(),
+    counterfactualLabel: z.string().min(1).nullish(),
+    claims: z.array(claimSchema).min(1),
+    beats: z.array(briefingBeatSchema).min(1),
+    resources: z
+      .array(
+        z
+          .object({
+            id: z.string().min(1),
+            kind: z.string().min(1),
+            rate: z.number().nonnegative(),
+            operational: z.boolean(),
+            faultCode: z.string().min(1).nullish(),
+          })
+          .strict(),
+      )
+      .min(1),
+    plans: z
+      .array(
+        z
+          .object({
+            planId: z.string().min(1),
+            planName: z.string().min(1),
+            recommended: z.boolean(),
+            onTimePct: z.number().min(0).max(100),
+            atRiskCount: z.number().int().nonnegative(),
+            riskLevel: riskLevelSchema,
+            units: z.array(canvasUnitSchema).min(1),
+          })
+          .strict(),
+      )
+      .length(2),
+    vocabulary: vocabularySchema,
+  })
+  .strict()
+  .superRefine((briefing, context) => {
+    if (briefing.vocabulary.domainKey !== briefing.domainKey) {
+      context.addIssue({
+        code: 'custom',
+        path: ['vocabulary', 'domainKey'],
+        message: 'must match the briefing domain',
+      })
+    }
+
+    let clock = 0
+    for (const [index, beat] of briefing.beats.entries()) {
+      if (Math.abs(beat.startSeconds - clock) > 0.01) {
+        context.addIssue({
+          code: 'custom',
+          path: ['beats', index, 'startSeconds'],
+          message: 'beats must form a continuous timeline',
+        })
+      }
+      clock += beat.durationSeconds
+    }
+    if (Math.abs(briefing.totalSeconds - clock) > 0.01) {
+      context.addIssue({
+        code: 'custom',
+        path: ['totalSeconds'],
+        message: 'must equal the complete beat timeline',
+      })
+    }
+
+    const recommended = briefing.plans.filter((plan) => plan.recommended)
+    if (
+      recommended.length !== 1 ||
+      recommended[0]?.planId !== briefing.recommendedPlanId
+    ) {
+      context.addIssue({
+        code: 'custom',
+        path: ['recommendedPlanId'],
+        message: 'must identify the single recommended plan',
+      })
+    }
+  })
 
 export const demoIncidentSchema = z.object({
   incident: incidentSchema,
@@ -306,3 +428,5 @@ export type Vocabulary = z.infer<typeof vocabularySchema>
 export type ScenarioSummary = z.infer<typeof scenarioSummarySchema>
 export type NumberFinding = z.infer<typeof numberFindingSchema>
 export type VerificationProbe = z.infer<typeof verificationProbeSchema>
+export type Briefing = z.infer<typeof briefingSchema>
+export type BriefingBeat = z.infer<typeof briefingBeatSchema>

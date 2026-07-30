@@ -445,3 +445,8 @@ videos/*/snapshots/
 videos/*/.hyperframes/
 videos/*/capture/
 videos/*/check.log
+
+## Forkcast — video working files
+demo/demo-original.mp4
+demo/generated/
+demo/decision-film/node_modules/
