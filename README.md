@@ -21,8 +21,8 @@ one worked example; a GPU compute hall runs on the same engine.
 |---|---|
 | **Team** | Forkcast |
 | **Members** | Yoann Frayce (solo) |
-| **Primary category** | Best AI Agent or Workflow Automation |
-| **Secondary category** | Best Azure OpenAI / LLM-Powered App |
+| **Primary category** | AI Agent or Workflow Automation |
+| **Secondary category** | Microsoft .NET Powered Business Applications |
 | **Demo video** | [`./demo/demo-smooth.mp4`](./demo/demo-smooth.mp4) |
 | **Stack** | ASP.NET Core Minimal API · C# · Azure OpenAI · React + TypeScript + Vite · deterministic Monte Carlo · xUnit |
 | **Domains shipped** | An electric delivery depot and a GPU compute hall, on the same engine |
